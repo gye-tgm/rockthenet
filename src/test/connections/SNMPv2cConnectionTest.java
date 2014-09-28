@@ -14,9 +14,9 @@ import org.snmp4j.agent.mo.MOScalar;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 
-import connections.ConnectionException;
-import connections.ConnectionFactory;
-import connections.ReadConnection;
+import rockthenet.connections.ConnectionException;
+import rockthenet.connections.ConnectionFactory;
+import rockthenet.connections.ReadConnection;
 
 public class SNMPv2cConnectionTest {
 	private static final String ADDRESS = "127.0.0.1";

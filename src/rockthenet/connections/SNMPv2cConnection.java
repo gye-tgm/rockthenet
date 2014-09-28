@@ -1,4 +1,4 @@
-package connections;
+package rockthenet.connections;
 
 import java.io.IOException;
 

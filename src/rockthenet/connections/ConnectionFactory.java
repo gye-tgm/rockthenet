@@ -1,4 +1,4 @@
-package connections;
+package rockthenet.connections;
 
 public class ConnectionFactory {
 	public static ReadConnection createSNMPv2cConnection(String address, int port, String community) throws ConnectionException {

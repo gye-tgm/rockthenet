@@ -1,4 +1,4 @@
-package connections;
+package rockthenet.connections;
 
 public interface Connection {
 	public void establish() throws ConnectionException;
