@@ -7,6 +7,7 @@ import java.util.HashMap;
  */
 public abstract class SnmpRetriever implements IDataRetriever {
     protected HashMap<String, String> oidDictionary; // (name, oid)
+    // TODO: WriteConnection
 
     @Override
     public Object get(String name){

@@ -13,7 +13,6 @@ public class Policy {
     private Integer action;
     private Integer activeStatus;
     private String name;
-    private IDataRetriever retriever;
 
     public Policy(Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service, Integer action, Integer activeStatus, String name) {
         this.id = id;
