@@ -1,8 +1,8 @@
-package firewall.junipernetscreen5gt;
+package rockthenet.firewall.junipernetscreen5gt;
 
-import connections.ConnectionException;
-import connections.ReadConnection;
-import firewall.SnmpRetriever;
+import rockthenet.connections.ConnectionException;
+import rockthenet.connections.ReadConnection;
+import rockthenet.firewall.SnmpRetriever;
 import org.snmp4j.PDU;
 
 import java.util.ArrayList;

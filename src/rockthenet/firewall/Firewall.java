@@ -1,4 +1,4 @@
-package firewall;
+package rockthenet.firewall;
 
 import javax.security.auth.Refreshable;
 import java.util.List;

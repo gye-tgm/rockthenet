@@ -1,6 +1,6 @@
-package firewall.junipernetscreen5gt;
+package rockthenet.firewall.junipernetscreen5gt;
 
-import firewall.IDataWriter;
+import rockthenet.firewall.IDataWriter;
 
 /**
  * Created by gary on 28/09/14.

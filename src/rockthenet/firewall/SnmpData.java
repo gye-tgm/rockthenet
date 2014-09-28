@@ -1,4 +1,4 @@
-package firewall;
+package rockthenet.firewall;
 
 /**
  * Created by gary on 28/09/14.
