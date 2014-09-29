@@ -30,7 +30,7 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 
 	@Override
-	public void establish() throws ConnectionException {
+	public void establish() throws ConnectionException { // TODO: verify behavior defined in documentation
 		try {
 			snmp = new Snmp(new DefaultUdpTransportMapping());
 			snmp.listen();
@@ -40,10 +40,10 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 
 	@Override
-	public void close() {
+	public void close() { // TODO: verify behavior defined in documentation
 		try {
 			snmp.close();
-		} catch (IOException e) {} // if there is an Exception, the connection is already closed anyways
+		} catch (IOException e) {} // if there is an Exception, the connection should have already been closed anyways
 	}
 
 	@Override
@@ -52,16 +52,15 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 
 	@Override
-	public PDU get(String[] oids) throws ConnectionException {
+	public PDU get(String[] oids) throws ConnectionException { // TODO: verify behavior defined in documentation
 		PDU pdu = new PDU();
 		for (String oid : oids)
 			pdu.add(new VariableBinding(new OID(oid)));
 	    pdu.setType(PDU.GET);
 	    
-	    ResponseEvent event;
 	    try {
-		    event = snmp.send(pdu, target, null);
-		    return event.getResponse();
+	    	ResponseEvent response = snmp.send(pdu, target);
+		    return response.getResponse();
 	    } catch (IOException e) {
 			throw new ConnectionException();
 		}
