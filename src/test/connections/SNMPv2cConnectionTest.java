@@ -20,7 +20,7 @@ import rockthenet.connections.ReadConnection;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SNMPv2cConnectionTest {
 	private static final String ADDRESS = "127.0.0.1";
-	private static final int 	PORT = 161;
+	private static final int 	PORT = 1025;
 	private static final String COMMUNITY = "test";
 	
 	private static final String OID_1 = "1.3.1.1.1.1.1.1.1.1";
