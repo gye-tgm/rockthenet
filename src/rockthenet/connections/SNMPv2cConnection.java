@@ -26,6 +26,7 @@ public class SNMPv2cConnection implements ReadConnection {
 		target.setVersion(SnmpConstants.version2c);
 		target.setAddress(targetAddress);
 		target.setCommunity(new OctetString(community));
+        target.setTimeout(3000);
 		this.target = target;
 	}
 
@@ -57,7 +58,8 @@ public class SNMPv2cConnection implements ReadConnection {
 		for (String oid : oids)
 			pdu.add(new VariableBinding(new OID(oid)));
 	    pdu.setType(PDU.GET);
-	    
+	    pdu.setMaxRepetitions(200);
+        pdu.setNonRepeaters(0);
 	    try {
 	    	ResponseEvent response = snmp.send(pdu, target);
 		    return response.getResponse();

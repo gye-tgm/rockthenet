@@ -1,15 +1,9 @@
 package test;
 
-import net.percederberg.mibble.MibValue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTRetriever;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class JuniperNetscreen5GTRetrieverTest {
     JuniperNetscreen5GTRetriever juniperNetscreen5GTRetriever;
@@ -30,15 +24,6 @@ public class JuniperNetscreen5GTRetrieverTest {
 
     @Test
     public void testGetReadConnection() throws Exception {
-
-    }
-
-    @Test
-    public void testGetOidDictionary() throws Exception {
-        HashMap<String, MibValue> hashMap = juniperNetscreen5GTRetriever.getOidDictionary();
-        for(Map.Entry<String, MibValue> e: hashMap.entrySet()){
-            System.out.println(e.getKey() + " "  + e.getValue());
-        }
 
     }
 }
