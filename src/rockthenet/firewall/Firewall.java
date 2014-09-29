@@ -24,4 +24,10 @@ public abstract class Firewall implements Refreshable {
     }
 
     public abstract void refreshPolicies();
+
+    public String getName() {
+        return name;
+    }
+
+
 }

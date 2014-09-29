@@ -29,3 +29,5 @@ target/
 
 *.bak
 *.swp
+
+*.agent
