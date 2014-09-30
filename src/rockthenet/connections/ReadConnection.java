@@ -37,6 +37,6 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * @param rootOID
 	 * @return
 	 */
-	public VariableBinding[] getTable(String rootOID);
+	public VariableBinding[] getTable(String rootOID) throws ConnectionException;
 
 }

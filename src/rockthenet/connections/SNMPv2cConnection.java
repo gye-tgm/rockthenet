@@ -74,10 +74,9 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 	
 	@Override
-	public VariableBinding[] getTable(String rootOID) {
+	public VariableBinding[] getTable(String rootOID) throws ConnectionException { /// TODO: throw the exception somehwere
 		TreeUtils treeUtils = new TreeUtils(snmp, new DefaultPDUFactory());
 		treeUtils.setMaxRepetitions(MAX_TREE_SIZE);
-			
 		return treeUtils.getSubtree(target, new OID(rootOID)).get(0).getVariableBindings(); // in a single-OID request, it's always 0
 	}
 }
