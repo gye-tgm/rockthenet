@@ -12,9 +12,24 @@ import java.util.Iterator;
  * @author gary
  */
 public class MibHelper {
+    private HashMap<String, MibValue> oidDictionary;
+
     public MibHelper() {
     }
 
+    public MibHelper(String filename) {
+        try {
+            oidDictionary = extractOids(loadMib(new File(filename)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MibLoaderException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getOID(String variableName){
+        return oidDictionary.get(variableName).toString();
+    }
     /**
      * Loads the Mib from the specified file and returns it.
      *

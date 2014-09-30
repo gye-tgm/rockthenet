@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="rockthenet.view.Controller">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Connect">
+                    <items>
+                        <MenuItem fx:id="newConnection" mnemonicParsing="false" text="New Connection..."/>
+                        <Menu mnemonicParsing="false" text="Open Recent">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Juniper NetScreen 5GT"/>
+                            </items>
+                        </Menu>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="New Rule..."/>
+                        <MenuItem mnemonicParsing="false" text="Edit Rule"/>
+                        <MenuItem mnemonicParsing="false" text="Delete Rule"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuBar" mnemonicParsing="false" text="Options">
+                    <items>
+                        <MenuItem fx:id="settings" mnemonicParsing="false" text="Settings..."/>
+                        <RadioMenuItem mnemonicParsing="false" text="E-mail notifications"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Guide"/>
+                        <MenuItem mnemonicParsing="false" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <left>
+        <TreeView prefHeight="375.0" prefWidth="105.0" BorderPane.alignment="CENTER"/>
+    </left>
+    <center>
+        <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <content>
+                <TableView prefHeight="693.0" prefWidth="1153.0">
+                    <columns>
+                        <TableColumn prefWidth="147.0" text="Service"/>
+                        <TableColumn prefWidth="116.0" text="Zone"/>
+                        <TableColumn minWidth="0.0" prefWidth="54.0" text="Port"/>
+                        <TableColumn minWidth="0.0" prefWidth="54.0" text="Enabled"/>
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+    </center>
+    <right>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+                   BorderPane.alignment="CENTER">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
+            </items>
+        </SplitPane>
+    </right>
+</BorderPane>

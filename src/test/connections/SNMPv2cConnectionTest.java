@@ -3,6 +3,7 @@ package test.connections;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,9 +14,12 @@ import org.snmp4j.agent.mo.MOScalar;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 
+import org.snmp4j.smi.VariableBinding;
+import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
+import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTRetriever;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SNMPv2cConnectionTest {
@@ -73,11 +77,9 @@ public class SNMPv2cConnectionTest {
 		assertEquals("noSuchObject", result);
 	}
 	
-	
 	@Test
 	public void testGetFirewall() throws ConnectionException {
 		connection = ConnectionFactory.createSNMPv2cConnection("10.0.100.10", 161, "5xHIT");
 		System.out.println(connection.get(".1.3.6.1.2.1.1.4.0").get(0));
 	}
-	
 }

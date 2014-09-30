@@ -57,7 +57,7 @@ public class SNMPv2cConnection implements ReadConnection {
 		for (String oid : oids)
 			pdu.add(new VariableBinding(new OID(oid)));
 	    pdu.setType(PDU.GET);
-	    
+
 	    try {
 	    	ResponseEvent response = snmp.send(pdu, target);
 		    return response.getResponse();
