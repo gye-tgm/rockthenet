@@ -7,8 +7,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import rockthenet.view.ConnectionDialogController;
 import rockthenet.view.Controller;
-import rockthenet.view.NewConnectionDialogController;
 import rockthenet.view.SettingsDialogController;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class Main extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/settingsDialog.fxml"));
+            loader.setLocation(getClass().getResource("view/settingsDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
@@ -99,7 +99,7 @@ public class Main extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/connectionDialog.fxml"));
+            loader.setLocation(getClass().getResource("view/connectionDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
@@ -111,7 +111,7 @@ public class Main extends Application {
             dialogStage.setScene(scene);
 
             // controller stuff
-            NewConnectionDialogController controller = loader.getController();
+            ConnectionDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
 
             // Show the dialog and wait until the user closes it

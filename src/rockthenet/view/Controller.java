@@ -22,7 +22,7 @@ public class Controller {
     @FXML
     private void initialize() {
         settings.setOnAction((event) -> settingsDialog());
-        //newConnection.setOnAction((event) -> newConnection());
+        newConnection.setOnAction((event) -> newConnection());
 
         /**settings.setOnAction(event -> {
          MenuItem settings = (MenuItem) event.getSource();

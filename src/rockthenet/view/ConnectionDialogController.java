@@ -6,7 +6,6 @@ package rockthenet.view;
  */
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
@@ -16,16 +15,10 @@ import org.controlsfx.dialog.Dialogs;
  *
  * @author Samuel Schmidt
  */
-public class NewConnectionDialogController {
+public class ConnectionDialogController {
 
     @FXML
     private TextField ip;
-    @FXML
-    private CheckBox emailNotificationsEnabled;
-    @FXML
-    private TextField refreshIntervall;
-    @FXML
-    private CheckBox refreshIntervallEnabled;
 
     private Stage dialogStage;
     private boolean okClicked = false;
