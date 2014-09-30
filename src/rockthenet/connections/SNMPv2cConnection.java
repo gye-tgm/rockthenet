@@ -1,6 +1,8 @@
 package rockthenet.connections;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
@@ -14,8 +16,13 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
+import org.snmp4j.util.DefaultPDUFactory;
+import org.snmp4j.util.TreeEvent;
+import org.snmp4j.util.TreeUtils;
 
 public class SNMPv2cConnection implements ReadConnection {
+	private static final int MAX_TREE_SIZE = 500;
+	
 	private Snmp snmp;
 	private Target target;
 	
@@ -47,12 +54,12 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 
 	@Override
-	public PDU get(String oid) throws ConnectionException {	
-		return get(new String[]{oid});
+	public VariableBinding get(String oid) throws ConnectionException {	
+		return get(new String[]{oid})[0]; // return only one VariableBinding
 	}
 
 	@Override
-	public PDU get(String[] oids) throws ConnectionException { // TODO: verify behavior defined in documentation
+	public VariableBinding[] get(String[] oids) throws ConnectionException { // TODO: verify behavior defined in documentation
 		PDU pdu = new PDU();
 		for (String oid : oids)
 			pdu.add(new VariableBinding(new OID(oid)));
@@ -60,9 +67,17 @@ public class SNMPv2cConnection implements ReadConnection {
 
 	    try {
 	    	ResponseEvent response = snmp.send(pdu, target);
-		    return response.getResponse();
+		    return response.getResponse().getVariableBindings().toArray(new VariableBinding[oids.length]);
 	    } catch (IOException e) {
 			throw new ConnectionException();
 		}
+	}
+	
+	@Override
+	public VariableBinding[] getTable(String rootOID) {
+		TreeUtils treeUtils = new TreeUtils(snmp, new DefaultPDUFactory());
+		treeUtils.setMaxRepetitions(MAX_TREE_SIZE);
+			
+		return treeUtils.getSubtree(target, new OID(rootOID)).get(0).getVariableBindings(); // in a single-OID request, it's always 0
 	}
 }
