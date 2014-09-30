@@ -77,7 +77,7 @@ public class SNMPv2cConnectionTest {
 	@Test
 	public void testGetFirewall() throws ConnectionException {
 		connection = ConnectionFactory.createSNMPv2cConnection("10.0.100.10", 161, "5xHIT");
-		System.out.println(connection.get(".1.3.6.1.4.1.3224.10.1.1.14"));
+		System.out.println(connection.get(".1.3.6.1.2.1.1.4.0").get(0));
 	}
 	
 }
