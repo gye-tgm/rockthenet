@@ -1,6 +1,6 @@
 package rockthenet.connections;
 
-import org.snmp4j.PDU;
+import org.snmp4j.smi.VariableBinding;
 
 /**
  * The base interface for all connections providing read access over <i>SNMP</i>.<br>
@@ -17,7 +17,7 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * 
 	 * @see #get(String[])
 	 */
-	public PDU get(String oid) throws ConnectionException;
+	public VariableBinding get(String oid) throws ConnectionException;
 	
 	/**
 	 * Returns the received <i>data unit</i> from requesting the given OIDs
@@ -26,9 +26,17 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * that OIDs position.
 	 * 
 	 * @param oids the identifier of the data unit to return
-	 * @return the data unit for the given OIDs
+	 * @return an array of VariableBindins (OID associated with their corresponding values)
 	 * @throws ConnectionException thrown if requesting failed
 	 */
-	public PDU get(String[] oids) throws ConnectionException;
+	public VariableBinding[] get(String[] oids) throws ConnectionException;
+	
+	/**
+	 * Returns all data in the table for the given root-OID.
+	 * 
+	 * @param rootOID the OID to fetch all associated data from
+	 * @return an array of all retrieved VaribablBindings
+	 */
+	public VariableBinding[] getTable(String rootOID) throws ConnectionException;
 
 }

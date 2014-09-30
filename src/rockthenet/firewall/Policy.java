@@ -25,6 +25,23 @@ public class Policy {
         this.activeStatus = activeStatus;
         this.name = name;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder s = new StringBuilder();
+    	
+    	s.append("id: \t\t" + id);
+    	s.append("\nname: \t\t" + name);
+    	s.append("\nsrcZone: \t" + srcZone);
+    	s.append("\ndstZone: \t" + dstZone);
+    	s.append("\nsrcAddress: \t" + srcAddress);
+    	s.append("\ndstAddress: \t" + dstAddress);
+    	s.append("\nservice: \t" + service);
+    	s.append("\naction: \t" + action);
+    	s.append("\nactiveStatus: \t" + activeStatus);
+    	
+    	return s.toString();
+    }
 
     public Integer getId() {
         return id;

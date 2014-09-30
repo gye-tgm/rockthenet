@@ -3,6 +3,7 @@ package test.connections;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 import org.junit.After;
@@ -13,8 +14,8 @@ import org.snmp4j.agent.mo.MOAccessImpl;
 import org.snmp4j.agent.mo.MOScalar;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
-
 import org.snmp4j.smi.VariableBinding;
+
 import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
@@ -58,38 +59,29 @@ public class SNMPv2cConnectionTest {
 	
 	@Test
 	public void singleGetTest() throws ConnectionException {
-		String result = connection.get(OID_1).getVariable(new OID(OID_1)).toString();
+		String result = connection.get(OID_1).toValueString();
 		assertEquals(OID_1_TEXT, result);
 	}
 	@Test
 	public void multipleGetTest() throws ConnectionException {
-		PDU result = connection.get(new String[]{OID_1, OID_2});
+		VariableBinding[] result = connection.get(new String[]{OID_1, OID_2});
 		
-		assertEquals(OID_1_TEXT, result.getVariable(new OID(OID_1)).toString());
-		assertEquals(OID_2_TEXT, result.getVariable(new OID(OID_2)).toString());
+		assertEquals(OID_1_TEXT, result[0].toValueString());
+		assertEquals(OID_2_TEXT, result[1].toValueString());
 	}
 	
 	/* test-cases for failing operations */
 	
 	@Test
 	public void getWrongOIDTest() throws ConnectionException {
-		String result = connection.get("2.3.4.5").getVariable(new OID("2.3.4.5")).toString();
+		String result = connection.get("2.3.4.5").toValueString();
 		assertEquals("noSuchObject", result);
 	}
 	
-	@Test
-	public void hi(){
-		assertEquals("hi", "hi");
-	}
+	
 	@Test
 	public void testGetFirewall() throws ConnectionException {
 		connection = ConnectionFactory.createSNMPv2cConnection("10.0.100.10", 161, "5xHIT");
-
-        PDU pdu = connection.get(".1.3.6.1.4.1.3224.10.1.1.3.2.0");
-
-        Vector<? extends VariableBinding> vbs = pdu.getVariableBindings();
-        for (VariableBinding vb : vbs) {
-            System.out.println(vb + " ," + vb.getVariable().getSyntaxString());
-        }
-    }
+		System.out.println(Arrays.toString(connection.getTable(".1.3.6.1.4.1.3224.10.1.1")));
+	}
 }

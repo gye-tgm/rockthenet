@@ -3,6 +3,8 @@ package test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import rockthenet.firewall.Policy;
 import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTRetriever;
 
 public class JuniperNetscreen5GTRetrieverTest {
@@ -25,5 +27,10 @@ public class JuniperNetscreen5GTRetrieverTest {
     @Test
     public void testGetReadConnection() throws Exception {
 
+    }
+    
+    @Test
+    public void test() {
+    	System.out.println(new Policy(1, "test", "test", "test", "test", 1, 1, 1, "test"));
     }
 }
