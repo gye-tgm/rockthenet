@@ -26,16 +26,16 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * that OIDs position.
 	 * 
 	 * @param oids the identifier of the data unit to return
-	 * @return the data unit for the given OIDs
+	 * @return an array of VariableBindins (OID associated with their corresponding values)
 	 * @throws ConnectionException thrown if requesting failed
 	 */
 	public VariableBinding[] get(String[] oids) throws ConnectionException;
 	
 	/**
-	 * Returns the data
+	 * Returns all data in the table for the given root-OID.
 	 * 
-	 * @param rootOID
-	 * @return
+	 * @param rootOID the OID to fetch all associated data from
+	 * @return an array of all retrieved VaribablBindings
 	 */
 	public VariableBinding[] getTable(String rootOID) throws ConnectionException;
 

@@ -1,8 +1,6 @@
 package rockthenet.connections;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
@@ -17,7 +15,6 @@ import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 import org.snmp4j.util.DefaultPDUFactory;
-import org.snmp4j.util.TreeEvent;
 import org.snmp4j.util.TreeUtils;
 
 public class SNMPv2cConnection implements ReadConnection {
@@ -74,9 +71,14 @@ public class SNMPv2cConnection implements ReadConnection {
 	}
 	
 	@Override
-	public VariableBinding[] getTable(String rootOID) throws ConnectionException { /// TODO: throw the exception somehwere
+	public VariableBinding[] getTable(String rootOID) throws ConnectionException {
 		TreeUtils treeUtils = new TreeUtils(snmp, new DefaultPDUFactory());
 		treeUtils.setMaxRepetitions(MAX_TREE_SIZE);
-		return treeUtils.getSubtree(target, new OID(rootOID)).get(0).getVariableBindings(); // in a single-OID request, it's always 0
+		
+		try {
+			return treeUtils.getSubtree(target, new OID(rootOID)).get(0).getVariableBindings(); // in a single-OID request, it's always 0
+		} catch (Exception e) {
+			throw new ConnectionException();
+		}
 	}
 }
