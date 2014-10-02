@@ -7,12 +7,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author gary
  */
 public class MibHelper {
-    private HashMap<String, MibValue> oidDictionary;
+    private HashMap<String, String> oidDictionary;   // (name -> oid)
+    private HashMap<String, String> namesDictionary; // (oid -> name)
+
 
     public MibHelper() {
     }
@@ -20,6 +23,10 @@ public class MibHelper {
     public MibHelper(String filename) {
         try {
             oidDictionary = extractOids(loadMib(new File(filename)));
+            namesDictionary = new HashMap<>();
+            for(Map.Entry<String, String> e: oidDictionary.entrySet()){
+                namesDictionary.put(e.getValue(), e.getKey());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (MibLoaderException e) {
@@ -28,10 +35,13 @@ public class MibHelper {
     }
 
     public String getOID(String variableName){
-        return oidDictionary.get(variableName).toString();
+        return oidDictionary.get(variableName);
     }
-    /**
-     * Loads the Mib from the specified file and returns it.
+
+    public String getName(String oid){
+        return namesDictionary.get(oid);
+    }
+    /* Loads the Mib from the specified file and returns it.
      *
      * @param file the file of the mib
      * @return the mib
@@ -44,17 +54,17 @@ public class MibHelper {
         return mibLoader.load(file);
     }
 
-    public HashMap<String, MibValue> extractOids(Mib mib) {
-        HashMap<String, MibValue>  map = new HashMap();
+    public HashMap<String, String> extractOids(Mib mib) {
+        HashMap<String, String>  map = new HashMap();
         Iterator iter = mib.getAllSymbols().iterator();
         MibSymbol symbol;
         MibValue value;
 
         while (iter.hasNext()) {
             symbol = (MibSymbol) iter.next();
-            value = extractOid(symbol);;
+            value = extractOid(symbol);
             if (value != null) {
-                map.put(symbol.getName(), value);
+                map.put(symbol.getName(), value.toString());
             }
         }
         return map;

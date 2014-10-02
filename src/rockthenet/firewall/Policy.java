@@ -14,6 +14,9 @@ public class Policy {
     private Integer activeStatus;
     private String name;
 
+    public Policy(){
+
+    }
     public Policy(Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service, Integer action, Integer activeStatus, String name) {
         this.id = id;
         this.srcZone = srcZone;
@@ -77,5 +80,41 @@ public class Policy {
 
     public String getName() {
         return name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setSrcZone(String srcZone) {
+        this.srcZone = srcZone;
+    }
+
+    public void setDstZone(String dstZone) {
+        this.dstZone = dstZone;
+    }
+
+    public void setSrcAddress(String srcAddress) {
+        this.srcAddress = srcAddress;
+    }
+
+    public void setDstAddress(String dstAddress) {
+        this.dstAddress = dstAddress;
+    }
+
+    public void setService(Integer service) {
+        this.service = service;
+    }
+
+    public void setAction(Integer action) {
+        this.action = action;
+    }
+
+    public void setActiveStatus(Integer activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

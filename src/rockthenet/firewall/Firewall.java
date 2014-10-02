@@ -4,6 +4,9 @@ import javax.security.auth.Refreshable;
 import java.util.List;
 
 /**
+ * This abstract class should be implemented by the various types of firewalls.
+ * It can be virtual or a hardware and can communicate with their retrievers
+ * and writers.
  * @author gary
  */
 public abstract class Firewall implements Refreshable {
@@ -28,6 +31,4 @@ public abstract class Firewall implements Refreshable {
     public String getName() {
         return name;
     }
-
-
 }

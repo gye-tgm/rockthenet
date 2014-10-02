@@ -3,9 +3,10 @@ package test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import rockthenet.firewall.Policy;
+import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTPolicy;
 import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTRetriever;
+
+import java.util.Map;
 
 public class JuniperNetscreen5GTRetrieverTest {
     JuniperNetscreen5GTRetriever juniperNetscreen5GTRetriever;
@@ -21,16 +22,13 @@ public class JuniperNetscreen5GTRetrieverTest {
 
     @Test
     public void testRetrievePolicies() throws Exception {
-
+        for(Map.Entry<Integer, JuniperNetscreen5GTPolicy> policy: juniperNetscreen5GTRetriever.retrievePolicies().entrySet()){
+            System.out.println(policy.getValue().toString() + "\n");
+        }
     }
 
     @Test
     public void testGetReadConnection() throws Exception {
 
-    }
-    
-    @Test
-    public void test() {
-    	System.out.println(new Policy(1, "test", "test", "test", "test", 1, 1, 1, "test"));
     }
 }
