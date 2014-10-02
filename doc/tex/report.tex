@@ -9,10 +9,7 @@
 \usepackage{url} 
 
 \title{Rock the net}
-\author{Elias Frantar}
-\author{Samuel Schmidt}
-\author{Nikolaus Schrack}
-\author{Gary Ye}
+\author{Elias Frantar, Samuel Schmidt, Nikolaus Schrack, Gary Ye}
 \date{\today{}, Wien}
 \begin{document}
 
@@ -251,7 +248,71 @@ leaveGroup: leave the specified group
 
 [1] http://docs.oracle.com/javase/7/docs/api/java/net/MulticastSocket.html
 
-
+\section{User Stories}
+ \textbf{Basic tasks:}
+\begin{itemize}
+\item As a user, I want to connect to my firewall device by entering its IP-address.
+\begin{itemize}
+\item As a user, I want to connect with SNMPv3.
+\item As a user, I want to fallback to SNMPv2c when SNMPv3 is not available.
+\end{itemize}
+\item As a user, I want a visually appealing graphical user interface.
+\item As a user, I want to list all firewall-rules configured on my device.
+\begin{itemize}
+\item As a user, I want to see the port of a firewall rule.
+\item As a user, I want to see the zone of a firewall rule.
+\item As a user, I want to see the service of a firewall rule.
+\item As a user, I only want to see the TCP and UDP firewall rules.
+\end{itemize}
+\item As a user, I want the rules to be refreshed.
+\begin{itemize}
+\item As a user, I want the rules to be refreshed automatically.
+\begin{itemize}
+\item As a user, I want to configure the refresh intervals.
+\end{itemize}
+\item As a user, I want to refresh the rules manually by pressing on a button.
+\end{itemize}
+\item As a user, I want to visually monitor the thru-put of a firewall-rules.
+\begin{itemize}
+\item As a user, I want to visually see the thru-put in line-chart.
+\item As a user, I want to monitor multiple rules at the same time.
+\end{itemize}
+\item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
+\item As a developer, I want all network packages to be logged in a log file for debugging purposes.
+\end{itemize}
+ \textbf{Advanced tasks:}
+\begin{itemize}
+\item As a user, I want to be notified if a rule has been changed without my assistance.
+\begin{itemize}
+\item As a user, I want to be notified by a pop-up window.
+\item As a user, I want to be optionally notified by email.
+\item As a user, I want to configure my email-address.
+\begin{itemize}
+\item As a user, I want to configure the email-address in a config-file.
+\item As a user, I want to configure the email-address in the GUI.
+\end{itemize}
+\end{itemize}
+\item As a user, I want to configure all firewall-rules on the device.
+\begin{itemize}
+\item As a user, I want to create a fully new rule.
+\item As a user, I want to fully edit an existing rule.
+\item As a user, I want to delete an existing rule.
+\item As a user, I want to login before editing a rule.
+\begin{itemize}
+\item As a user, I want to stay logged in for the whole session after I have logged in for the first time.
+\end{itemize}
+\end{itemize}
+\item As a user, I want to have a transaction system for write access on the firewall, so that no editing conflicts can occur when multiple applications are trying to modify at the same time.
+\begin{itemize}
+\item ???
+\item ???
+\item ...
+\end{itemize}
+\item As a developer, I want to be able to easily modify the software so that it works with other firewall hardwares.
+\begin{itemize}
+\item As a developer, I only want to exchange the SNMP-commands to make the application work with other firewall hardwares.
+\end{itemize}
+\end{itemize}
 \section{Test report}
 \section{Occurred problems}
 \bibliography{protokoll}{}
