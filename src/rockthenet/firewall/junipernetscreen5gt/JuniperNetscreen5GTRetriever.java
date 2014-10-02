@@ -3,6 +3,7 @@ package rockthenet.firewall.junipernetscreen5gt;
 import net.percederberg.mibble.MibLoaderException;
 import org.snmp4j.PDU;
 import org.snmp4j.smi.OID;
+import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
@@ -49,34 +50,34 @@ public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
                 }
                 // Now we have a reference to the policy that we want to change the value(s)
                 JuniperNetscreen5GTPolicy policy = policies.get(id);
-
+                Variable variable = variableBindings[i].getVariable();
                 switch(oidString){
                     case "nsPlyId":
-                        policy.setId(variableBindings[i].getVariable().toInt());
+                        policy.setId(variable.toInt());
                         break;
                     case "nsPlySrcZone":
-                        policy.setSrcZone(variableBindings[i].getVariable().toString());
+                        policy.setSrcZone(variable.toString());
                         break;
                     case "nsPlyDstZone":
-                        policy.setDstZone(variableBindings[i].getVariable().toString());
+                        policy.setDstZone(variable.toString());
                         break;
                     case "nsPlySrcAddr":
-                        policy.setSrcAddress(variableBindings[i].getVariable().toString());
+                        policy.setSrcAddress(variable.toString());
                         break;
                     case "nsPlyDstAddr":
-                        policy.setDstAddress(variableBindings[i].getVariable().toString());
+                        policy.setDstAddress(variable.toString());
                         break;
                     case "nsPlyService":
-                        policy.setService(variableBindings[i].getVariable().toInt());
+                        policy.setService(variable.toInt());
                         break;
                     case "nsPlyAction":
-                        policy.setAction(variableBindings[i].getVariable().toInt());
+                        policy.setAction(variable.toInt());
                         break;
                     case "nsPlyActiveStatus":
-                        policy.setActiveStatus(variableBindings[i].getVariable().toInt());
+                        policy.setActiveStatus(variable.toInt());
                         break;
                     case "nsPlyName":
-                        policy.setName(variableBindings[i].getVariable().toString());
+                        policy.setName(variable.toString());
                         break;
                     default:
                         break;
