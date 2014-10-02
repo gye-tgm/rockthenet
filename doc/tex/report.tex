@@ -50,26 +50,39 @@
 \tableofcontents
 \newpage
 
-\section{Aufgabenstellung}
+\section{Task description}
 % TODO
-\section{Designüberlegung}
+\section{Design}
 % TODO
-\includegraphics{images/uml}
+\includegraphics[width=\textwidth]{images/uml}
  
-\section{Aufwandsschätzun}
+\section{Effort estimation}
+
+Task	Original Estimate 	Remaining Estimate	Time spent
+Preperation for the Tasks	20	0.00	24.50
+List all configured firewall rules (policies) on the device, add the details of the mentioned services and zones as well.	7	2	9.50
+Allow refreshing of the list by clicking a button and by a configurable time-intervall. Your GUI should remain responsive even with short refresh-intervals!	6	6	0.00
+"Visualize the thru-put for a highlighted firewall-rule (nice2have: multiple rows) in a line-chart (configurable refresh-interval, unit bytes/sec)
+"	8	4	5.00
+Encapsulate the data retrieval for further reuse and easy expansion. An UML-model of your design will help you defend it at the review!	4	0.00	4.00
+Build a visual appealing and easy to use interface (there is more than Swing out there).	10	7	8.00
+Final Documentation 	8	12	5.00
+Basic Total	63	31.00	56.00
+Advanced Tasks			
+Alarm the user visually and per email if the config of the firewall-rules changes. To avoid polling use the SNMP-trap mechanism.	7	5	0
+Allow managing of firewall-rules (CRUD). To accomplish this, you will have to send configuration commands via telnet or ssh. An admin-account is available per request.	6	8	0
+Use multicast-groups to build a simple transaction system to serialize administrative tasks on the firewall (for example pass an “admin token” to recognize the collaborator who is allowed to write to the firewall). This should also work in a heterogenous environment (different implementations, different OSes), so you have to coordinate with other teams.	8	15	0
+Make sure, that your interface to the firewall allows an easy change of the firewall-model (new releases, manufacturer, ...). It is not necessary to make this configurable in the GUI but must (explicitly) be considered in your software-design!	5	0	2
+Advanced Total	26	28	2
+Total	89	59.00	58.00
+
+\section{Installation}
+
+\section{Technologies}
 
 
-
-\section{Vorbereitung und Installation}
-
-
-\section{Technologien}
-
-
-\section{Testbericht}
-\section{Aufgetretene Probleme}
-\section{Resultate und Niederlagen}
-\subsection{Niederlagen}
+\section{Test report}
+\section{Occurred problems}
 \bibliography{protokoll}{}
 \bibliographystyle{plain}
 \end{document}
