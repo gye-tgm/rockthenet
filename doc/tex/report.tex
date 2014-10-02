@@ -33,13 +33,11 @@
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
-% numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
   rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-% stringstyle=\color{mymauve},     % string literal style
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
@@ -160,10 +158,99 @@ Like the number of invocations, you can also verify the order of of invocations:
 For explanation of additional functionalities and full documentation, see [2].
 
 \subsection{Java FX}
-\subsection{SNMP}
+Java 8 supports Java FX, so no further installation will be needed if Java 8 is used. 
+
+\subsubsection{Eclipse}
+In Eclipse kann das Addon zum Erstellen von JavaFx Applikationen unter dem Punkt “Help” -> “Install New Software” installiert werden. Der Name ist e(fx)clipse und der Link % http://download.eclipse.org/efxclipse/updates-released/1.0.0/site. 
+Jetzt kann über “New” -> “Other” -> “JavaFX Project” ein Projekt erstellt werden. 
+
+\subsubsection{IntelliJ}
+Tutorial with Java 8 and IntelliJ IDEA 13+
+% http://docs.oracle.com/javase/8/scene-builder-2/work-with-java-ides/sb-with-intellij.htm 
+Getting Started with JavaFX
+% http://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm 
+
+\subsubsection{IntelliJ - TGM Licenses}
+Run IntelliJ IDEA and follow the Installation Wizard's instructions. To register for use of the software or change your existing registration details, go to Help/Register menu of the software and enter the included below the User Name and License Key(s) into the registration dialog:
+
+User Name: TGM - Institute of Technology 
+License Key: 603253-X846L-X51EC-FMQQ7-EXY9B-DO323
+
+\subsection{Charts}
+Für unsers Applikation wird ein Line Chart gebraucht, was mit JavaFX möglich ist. 
+% http://docs.oracle.com/javafx/2/charts/line-chart.htm#CIHGBCFI
+
+\subsection{SNMP - Simple Network Management Protocol}
+
+It is, like the name says, a simple network protocol to manage and monitor the devices in a network. Practically, the monitored devices are all connected to a central system that controls them by using the “Simple Network Manager Protocol”.
+
+Figure 1: the Router, the Server, the Switch and the Printer are connected via the SNMP to the management system.
+% (Source: http://de.wikipedia.org/wiki/Simple_Network_Management_Protocol)
+
+\subsubsection{SNMPv2c and SNMPv3 differences}
+
+With v3 no changes to the protocol aside from added security and remote configuration enhancements (we use telnet anyway) to SNMP were added. However new textual conventions, concepts and terminology were introduced.
+
+The core Snmp class documentation[3] offers only insight on big differences in SNMPv1(asynchronous) and v3(synchronous) implementations. TransportMapping only affects UDP/TCP/… configurations.
+
+\subsection{MIB - Management Information Base}
+As the management system wanting to read data from a device, it has to know the data of the device. The specified informations can be retrieved from the corresponding MIB. 
+
+The MIB of the device, that is being used for this exercise, can be found here [1].
+
+The MIB is structured like a tree (examples can be found in the Wikipedia article). Every object of the device can be identified by the OID (Object Identifier), which is just a list of numbers separated by a dot.
+
+One can for example GET/SET the variables by using the OI of the specified object.
+
+Also one can use a MIB browser to explore the structure [2].
+
+[1] http://www.oidview.com/mibs/2636/JUNIPER-NSM-TRAPS.html
+[2] http://ireasoning.com/mibbrowser.shtml 
+[3] http://www.snmp4j.org/doc/org/snmp4j/Snmp.html 
 \subsubsection{Connection}
 \subsubsection{MIBs}
 \subsection{Multicast-Groups}
+
+Multicast is basically a group communication where the packages are sent only once and arrive at their destination simultaneously. The nodes of the network (router, switches) will take care of how the messages will be distributed. So the sender does not have to worry about the number of receivers.
+
+The most common protocol for this is UDP, even though it’s unreliable. There exists also reliable protocols where loss detection and retransmission are provided.
+
+
+In the Java API there exists a class to provide multicasting [1]. The documentation itself says:
+“A multicast group is specified by a class D IP address and by a standard UDP port number. Class D IP addresses are in the range 224.0.0.0 to 239.255.255.255, inclusive. The address 224.0.0.0 is reserved and should not be used.”
+
+A code snippet has also been provided:
+
+\begin{lstlisting}
+// join a Multicast group and send the group salutations
+...
+String msg = "Hello";
+InetAddress group = InetAddress.getByName("228.5.6.7");
+MulticastSocket s = new MulticastSocket(6789);
+s.joinGroup(group);
+DatagramPacket hi = new DatagramPacket(msg.getBytes(), msg.length(),
+group, 6789);
+s.send(hi);
+// get their responses!
+byte[] buf = new byte[1000];
+DatagramPacket recv = new DatagramPacket(buf, buf.length);
+s.receive(recv);
+...
+// OK, I'm done talking - leave the group...
+s.leaveGroup(group);
+\end{lstlisting}
+
+
+
+The important methods of the MulticastSocket class are:
+joinGroup: to join the given group
+receive: receive the message of the subscribed group
+leaveGroup: leave the specified group
+
+
+
+[1] http://docs.oracle.com/javase/7/docs/api/java/net/MulticastSocket.html
+
 
 \section{Test report}
 \section{Occurred problems}
