@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="rockthenet.view.Controller">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -40,13 +43,10 @@
             </menus>
         </MenuBar>
     </top>
-    <left>
-        <TreeView prefHeight="375.0" prefWidth="105.0" BorderPane.alignment="CENTER"/>
-    </left>
     <center>
         <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <content>
-                <TableView prefHeight="693.0" prefWidth="1153.0">
+                <TableView prefHeight="1080.0" prefWidth="1920.0">
                     <columns>
                         <TableColumn prefWidth="147.0" text="Service"/>
                         <TableColumn prefWidth="116.0" text="Zone"/>
@@ -57,13 +57,14 @@
             </content>
         </ScrollPane>
     </center>
-    <right>
-        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
-                   BorderPane.alignment="CENTER">
-            <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
-            </items>
-        </SplitPane>
-    </right>
+    <bottom>
+        <LineChart prefHeight="88.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </LineChart>
+    </bottom>
 </BorderPane>
