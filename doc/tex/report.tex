@@ -33,13 +33,13 @@
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+%  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
   rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mymauve},     % string literal style
+%  stringstyle=\color{mymauve},     % string literal style
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
@@ -144,6 +144,47 @@ Also one can use a MIB browser to explore the structure [2].
 \subsubsection{Connection}
 \subsubsection{MIBs}
 \subsection{Multicast-Groups}
+
+Multicast is basically a group communication where the packages are sent only once and arrive at their destination simultaneously. The nodes of the network (router, switches) will take care of how the messages will be distributed. So the sender does not have to worry about the number of receivers.
+
+The most common protocol for this is UDP, even though it’s unreliable. There exists also reliable protocols where loss detection and retransmission are provided.
+
+
+In the Java API there exists a class to provide multicasting [1]. The documentation itself says:
+“A multicast group is specified by a class D IP address and by a standard UDP port number. Class D IP addresses are in the range 224.0.0.0 to 239.255.255.255, inclusive. The address 224.0.0.0 is reserved and should not be used.”
+
+A code snippet has also been provided:
+
+\begin{lstlisting}
+// join a Multicast group and send the group salutations
+...
+String msg = "Hello";
+InetAddress group = InetAddress.getByName("228.5.6.7");
+MulticastSocket s = new MulticastSocket(6789);
+s.joinGroup(group);
+DatagramPacket hi = new DatagramPacket(msg.getBytes(), msg.length(),
+group, 6789);
+s.send(hi);
+// get their responses!
+byte[] buf = new byte[1000];
+DatagramPacket recv = new DatagramPacket(buf, buf.length);
+s.receive(recv);
+...
+// OK, I'm done talking - leave the group...
+s.leaveGroup(group);
+\end{lstlisting}
+
+
+
+The important methods of the MulticastSocket class are:
+joinGroup: to join the given group
+receive: receive the message of the subscribed group
+leaveGroup: leave the specified group
+
+
+
+[1] http://docs.oracle.com/javase/7/docs/api/java/net/MulticastSocket.html
+
 
 \section{Test report}
 \section{Occurred problems}
