@@ -33,13 +33,13 @@
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+% numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
   rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mymauve},     % string literal style
+% stringstyle=\color{mymauve},     % string literal style
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
@@ -54,7 +54,7 @@
 % TODO
 \section{Design}
 % TODO
-% \includegraphics[width=\textwidth]{images/uml}
+\includegraphics[width=\textwidth]{images/uml}
  
 \section{Effort estimation}
 
@@ -91,6 +91,74 @@ Advanced Total & 26 &	28 &	2 \\ \hline
 
 \section{Technologies}
 \subsection{Mock-Objects}
+\subsubsection{Setup}
+
+\begin{enumerate}
+	\item Download \textit{Mockito} from [1]
+	\item Add \textit{junit-4.11.jar} and \textit{mockito-all-1.9.5.jar} to the project's \textit{classpath}
+	\item Done
+\end{enumerate}
+
+\subsubsection{How to use Mockito}
+
+\textit{Mockito} allows you to mock interfaces, but also concrete classes, with a single line of code:
+	
+\begin{lstlisting} 
+List mockedList = mock(List.class); // creates a mock-Object of `List` 
+\end{lstlisting}
+	
+A \textit{Mockito-Mock-Objects} remembers all methods, which have been called. So you can check afterwards if some method has been called with some parameters.
+	
+\begin{lstlisting}
+	mockedList.add("one");
+	    
+	verify(mockedList).add("one"); // test "successful" because that exact method with that exact parameter has been called before
+	verify(mockedList).add("two"); // test "failed" because `.add("two")` has not been called before
+\end{lstlisting}
+
+One of the main functionalities of a Mock-object is that it can provide kind of dummy-methods, called *stubs*, i.e. when a specific method with a specific parameter is called, a specific
+value is returned. There are also some kind of wildcards for the methods parameters, if you want to return "first" on any given Integer-parameter. That can be achieved like this:
+
+\begin{lstlisting}
+    when(mockedList.get(0)).thenReturn("first"); // `mockedList` will return "first" when `.get(0)` is called
+    System.out.println(mockedList.get(0)); // prints "first"
+    
+    when(mockedList.get(anyInt()).thenReturn("any int"); // will return "any int" if you pass for example: 1, 27, 4, ...
+    System.out.println(mockedList.get(2345)); // prints "any int"
+\end{lstlisting}
+
+You can also make the mock throw Exceptions by using `.thenThrow()` or make void methods throw Exceptions by:
+
+\begin{lstlisting}
+    doThrow(new RuntimeException()).when(mockedList).clear();
+    mockedList.clear(); // throws RunTime-Exception
+\end{lstlisting}
+
+You can also verify how often a specific method has been called. That works like this:
+
+\begin{lstlisting}
+    mockedList.add("once");
+    
+    verify(mockedList, times(1)).add("once"); // success because `.add("once")` has been called exactly once
+    verify(mockedList, times(2)).add("once"); // fails because it has only been called once
+\end{lstlisting}
+
+For \textit{times(0)}, you should better use \textit{never()}.
+ 
+Like the number of invocations, you can also verify the order of of invocations:
+
+\begin{lstlisting}
+    mockedList.add("first");
+    mockedList.add("second");
+    
+    InOrder inOrder = inOrder(mockedList);
+    
+    inOrder.verify(mockedList).add("first");
+    inOrder.verify(mockedList).add("second");  
+\end{lstlisting} 
+    
+For explanation of additional functionalities and full documentation, see [2].
+
 \subsection{Java FX}
 \subsection{SNMP}
 \subsubsection{Connection}
