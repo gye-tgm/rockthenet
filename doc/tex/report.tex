@@ -114,7 +114,33 @@ License Key: 603253-X846L-X51EC-FMQQ7-EXY9B-DO323
 Für unsers Applikation wird ein Line Chart gebraucht, was mit JavaFX möglich ist. 
 % http://docs.oracle.com/javafx/2/charts/line-chart.htm#CIHGBCFI
 
-\subsection{SNMP}
+\subsection{SNMP - Simple Network Management Protocol}
+
+It is, like the name says, a simple network protocol to manage and monitor the devices in a network. Practically, the monitored devices are all connected to a central system that controls them by using the “Simple Network Manager Protocol”.
+
+Figure 1: the Router, the Server, the Switch and the Printer are connected via the SNMP to the management system.
+% (Source: http://de.wikipedia.org/wiki/Simple_Network_Management_Protocol)
+
+\subsubsection{SNMPv2c and SNMPv3 differences}
+
+With v3 no changes to the protocol aside from added security and remote configuration enhancements (we use telnet anyway) to SNMP were added. However new textual conventions, concepts and terminology were introduced.
+
+The core Snmp class documentation[3] offers only insight on big differences in SNMPv1(asynchronous) and v3(synchronous) implementations. TransportMapping only affects UDP/TCP/… configurations.
+
+\subsection{MIB - Management Information Base}
+As the management system wanting to read data from a device, it has to know the data of the device. The specified informations can be retrieved from the corresponding MIB. 
+
+The MIB of the device, that is being used for this exercise, can be found here [1].
+
+The MIB is structured like a tree (examples can be found in the Wikipedia article). Every object of the device can be identified by the OID (Object Identifier), which is just a list of numbers separated by a dot.
+
+One can for example GET/SET the variables by using the OI of the specified object.
+
+Also one can use a MIB browser to explore the structure [2].
+
+[1] http://www.oidview.com/mibs/2636/JUNIPER-NSM-TRAPS.html
+[2] http://ireasoning.com/mibbrowser.shtml 
+[3] http://www.snmp4j.org/doc/org/snmp4j/Snmp.html 
 \subsubsection{Connection}
 \subsubsection{MIBs}
 \subsection{Multicast-Groups}
