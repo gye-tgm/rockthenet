@@ -5,8 +5,8 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="rockthenet.view.Controller">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -21,23 +21,15 @@
                         </Menu>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="New Rule..."/>
-                        <MenuItem mnemonicParsing="false" text="Edit Rule"/>
-                        <MenuItem mnemonicParsing="false" text="Delete Rule"/>
-                    </items>
-                </Menu>
                 <Menu fx:id="menuBar" mnemonicParsing="false" text="Options">
                     <items>
                         <MenuItem fx:id="settings" mnemonicParsing="false" text="Settings..."/>
-                        <RadioMenuItem mnemonicParsing="false" text="E-mail notifications"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Guide"/>
-                        <MenuItem mnemonicParsing="false" text="About"/>
+                        <MenuItem fx:id="about" mnemonicParsing="false" text="About"/>
+                        <MenuItem fx:id="help" mnemonicParsing="false" text="Help"/>
                     </items>
                 </Menu>
             </menus>
@@ -46,12 +38,16 @@
     <center>
         <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <content>
-                <TableView prefHeight="1080.0" prefWidth="1920.0">
+                <TableView>
                     <columns>
-                        <TableColumn prefWidth="147.0" text="Service"/>
-                        <TableColumn prefWidth="116.0" text="Zone"/>
-                        <TableColumn minWidth="0.0" prefWidth="54.0" text="Port"/>
-                        <TableColumn minWidth="0.0" prefWidth="54.0" text="Enabled"/>
+                        <TableColumn prefWidth="149.0" text="Name"/>
+                        <TableColumn prefWidth="149.0" text="Source-Zone"/>
+                        <TableColumn prefWidth="161.0" text="Destination-Zone"/>
+                        <TableColumn prefWidth="159.0" text="Source-Address"/>
+                        <TableColumn minWidth="0.0" prefWidth="160.0" text="Destination-Address"/>
+                        <TableColumn minWidth="0.0" prefWidth="122.0" text="Service"/>
+                        <TableColumn minWidth="0.0" prefWidth="127.0" text="Action"/>
+                        <TableColumn minWidth="0.0" prefWidth="127.0" text="Enabled"/>
                     </columns>
                 </TableView>
             </content>
@@ -60,10 +56,10 @@
     <bottom>
         <LineChart prefHeight="88.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <xAxis>
-                <CategoryAxis side="BOTTOM"/>
+                <CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0"/>
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT"/>
+                <NumberAxis label="bytes/sec" side="LEFT"/>
             </yAxis>
         </LineChart>
     </bottom>

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
+import rockthenet.IPValidator;
 
 /**
  * Dialog to edit the settings
@@ -19,6 +20,10 @@ public class ConnectionDialogController {
 
     @FXML
     private TextField ip;
+    @FXML
+    private TextField port;
+    @FXML
+    private TextField community;
 
     private Stage dialogStage;
     private boolean okClicked = false;
@@ -58,7 +63,6 @@ public class ConnectionDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            System.out.println(ip.getText());
             okClicked = true;
             dialogStage.close();
         }
@@ -79,22 +83,34 @@ public class ConnectionDialogController {
      */
     private boolean isInputValid() {
         String errorMessage = "";
+        IPValidator ipValidator = new IPValidator();
 
-        if (ip.getText() == null || ip.getText().length() == 0) {
-            errorMessage += "Invalid Connection specified!\n";
 
-            if (errorMessage.length() == 0) {
-                return true;
-            } else {
-                // Show the error message.
-                Dialogs.create()
-                        .title("Invalid Fields")
-                        .masthead("Please correct invalid fields")
-                        .message(errorMessage)
-                        .showError();
-                return false;
-            }
+        if (ip.getText() == null || ip.getText().length() == 0 || !ipValidator.validate(ip.getText()))
+            errorMessage += "Invalid IP specified!\n";
+
+        try {
+            if (port.getText() == null || port.getText().length() == 0
+                    || Integer.parseInt(port.getText()) > 0 &&
+                    Integer.parseInt(port.getText()) > 65535)
+                errorMessage += "Valid Port range is 1-65535\n";
+        } catch (NumberFormatException nfe) {
+            errorMessage += "Valid Port range is 1-65535\n";
         }
-        return false;
+
+        if (community.getText() == null || community.getText().length() == 0)
+            errorMessage += "No Community specified!\n";
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Dialogs.create()
+                    .title("Invalid Fields")
+                    .masthead("Please correct invalid fields")
+                    .message(errorMessage)
+                    .showError();
+            return false;
+        }
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
 import rockthenet.view.ConnectionDialogController;
 import rockthenet.view.Controller;
 import rockthenet.view.SettingsDialogController;
@@ -53,9 +54,8 @@ public class Main extends Application {
     }
 
     /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
+     * Open SettingsDialog to set notification mail and refresh rate and wether
+     * or not these are enabled
      *
      * @return true if the user clicked OK, false otherwise.
      */
@@ -89,11 +89,8 @@ public class Main extends Application {
     }
 
     /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
+     * Opens a ConnectionDialog to set IP, Port and Community
      *
-     * @return true if the user clicked OK, false otherwise.
      */
     public boolean showNewConnectionDialog() {
         try {
@@ -124,10 +121,21 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Information about the application
+     */
+    public void showAboutDialog() {
+        Dialogs.create()
+                .owner(primaryStage)
+                .title("About")
+                .masthead("Rock the net")
+                .message("is a simple-to-use application to monitor and configure a hardware firewall appliance." +
+                        "\n(Juniper NetScreen 5GT implemented)")
+                .showInformation();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
-
-
 }
 
