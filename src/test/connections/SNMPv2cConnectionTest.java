@@ -4,23 +4,19 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Vector;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.snmp4j.PDU;
 import org.snmp4j.agent.mo.MOAccessImpl;
 import org.snmp4j.agent.mo.MOScalar;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 
-import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
-import rockthenet.firewall.junipernetscreen5gt.JuniperNetscreen5GTRetriever;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SNMPv2cConnectionTest {

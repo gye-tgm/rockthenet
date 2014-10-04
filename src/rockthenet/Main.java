@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
+import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 import rockthenet.view.ConnectionDialogController;
 import rockthenet.view.Controller;
 import rockthenet.view.SettingsDialogController;

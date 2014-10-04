@@ -1,6 +1,8 @@
 package rockthenet.firewall;
 
 /**
+ * The class represents a policy which is being used for configuring the firewalls.
+ * This policy class contains the basic properties a firewall should have.
  * @author Gary
  */
 public class Policy {
@@ -14,9 +16,25 @@ public class Policy {
     private Integer activeStatus;
     private String name;
 
+    /**
+     * Default constructor of the policy
+     */
     public Policy(){
-
+        this(0, "N/A", "N/A", "N/A", "N/A", -1, -1, -1, "");
     }
+
+    /**
+     * Constructs a policy with the given properties.
+     * @param id the id of the firewall policy, which every policy should have
+     * @param srcZone the source zone
+     * @param dstZone the destination zone
+     * @param srcAddress the source address
+     * @param dstAddress the destination address
+     * @param service the service of the policy as an integer
+     * @param action the action of the policy
+     * @param activeStatus the active status
+     * @param name the name of the policy
+     */
     public Policy(Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service, Integer action, Integer activeStatus, String name) {
         this.id = id;
         this.srcZone = srcZone;

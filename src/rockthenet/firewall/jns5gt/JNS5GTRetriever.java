@@ -1,7 +1,5 @@
-package rockthenet.firewall.junipernetscreen5gt;
+package rockthenet.firewall.jns5gt;
 
-import net.percederberg.mibble.MibLoaderException;
-import org.snmp4j.PDU;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
@@ -11,20 +9,27 @@ import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.SnmpRetriever;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by gary on 28/09/14.
+ * This is the JNS5GT retriever which retrieves the data by using SNMP protocol.
+ * @author Gary Ye
  */
-public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
+public class JNS5GTRetriever extends SnmpRetriever {
     private ReadConnection readConnection;
     private MibHelper mibHelper;
 
-    public JuniperNetscreen5GTRetriever(String address, int port, String readCommunity) {
+    /**
+     * Constructs a new retriever for the JNS5GT appliance by building an SNMP connection with
+     * the given connection data.
+     * @param address the address of the firewall appliance
+     * @param port the port number of the firewall appliance
+     * @param readCommunity the read community
+     */
+    public JNS5GTRetriever(String address, int port, String readCommunity) {
         mibHelper = new MibHelper("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
 
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
@@ -35,8 +40,12 @@ public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
         }
     }
 
-    public HashMap<Integer, JuniperNetscreen5GTPolicy> retrievePolicies(){
-        HashMap<Integer, JuniperNetscreen5GTPolicy> policies = new HashMap<>();
+    /**
+     * Retrieves all policies from the firewall, to which a connection has been established.
+     * @return the policies
+     */
+    public List<JNS5GTPolicy> retrievePolicies(){
+        HashMap<Integer, JNS5GTPolicy> policies = new HashMap<>();
         try {
             VariableBinding[] variableBindings = readConnection.getTable(mibHelper.getOID("nsPlyTable"));
             for(int i = 0; i < variableBindings.length; i++){
@@ -46,10 +55,10 @@ public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
                 String oidString = mibHelper.getName(new OID(Arrays.copyOf(arr, arr.length - 2)).toString());
                 // Then put it into the hashmap if not already done.
                 if(!policies.containsKey(id)) {
-                    policies.put(id, new JuniperNetscreen5GTPolicy());
+                    policies.put(id, new JNS5GTPolicy());
                 }
                 // Now we have a reference to the policy that we want to change the value(s)
-                JuniperNetscreen5GTPolicy policy = policies.get(id);
+                JNS5GTPolicy policy = policies.get(id);
                 Variable variable = variableBindings[i].getVariable();
                 switch(oidString){
                     case "nsPlyId":
@@ -82,12 +91,11 @@ public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
                     default:
                         break;
                 }
-                // System.out.println(variableBindings[i].getOid() + " " + variableBindings[i].getVariable());
             }
         } catch (ConnectionException e) {
             e.printStackTrace();
         }
-        return policies;
+        return new ArrayList<>(policies.values());
     }
 
     public ReadConnection getReadConnection() {

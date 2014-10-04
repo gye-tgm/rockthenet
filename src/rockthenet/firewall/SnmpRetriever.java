@@ -1,9 +1,8 @@
 package rockthenet.firewall;
 
-import java.util.HashMap;
-
 /**
- * Created by gary on 28/09/14.
+ * A data retriever designed for retrieving data with SNMP.
+ * @author Gary Ye
  */
 public abstract class SnmpRetriever implements IDataRetriever {
 }
