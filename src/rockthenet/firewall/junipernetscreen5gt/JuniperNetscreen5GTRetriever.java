@@ -93,4 +93,14 @@ public class JuniperNetscreen5GTRetriever extends SnmpRetriever {
     public ReadConnection getReadConnection() {
         return readConnection;
     }
+
+    @Override
+    public Object get(String variableName) {
+        switch (variableName){
+            case "policies":
+                return retrievePolicies();
+            default:
+                return null;
+        }
+    }
 }
