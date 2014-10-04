@@ -10,8 +10,8 @@ import java.io.IOException;
  * Created by gary on 28/09/14.
  */
 public class JuniperNetscreen5GTFirewall extends Firewall {
-    public JuniperNetscreen5GTFirewall(IDataRetriever dataRetriever) throws IOException, MibLoaderException {
-        super("Juniper Netscreen 5GT", dataRetriever, new JuniperNetscreen5GTWriter());
+    public JuniperNetscreen5GTFirewall(JuniperNetscreen5GTRetriever dataRetriever, JuniperNetscreen5GTWriter writer) throws IOException, MibLoaderException {
+        super("Juniper Netscreen 5GT", dataRetriever, writer);
     }
 
     @Override
