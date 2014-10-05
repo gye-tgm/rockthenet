@@ -10,6 +10,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import rockthenet.Main;
+import rockthenet.Refreshable;
+import rockthenet.Refresher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by Samuel on 29.09.2014.
  */
-public class Controller {
+public class Controller implements Refreshable {
 
     @FXML
     private Menu menuBar;
@@ -44,9 +46,8 @@ public class Controller {
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
-
-        refreshTime = 4;
-        Refresher refresher = new Refresher(refreshTime,this);
+        refreshTime = 4000;
+        (new Refresher(refreshTime, this)).start();
     }
 
     /**
@@ -81,6 +82,8 @@ public class Controller {
 
     protected void refreshLineChart(){
         lineChart.getData().clear();
+        lineChart.setTitle("Monitoring Thru Put");
+
         List<String> rules = getLineChartRule();
         for (int i = 0; i < rules.size(); i++) {
             XYChart.Series series = new XYChart.Series();
@@ -90,18 +93,9 @@ public class Controller {
                 series.getData().add(new XYChart.Data(a[0], a[1]));
             }
             lineChart.setCreateSymbols(false);
-            lineChart.getData().add(series);
+            // lineChart.getData().add(series);
         }
 
-    }
-
-    protected void refresher(){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                refreshLineChart();
-            }
-        });
     }
 
     /**
@@ -125,4 +119,13 @@ public class Controller {
         return rules;
     }
 
+    @Override
+    public void refresh() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                refreshLineChart();
+            }
+        });
+    }
 }
