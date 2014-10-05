@@ -1,2 +1,8 @@
 language: java
+notifications:
+  email:
+    - efrantar@student.tgm.ac.at
+    - sschmidt@student.tgm.ac.at
+    - nschrack@student.tgm.ac.at
+    - gye@student.tgm.ac.at
 
