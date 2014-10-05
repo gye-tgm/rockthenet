@@ -1,6 +1,6 @@
 package test.connections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
@@ -16,42 +16,41 @@ import org.snmp4j.smi.VariableBinding;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
-import rockthenet.connections.SNMPv2cConnection;
 
 /* TODO: add a real MOTable for testing */
 
 /**
- * Unit-tests for {@link SNMPv2cConnection}
+ * Unit-tests for {@link SNMPv3Connection}
  * 
  * @author Elias Frantar
  * @version 2014-10-05
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class SNMPv2cConnectionTest {
-	private static final String ADDRESS = "127.0.0.1";
-	private static final int 	PORT = 1025;
-	private static final String COMMUNITY_NAME = "test";
-	private static final String SECURITY_NAME = "test";
+public class SNMPv3ConnectionTest {
+	private static final String ADDRESS = 		"127.0.0.1";
+	private static final int 	PORT = 			1025;
+	private static final String USER_NAME = 	"SHADES";
+	private static final String AUTH_PASSWORD = "SHADESAuthPassword";
+	private static final String PRIV_PASSWORD = "SHADESPrivPassword";
 	
-	private static final String OID_1 = "1.3.1.1.1.1.1.1.1.1";
-	private static final String OID_2 = "1.3.2.1.1.1.1.1.1.1";
-	private static final String OID_1_TEXT = "This is the first test!";
-	private static final String OID_2_TEXT = "This is the second test!";
+	private static final String OID_1 = 		"1.3.1.1.1.1.1.1.1.1";
+	private static final String OID_2 = 		"1.3.2.1.1.1.1.1.1.1";
+	private static final String OID_1_TEXT = 	"This is the first test!";
+	private static final String OID_2_TEXT = 	"This is the second test!";
 	
 	private ReadConnection connection;
-	private SNMPv2Agent snmpAgent;
-
-	/* execute before and after every test-case */
+	private SNMPv3Agent snmpAgent;
+	
 	@Before
 	public void setup() throws ConnectionException, IOException {
-		snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY_NAME);
+		snmpAgent = new SNMPv3Agent(ADDRESS, PORT);
 		snmpAgent.start();
 		
 		snmpAgent.unregisterManagedObject(snmpAgent.getSnmpv2MIB());
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_1), new MOAccessImpl(1), new OctetString(OID_1_TEXT)));
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_2), new MOAccessImpl(1), new OctetString(OID_2_TEXT)));	
-
-		connection = ConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY_NAME, SECURITY_NAME);
+		
+		connection = ConnectionFactory.createSNMPv3Connection(ADDRESS, PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	@After
 	public void tearDown() {
@@ -121,12 +120,12 @@ public class SNMPv2cConnectionTest {
 	@Test (expected = ConnectionException.class)
 	public void invalidAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY_NAME, SECURITY_NAME);
+		connection = ConnectionFactory.createSNMPv3Connection("aaa", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	@Test (expected = ConnectionException.class)
 	public void notExistingAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY_NAME, SECURITY_NAME);
+		connection = ConnectionFactory.createSNMPv3Connection("10.10.10.10", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	
 	@Test (expected = ConnectionException.class)

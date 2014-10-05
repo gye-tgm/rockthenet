@@ -3,9 +3,11 @@ package rockthenet.connections;
 import java.io.IOException;
 
 import org.snmp4j.PDU;
+import org.snmp4j.ScopedPDU;
 import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 import org.snmp4j.event.ResponseEvent;
+import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.smi.Address;
 import org.snmp4j.smi.GenericAddress;
 import org.snmp4j.smi.OID;
@@ -72,7 +74,12 @@ public abstract class SNMPConnection implements ReadConnection {
 
 	@Override
 	public VariableBinding[] get(String[] oids) throws ConnectionException {
-		PDU pdu = new PDU();
+		PDU pdu;
+		if (target.getVersion() == SnmpConstants.version3) // choose the correct PDU-type depending on protocol version
+			pdu = new ScopedPDU();
+		else
+			pdu = new PDU();
+		
 		for (String oid : oids)
 			pdu.add(new VariableBinding(new OID(oid)));
 	    pdu.setType(PDU.GET);
