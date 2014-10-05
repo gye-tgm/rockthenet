@@ -55,7 +55,7 @@ public class Main extends Application {
     }
 
     /**
-     * Open SettingsDialog to set notification mail and refresh rate and wether
+     * Open SettingsDialog to set notification mail and refresh rate and whether
      * or not these are enabled
      *
      * @return true if the user clicked OK, false otherwise.
