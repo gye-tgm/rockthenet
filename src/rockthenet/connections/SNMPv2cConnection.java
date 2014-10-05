@@ -18,7 +18,7 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 public class SNMPv2cConnection extends SNMPConnection {
 
 	/**
-	 * Creates a new established connection.
+	 * Creates a new connection
 	 * 
 	 * <p><i>Note:</i> {@link #establish()} must be called before usage!
 	 * 

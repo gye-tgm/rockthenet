@@ -6,7 +6,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.UserTarget;
 import org.snmp4j.mp.MPv3;
 import org.snmp4j.mp.SnmpConstants;
-import org.snmp4j.security.AuthMD5;
+import org.snmp4j.security.AuthSHA;
 import org.snmp4j.security.PrivDES;
 import org.snmp4j.security.SecurityLevel;
 import org.snmp4j.security.SecurityModels;
@@ -18,18 +18,47 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
-/* TODO: test functionality */
-
+/**
+ * This class implements a connection via the <i>SNMPv3</i> protocol.
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-05
+ */
 public class SNMPv3Connection extends SNMPConnection {
-	public static OID AUTH_PROTOCOL = AuthMD5.ID;
-	public static OID PRIVACY_PROTOCOL = PrivDES.ID;
+	/**
+	 * The protocol/algorithm used for authentication (SHA)
+	 */
+	public static OID AUTH_PROTOCOL = 	AuthSHA.ID;
+	/**
+	 * The protocol/algorithm used for privacy (DES)
+	 */
+	public static OID PRIV_PROTOCOL = 	PrivDES.ID;
 	
 	private UsmUser user;
 	
+	/**
+	 * Equivalent to {@code SNMPv3Connection(address, port, username, authPassword, privPassword, AUTH_PROTOCOL, PRIV_PROTOCOL)
+	 * 
+	 * @see #SNMPv3Connection(String, int, String, String, String, OID, OID)
+	 */
 	protected SNMPv3Connection(String address, int port, String username, String authPassword, String privPassword) throws ConnectionException {
-		this(address, port, username, authPassword, privPassword, AUTH_PROTOCOL, PRIVACY_PROTOCOL);
+		this(address, port, username, authPassword, privPassword, AUTH_PROTOCOL, PRIV_PROTOCOL);
 	}
-	
+	/**
+	 * Creates a new connection
+	 * 
+	 * <p><i>Note:</i> {@link #establish()} must be called before usage!
+	 * 
+	 * @param address the address of the SNMP-server (IP or URL)
+	 * @param port the port of the SNMP-server
+	 * @param username the name of the user
+	 * @param authPassword the authentication password
+	 * @param privPassword the privacy password
+	 * @param authProtocol the authentication protocol (algorithm)
+	 * @param privProtocol the privacy protocol (algorithm)
+	 * 
+	 * @throws ConnectionException thrown if invalid address-parameters where passed
+	 */
 	protected SNMPv3Connection(String address, int port, String username, String authPassword, String privPassword, OID authProtocol, OID privProtocol) throws ConnectionException {
 		Address targetAddress = parseAddress(address, port);
 		
@@ -37,7 +66,7 @@ public class SNMPv3Connection extends SNMPConnection {
 		target.setVersion(SnmpConstants.version3);
 		target.setAddress(targetAddress);
 		target.setSecurityLevel(SecurityLevel.AUTH_PRIV);
-		target.setSecurityName(new OctetString("MD5DES"));
+		target.setSecurityName(new OctetString("SHADES"));
 		this.target = target;
 		
 		this.user = new UsmUser(new OctetString(username), authProtocol, new OctetString(authPassword), privProtocol, new OctetString(privPassword));

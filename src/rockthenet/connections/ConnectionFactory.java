@@ -25,4 +25,25 @@ public class ConnectionFactory {
 		connection.establish();
 		return connection;
 	}
+	
+	/**
+	 * Creates a new established {@link SNMPv3Connection}
+	 * 
+	 * @param address the address of the SNMP-server (IP or URL)
+	 * @param port the port of the SNMP-server
+	 * @param username the name of the user
+	 * @param authPassword the authentication password
+	 * @param privPassword the privacy password
+	 * @param authProtocol the authentication protocol (algorithm)
+	 * @param privProtocol the privacy protocol (algorithm)
+	 * 
+	 * @return a ready to used {@link SNMPv2cConnection} with the specified parameters
+	 * @throws ConnectionException thrown if connecting failed (see Exception-message for more information)
+	 */
+	public static ReadConnection createSNMPv3Connection(String address, int port, String username, String authPassword, String privPassword) throws ConnectionException {
+		ReadConnection connection = new SNMPv3Connection(address, port, username, authPassword, privPassword);
+		connection.establish();
+		return connection;
+	}
+	
 }
