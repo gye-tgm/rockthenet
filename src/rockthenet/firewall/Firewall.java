@@ -61,4 +61,16 @@ public abstract class Firewall implements Refreshable {
     public void setPolicies(List<Policy> policies) {
         this.policies = policies;
     }
+
+    /**
+     * Returns the policy with the given id
+     * @param id the id of the wanted policy
+     * @return the policy with the given id
+     */
+    public Policy getPolicy(Integer id){
+        for(Policy policy: policies)
+            if(policy.getId().equals(id))
+                return policy;
+        return null;
+    }
 }

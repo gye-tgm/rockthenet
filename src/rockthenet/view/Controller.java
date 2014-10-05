@@ -12,9 +12,17 @@ import javafx.scene.image.ImageView;
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
+import rockthenet.ThruPutMonitorModel;
+import rockthenet.firewall.Firewall;
+import rockthenet.firewall.Policy;
+import rockthenet.firewall.jns5gt.JNS5GTFirewall;
+import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Samuel on 29.09.2014.
@@ -36,7 +44,11 @@ public class Controller implements Refreshable {
 
     private Main main;
 
-    private int refreshTime;
+    private PolicyLineChart policyLineChart;
+
+    private ThruPutMonitorModel monitorModel;
+
+    private Firewall firewall;
 
     @FXML
     private void initialize() {
@@ -46,8 +58,25 @@ public class Controller implements Refreshable {
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
-        refreshTime = 4000;
-        (new Refresher(refreshTime, this)).start();
+
+
+        (new Refresher(4000, this)).start();
+
+        // TODO: Only for testing purposes
+        firewall = mock(Firewall.class);
+
+        ArrayList<Policy> testPolicies = new ArrayList<>();
+        JNS5GTPolicy policy = mock(JNS5GTPolicy.class);
+        when(policy.getName()).thenReturn("Policy 1");
+        when(policy.getThruPut()).thenReturn(2580, 129, 3410, 239, 5, 399);
+        when(policy.getId()).thenReturn(1);
+
+        testPolicies.add(policy);
+
+        when(firewall.getPolicies()).thenReturn(testPolicies);
+        when(firewall.getPolicy(1)).thenReturn(policy);
+        policyLineChart = new PolicyLineChart(lineChart);
+        monitorModel = new ThruPutMonitorModel(firewall);
     }
 
     /**
@@ -82,41 +111,13 @@ public class Controller implements Refreshable {
 
     protected void refreshLineChart(){
         lineChart.getData().clear();
-        lineChart.setTitle("Monitoring Thru Put");
 
-        List<String> rules = getLineChartRule();
-        for (int i = 0; i < rules.size(); i++) {
-            XYChart.Series series = new XYChart.Series();
-            series.setName(rules.get(i));
-            for (int d = 0; d < refreshTime; d++) {
-                int[] a = getData(d, rules.get(i));
-                series.getData().add(new XYChart.Data(a[0], a[1]));
-            }
-            lineChart.setCreateSymbols(false);
-            // lineChart.getData().add(series);
+        int[] selected = {1};
+
+        monitorModel.refresh();
+        for(int i = 0; i < selected.length; i++){
+            policyLineChart.addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
         }
-
-    }
-
-    /**
-     * Gives the data through-put from a firewall rule at a specific time back.
-     * @param time The time at which the data is measured
-     * @param name The name of the rule
-     * @return
-     */
-    public int[] getData(int time, String name){
-        //TODO Real Data
-        int [] a = {time, (int)(Math.random()*30)};
-        return a;
-    }
-
-    public List<String> getLineChartRule(){
-        //TODO Real Rules which are checked
-        ArrayList<String> rules = new ArrayList<String>();
-        for(int i = 0; i <= 2; i++ ){
-            rules.add(i,"test"+1);
-        }
-        return rules;
     }
 
     @Override

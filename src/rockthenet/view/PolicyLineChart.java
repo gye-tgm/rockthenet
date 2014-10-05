@@ -1,24 +1,34 @@
 package rockthenet.view;
 
-import javafx.beans.NamedArg;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import rockthenet.ThruPutData;
+
+import java.util.ArrayList;
 
 /**
  * Created by gary on 05/10/14.
  */
-public class PolicyLineChart extends LineChart {
-    public PolicyLineChart(@NamedArg("xAxis") Axis axis, @NamedArg("yAxis") Axis axis2, @NamedArg("data") ObservableList data) {
-        super(axis, axis2, data);
-        setTitle("ThruPut Monitoring");
+public class PolicyLineChart {
+    private LineChart lineChart;
+
+    public PolicyLineChart(LineChart lineChart) {
+        this.lineChart = lineChart;
+
+        this.lineChart.getXAxis().setLabel("Time Unit");
+        this.lineChart.getYAxis().setLabel("Bytes Per Sec");
+
+        this.lineChart.setTitle("Policy Line Chart");
+        this.lineChart.setCreateSymbols(false);
     }
-    /*
-    public PolicyLineChart() {
 
-        super(new NumberAxis("Time", 0.0, 10.0, 1), new NumberAxis("Bytes Per Second", 0.0, 100.0, 1));
-        setTitle("ThruPut Monitoring");
-    } */
-
+    public void addPolicy(ArrayList<ThruPutData> list, String policyName) {
+        XYChart.Series series = new XYChart.Series();
+        series.setName(policyName);
+        for (ThruPutData data : list) {
+            series.getData().add(new XYChart.Data(data.getTimeUnit(), data.getBytesPerSec()));
+        }
+        lineChart.getData().add(series);
+    }
 }
