@@ -22,6 +22,10 @@ public class JNS5GTRetriever extends SnmpRetriever {
     private ReadConnection readConnection;
     private MibHelper mibHelper;
 
+    public JNS5GTRetriever(ReadConnection readConnection) throws ConnectionException {
+        this.mibHelper = new MibHelper("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
+        this.readConnection = readConnection;
+    }
     /**
      * Constructs a new retriever for the JNS5GT appliance by building an SNMP connection with
      * the given connection data.
@@ -29,15 +33,9 @@ public class JNS5GTRetriever extends SnmpRetriever {
      * @param port the port number of the firewall appliance
      * @param readCommunity the read community
      */
-    public JNS5GTRetriever(String address, int port, String readCommunity) {
-        mibHelper = new MibHelper("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
-
+    public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException {
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
-        try {
-            readConnection = ConnectionFactory.createSNMPv2cConnection(address, port, readCommunity);
-        } catch (ConnectionException e) {
-            e.printStackTrace();
-        }
+        this(ConnectionFactory.createSNMPv2cConnection(address, port, readCommunity));
     }
 
     /**
@@ -100,10 +98,6 @@ public class JNS5GTRetriever extends SnmpRetriever {
             e.printStackTrace();
         }
         return new ArrayList<>(policies.values());
-    }
-
-    public ReadConnection getReadConnection() {
-        return readConnection;
     }
 
     @Override

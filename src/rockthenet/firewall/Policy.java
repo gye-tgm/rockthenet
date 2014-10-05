@@ -135,4 +135,39 @@ public class Policy {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Policy policy = (Policy) o;
+
+        if (action != null ? !action.equals(policy.action) : policy.action != null) return false;
+        if (activeStatus != null ? !activeStatus.equals(policy.activeStatus) : policy.activeStatus != null)
+            return false;
+        if (dstAddress != null ? !dstAddress.equals(policy.dstAddress) : policy.dstAddress != null) return false;
+        if (dstZone != null ? !dstZone.equals(policy.dstZone) : policy.dstZone != null) return false;
+        if (id != null ? !id.equals(policy.id) : policy.id != null) return false;
+        if (name != null ? !name.equals(policy.name) : policy.name != null) return false;
+        if (service != null ? !service.equals(policy.service) : policy.service != null) return false;
+        if (srcAddress != null ? !srcAddress.equals(policy.srcAddress) : policy.srcAddress != null) return false;
+        if (srcZone != null ? !srcZone.equals(policy.srcZone) : policy.srcZone != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (srcZone != null ? srcZone.hashCode() : 0);
+        result = 31 * result + (dstZone != null ? dstZone.hashCode() : 0);
+        result = 31 * result + (srcAddress != null ? srcAddress.hashCode() : 0);
+        result = 31 * result + (dstAddress != null ? dstAddress.hashCode() : 0);
+        result = 31 * result + (service != null ? service.hashCode() : 0);
+        result = 31 * result + (action != null ? action.hashCode() : 0);
+        result = 31 * result + (activeStatus != null ? activeStatus.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

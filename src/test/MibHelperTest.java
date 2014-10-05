@@ -6,11 +6,10 @@ import org.junit.Test;
 import rockthenet.MibHelper;
 
 /**
- * Created by gary on 30/09/14.
+ * @author Gary Ye
  */
 public class MibHelperTest {
-
-    MibHelper mibHelper;
+    private MibHelper mibHelper;
 
     @Before
     public void setUp() throws Exception {
@@ -19,13 +18,12 @@ public class MibHelperTest {
 
     @After
     public void tearDown() throws Exception {
-
+        mibHelper = null;
     }
 
     @Test
     public void testGetOID(){
         String[] names = {"nsPlyId", "nsPlySrcZone", "nsPlyDstZone", "nsPlySrcAddr", "nsPlyDstAddr", "nsPlyService", "nsPlyAction", "nsPlyActiveStatus", "nsPlyName"};
-
         for(int i = 0; i < names.length; i++) {
             System.out.println(names[i] + " " + mibHelper.getOID("nsPlyId"));
         }
