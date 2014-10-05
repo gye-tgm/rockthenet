@@ -1,6 +1,9 @@
 package rockthenet.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import rockthenet.Main;
@@ -18,7 +21,10 @@ public class Controller {
     private MenuItem newConnection;
     @FXML
     private MenuItem about;
-
+    @FXML
+    private LineChart lineChart;
+    @FXML
+    private Button refreshButton;
 
     private Main main;
 
@@ -53,5 +59,10 @@ public class Controller {
 
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    @FXML
+    protected void refreshButtonPressed(){
+        //TODO
     }
 }
