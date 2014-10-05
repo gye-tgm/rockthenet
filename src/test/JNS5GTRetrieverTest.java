@@ -1,34 +1,26 @@
 package test;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.snmp4j.smi.*;
+import org.snmp4j.smi.Integer32;
+import org.snmp4j.smi.OID;
+import org.snmp4j.smi.OctetString;
+import org.snmp4j.smi.VariableBinding;
 import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ReadConnection;
-import rockthenet.firewall.jns5gt.JNS5GTRetriever;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
+import rockthenet.firewall.jns5gt.JNS5GTRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class JNS5GTRetrieverTest {
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testGetPolicies() throws Exception {
         ReadConnection readConnection = mock(ReadConnection.class);
@@ -74,7 +66,7 @@ public class JNS5GTRetrieverTest {
     public void testRetrievePoliciesWithConnection() throws ConnectionException {
         // TODO: this needs to be fixed
         JNS5GTRetriever retriever = new JNS5GTRetriever("NOSUCHADDRESSSAVAILABLE", 161, "5xHIT");
-        for(JNS5GTPolicy policy: retriever.retrievePolicies()){
+        for (JNS5GTPolicy policy : retriever.retrievePolicies()) {
             System.out.println(policy.toString() + "\n");
         }
     }
