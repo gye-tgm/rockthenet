@@ -11,18 +11,18 @@ public class Refresher extends Thread {
     public Refresher(int interval, Controller controller){
         this.interval = interval;
         this.controller = controller;
+        this.setDaemon(true);
         start();
     }
 
     public void run(){
         try{
             while(true){
-                sleep(interval);
                 controller.refresher();
+                sleep(interval*1000);
             }
         }catch(InterruptedException e) {
             System.out.println("interrupted.");
-
         }
     }
 

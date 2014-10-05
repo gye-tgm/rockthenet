@@ -39,8 +39,8 @@ public class Controller {
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
-        refreshTime = 4000;
-        new Refresher(refreshTime,this);
+        refreshTime = 4;
+        Refresher refresher = new Refresher(refreshTime,this);
     }
 
     /**
@@ -118,4 +118,5 @@ public class Controller {
         }
         return rules;
     }
+
 }
