@@ -83,6 +83,12 @@ public class SNMPv2Agent extends BaseAgent {
         sendColdStartNotification();
     }
     
+    public void stop() {
+    	try {
+    		super.stop();
+    	} catch (Exception e) {} // prevent Exception on double-close; required for a test-case
+    }
+    
     protected void initTransportMappings() throws IOException {
         transportMappings =  new TransportMapping[1];
         transportMappings[0] = TransportMappings.getInstance().createTransportMapping(GenericAddress.parse("udp:" + address + "/" + port));
