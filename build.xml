@@ -1,42 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="rockthenet" default="compile" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
-  <property name="src.dir" value="src" />
-  <property name="build.dir" value="bin" />
+<project name="rockthenet" default="all" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+  <import file="rtnbuild.xml"/>
+  <property name="build.dir" value="out/production/rockthenet" />
+  <property name="exec.dir" value="out/production/rockthenet" />
   <property name="lib.dir" value="lib" />
   <property name="doc.dir" value="jdoc" />
   <property name="id" value="default" />
   
-  <path id="project.classpath">
-    <pathelement location="${build.dir}" />
-    <fileset dir="${lib.dir}" >
-      <include name="controlsfx-8.0.6_20.jar"/>
-      <include name="mibble-mibs-2.9.3.jar"/>
-      <include name="grammatica-1.5.jar"/>
-      <include name="mibble-parser-2.9.3.jar"/>
-      <include name="mockito-all-1.9.5.jar"/>
-      <include name="snmp4j-2.3.1.jar"/>
-      <include name="snmp4j-agent-2.2.2.jar"/>
-      <include name="junit-4.11.jar"/>
-    </fileset>
-  </path>
-
-  <target name="compile" description="Compile project.">
-    <mkdir dir="${build.dir}" />
-      <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"      
-    uri="javafx:com.sun.javafx.tools.ant" classpath="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/lib/ant-javafx.jar"/>
-
-    <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false" />
-  </target>
-
-  <target name="run-gui" depends="compile" description="Runs the GUI.">
-    <java classname="rockthenet.Main" fork="true" classpathref="project.classpath"/>
+  <target name="run-gui" depends="all" description="Runs the GUI.">
+    <echo message="Exec dir in ${exec.dir}" /> 
+    <java classname="rockthenet.Main"
+	  fork="true"
+	  dir="${exec.dir}" 
+      />
   </target>
 
   <target name="clean" description="Clean build products.">
     <delete dir="${build.dir}" />
   </target>
 
-  <target name="rebuild" depends="clean, compile" description="Clean and build products." />
+  <target name="rebuild" depends="clean, all" description="Clean and build products." />
   
   <target name="create-doc">
     <mkdir dir="${doc.dir}" />
