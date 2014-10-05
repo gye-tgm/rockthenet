@@ -7,7 +7,7 @@ import org.snmp4j.smi.VariableBinding;
  * Defines methods for fetching values for given OIDs
  * 
  * @author Elias Frantar
- * @version 2014-09-28
+ * @version 2014-10-05
  */
 public interface ReadConnection extends Connection { // TODO: maybe rename this to `SNMPReadConnection`
 	
@@ -27,7 +27,7 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * 
 	 * @param oids the identifier of the data unit to return
 	 * @return an array of VariableBindins (OID associated with their corresponding values)
-	 * @throws ConnectionException thrown if requesting failed
+	 * @throws ConnectionException thrown if requesting failed (see Exception-message for more information)
 	 */
 	public VariableBinding[] get(String[] oids) throws ConnectionException;
 	
@@ -36,6 +36,7 @@ public interface ReadConnection extends Connection { // TODO: maybe rename this 
 	 * 
 	 * @param rootOID the OID to fetch all associated data from
 	 * @return an array of all retrieved VaribablBindings
+	 * @throws ConnectionException thrown if requesting failed (see Exception-message for more information)
 	 */
 	public VariableBinding[] getTable(String rootOID) throws ConnectionException;
 

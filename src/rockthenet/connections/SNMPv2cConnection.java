@@ -9,20 +9,39 @@ import org.snmp4j.smi.Address;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
+/**
+ * This class implements a connection via the <i>SNMPv2c</i> protocol.
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-05
+ */
 public class SNMPv2cConnection extends SNMPConnection {
 
-	protected SNMPv2cConnection(String address, int port, String community) throws ConnectionException {
+	/**
+	 * Creates a new established connection.
+	 * 
+	 * <p><i>Note:</i> {@link #establish()} must be called before usage!
+	 * 
+	 * @param address the address of the SNMP-server (IP or URL)
+	 * @param port the port of the SNMP-server
+	 * @param communityName the name of the community to connect to
+	 * @param securityName the security name of the community to connect to
+	 * 
+	 * @throws ConnectionException thrown if invalid address-parameters where passed
+	 */
+	protected SNMPv2cConnection(String address, int port, String communityName, String securityName) throws ConnectionException {
 		Address targetAddress = parseAddress(address, port);
 			
 		CommunityTarget target = new CommunityTarget();
 		target.setVersion(SnmpConstants.version2c);
 		target.setAddress(targetAddress);
-		target.setCommunity(new OctetString(community));
+		target.setCommunity(new OctetString(communityName));
+		target.setSecurityName(new OctetString(securityName));
 		this.target = target;
 	}
 
 	@Override
-	public void establish() throws ConnectionException { // TODO: verify behavior defined in documentation
+	public void establish() throws ConnectionException {
 		if (snmp != null) // in case we are already up and want to reconnect
 			close();
 		

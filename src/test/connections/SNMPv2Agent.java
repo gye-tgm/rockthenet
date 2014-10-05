@@ -27,11 +27,13 @@ import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.transport.TransportMappings;
 
+/* TODO: add support for `securityName` */
 public class SNMPv2Agent extends BaseAgent {
 	private String address;
 	private int port;
 	private String community;
 	 
+	
     public SNMPv2Agent(String address, int port, String community) throws IOException {
         super(new File("conf.agent"), new File("bootCounter.agent"), new CommandProcessor(new OctetString(MPv3.createLocalEngineID())));
         

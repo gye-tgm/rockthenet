@@ -1,10 +1,20 @@
 package rockthenet.connections;
 
-@SuppressWarnings("serial")
+/**
+ * This Exception is thrown when a connection-error occurred.<br>
+ * It should contain a message on what probably happened.
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-05
+ */
+@SuppressWarnings("serial") // we don't need a serial-ID
 public class ConnectionException extends Exception {
-	private String message = "unknown cause";
+	private String message;
 	
-	public ConnectionException() {}
+	/* constructors; self explanatory */
+	public ConnectionException() {
+		message = "unknown cause";
+	}
 	public ConnectionException(String message) {
 		this.message = message;
 	}

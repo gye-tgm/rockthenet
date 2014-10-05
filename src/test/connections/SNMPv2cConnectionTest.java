@@ -16,14 +16,23 @@ import org.snmp4j.smi.VariableBinding;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
+import rockthenet.connections.SNMPv2cConnection;
 
 /* TODO: add a real MOTable for testing */
+/* TODO: maybe switch to {@link TestAgent} for testing */
 
+/**
+ * Unit-tests for {@link SNMPv2cConnection}
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-05
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SNMPv2cConnectionTest {
 	private static final String ADDRESS = "127.0.0.1";
 	private static final int 	PORT = 1025;
-	private static final String COMMUNITY = "test";
+	private static final String COMMUNITY_NAME = "test";
+	private static final String SECURITY_NAME = "test";
 	
 	private static final String OID_1 = "1.3.1.1.1.1.1.1.1.1";
 	private static final String OID_2 = "1.3.2.1.1.1.1.1.1.1";
@@ -36,14 +45,14 @@ public class SNMPv2cConnectionTest {
 	/* execute before and after every test-case */
 	@Before
 	public void setup() throws ConnectionException, IOException {
-		snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY);
+		snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY_NAME);
 		snmpAgent.start();
 		
 		snmpAgent.unregisterManagedObject(snmpAgent.getSnmpv2MIB());
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_1), new MOAccessImpl(1), new OctetString(OID_1_TEXT)));
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_2), new MOAccessImpl(1), new OctetString(OID_2_TEXT)));	
 
-		connection = ConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY);
+		connection = ConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	@After
 	public void tearDown() {
@@ -113,12 +122,12 @@ public class SNMPv2cConnectionTest {
 	@Test (expected = ConnectionException.class)
 	public void invalidAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY);
+		connection = ConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	@Test (expected = ConnectionException.class)
 	public void notExistingAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY);
+		connection = ConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	
 	@Test (expected = ConnectionException.class)

@@ -35,7 +35,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
      */
     public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException {
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
-        this(ConnectionFactory.createSNMPv2cConnection(address, port, readCommunity));
+        this(ConnectionFactory.createSNMPv2cConnection(address, port, readCommunity, readCommunity)); // TODO: communityName != securityName
     }
 
     /**

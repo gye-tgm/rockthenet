@@ -17,13 +17,38 @@ import org.snmp4j.util.TreeUtils;
 
 import java.util.List;
 
+/**
+ * The abstract base-class for all SNMP-type {@link Connection}s.<br>
+ * Contains generic implementations for all {@code get()}-requests.
+ * 
+ * <p>When extending this class, {@link #establish()} has to be implemented. 
+ * In addition you will also have to assign the proper Objects to {@code snmp} and {@code target} 
+ * if you want to use this class' {@code get()}-implementations.
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-05
+ */
 public abstract class SNMPConnection implements ReadConnection {
+	/**
+	 * The protocol used for connecting to the SNMP-server (UDP)
+	 */
 	public static final String CONNECTION_PROTOCOL = "udp";
+	/**
+	 * The maximum number of {@link VariableBinding}s returned by {@link #getTable(String)}
+	 */
 	public static final int MAX_TREE_SIZE = 500;
 	
 	protected Snmp snmp;
 	protected Target target;
 	
+	/**
+	 * Attempts to create an SNMP-address from the given information.
+	 * 
+	 * @param address the address the address of the SNMP-server (IP or URL)
+	 * @param port the port of the SNMP-server
+	 * @return the converted address
+	 * @throws ConnectionException thrown if the given parameters do not form a valid address
+	 */
 	protected Address parseAddress(String address, int port) throws ConnectionException {
 		Address parsedAddress = GenericAddress.parse("udp:" + address + "/" + port);
 		
@@ -55,7 +80,7 @@ public abstract class SNMPConnection implements ReadConnection {
 	    try {
 	    	ResponseEvent response = snmp.send(pdu, target);
 	    	
-	    	if (response.getResponse() == null)
+	    	if (response.getResponse() == null) // connection-error
 	    		throw new ConnectionException("no response from target");
 	    	
 		    return response.getResponse().getVariableBindings().toArray(new VariableBinding[oids.length]);
@@ -71,7 +96,7 @@ public abstract class SNMPConnection implements ReadConnection {
 		
 		List<TreeEvent> result = treeUtils.getSubtree(target, new OID(rootOID));
 		
-		if (result.get(0).getStatus() != RetrievalEvent.STATUS_OK)
+		if (result.get(0).getStatus() != RetrievalEvent.STATUS_OK) // connection-error
 			throw new ConnectionException("request failed");
 		
 		return result.get(0).getVariableBindings(); // in a single-OID request, it's always 0
