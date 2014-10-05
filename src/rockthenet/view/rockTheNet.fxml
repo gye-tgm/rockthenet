@@ -42,7 +42,8 @@
     <bottom>
         <LineChart fx:id="lineChart" prefHeight="88.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <xAxis>
-                <CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0" />
+                <!--<CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0" /> -->
+                <NumberAxis id="xAxis" label="Seconds" side="BOTTOM" />
             </xAxis>
             <yAxis>
                 <NumberAxis label="bytes/sec" side="LEFT" />
