@@ -3,7 +3,6 @@ package test.connections;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +17,8 @@ import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
 
+/* TODO: add a real MOTable for testing */
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SNMPv2cConnectionTest {
 	private static final String ADDRESS = "127.0.0.1";
@@ -25,14 +26,14 @@ public class SNMPv2cConnectionTest {
 	private static final String COMMUNITY = "test";
 	
 	private static final String OID_1 = "1.3.1.1.1.1.1.1.1.1";
-	private static final String OID_2 = "1.3.1.1.4.5";
+	private static final String OID_2 = "1.3.2.1.1.1.1.1.1.1";
 	private static final String OID_1_TEXT = "This is the first test!";
 	private static final String OID_2_TEXT = "This is the second test!";
 	
 	private ReadConnection connection;
-
 	private SNMPv2Agent snmpAgent;
 
+	/* execute before and after every test-case */
 	@Before
 	public void setup() throws ConnectionException, IOException {
 		snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY);
@@ -41,10 +42,9 @@ public class SNMPv2cConnectionTest {
 		snmpAgent.unregisterManagedObject(snmpAgent.getSnmpv2MIB());
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_1), new MOAccessImpl(1), new OctetString(OID_1_TEXT)));
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_2), new MOAccessImpl(1), new OctetString(OID_2_TEXT)));	
-		
+
 		connection = ConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY);
 	}
-	
 	@After
 	public void tearDown() {
 		connection.close();
@@ -65,6 +65,40 @@ public class SNMPv2cConnectionTest {
 		assertEquals(OID_1_TEXT, result[0].toValueString());
 		assertEquals(OID_2_TEXT, result[1].toValueString());
 	}
+	@Test
+	public void getTableTest() throws ConnectionException {
+		VariableBinding[] result = connection.getTable(OID_1.substring(0, OID_1.length() - 2));
+		
+		assertEquals(OID_1_TEXT, result[0].toValueString());
+	}
+	
+	@Test
+	public void connectTwiceTest() throws ConnectionException { // should still work afterwards
+		connection.establish();
+		connection.establish();
+		
+		String result = connection.get(OID_1).toValueString();
+		assertEquals(OID_1_TEXT, result);
+	}
+	@Test
+	public void reconnectTest() throws ConnectionException {
+		connection.close();
+		connection.establish();
+		
+		String result = connection.get(OID_1).toValueString();
+		assertEquals(OID_1_TEXT, result);
+	}
+	
+	@Test (expected = ConnectionException.class)
+	public void closeTest() throws ConnectionException {
+		connection.close();
+		connection.get(OID_1);
+	}
+	@Test
+	public void closeTwiceTest() { // should not throw any Exceptions
+		connection.close();
+		connection.close();
+	}
 	
 	/* test-cases for failing operations */
 	
@@ -74,10 +108,38 @@ public class SNMPv2cConnectionTest {
 		assertEquals("noSuchObject", result);
 	}
 	
+	/* Exception tests */
 	
-	@Test
-	public void testGetFirewall() throws ConnectionException {
-		connection = ConnectionFactory.createSNMPv2cConnection("10.0.100.10", 161, "5xHIT");
-		System.out.println(Arrays.toString(connection.getTable(".1.3.6.1.4.1.3224.10.1.1")));
+	@Test (expected = ConnectionException.class)
+	public void invalidAddressTest() throws ConnectionException {
+		connection.close();
+		connection = ConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY);
+	}
+	@Test (expected = ConnectionException.class)
+	public void notExistingAddressTest() throws ConnectionException {
+		connection.close();
+		connection = ConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY);
+	}
+	
+	@Test (expected = ConnectionException.class)
+	public void getWithClientDownTest() throws ConnectionException {
+		connection.close();
+		connection.get(OID_1);
+	}
+	@Test (expected = ConnectionException.class)
+	public void getWithServerDownTest() throws ConnectionException {
+		snmpAgent.stop();
+		connection.get(OID_1);
+	}
+	
+	@Test (expected = ConnectionException.class)
+	public void getTableWithClientDownTest() throws ConnectionException {
+		connection.close();
+		connection.getTable(OID_1);
+	}
+	@Test (expected = ConnectionException.class)
+	public void getTableWithServerDownTest() throws ConnectionException {
+		snmpAgent.stop();
+		connection.getTable(OID_1);
 	}
 }
