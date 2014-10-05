@@ -4,6 +4,7 @@
   <property name="build.dir" value="out/production/rockthenet" />
   <property name="exec.dir" value="out/production/rockthenet" />
   <property name="lib.dir" value="lib" />
+  <property name="report.dir" value="report" />
   <property name="doc.dir" value="jdoc" />
   <property name="id" value="default" />
   
@@ -25,7 +26,15 @@
     <mkdir dir="${doc.dir}" />
     <javadoc sourcepath="src" destdir="${doc.dir}" />
   </target>
-  
+  <target name="test" depends="all" description="Testing">
+    <junit dir="${exec.dir}" printsummary="yes" fork="no" haltonerror="no" haltonfailure="no">
+        <classpath>
+            <path refid="library.junit-4.11.classpath"/>
+            <path refid="rockthenet.module.production.classpath"/>
+        </classpath>
+	<test name="test.JNS5GTRetrieverTest" outfile="${report.dir}/junit_test_results"/>
+    </junit> 
+  </target> 
   <target name="clean-doc">
     <delete dir="${doc.dir}" />
   </target>
