@@ -68,8 +68,15 @@ public class Controller implements Refreshable {
         ArrayList<Policy> testPolicies = new ArrayList<>();
         JNS5GTPolicy policy = mock(JNS5GTPolicy.class);
         when(policy.getName()).thenReturn("Policy 1");
-        when(policy.getThruPut()).thenReturn(2580, 129, 3410, 239, 5, 399);
+        when(policy.getThruPut()).thenReturn(2580, 129, 3410, 239, 5, 399, 28, 1000, 2409, 3010, 2912, 10209, 3921, 5201);
         when(policy.getId()).thenReturn(1);
+        when(policy.getSrcZone()).thenReturn("Trust");
+        when(policy.getDstZone()).thenReturn("Untrust");
+        when(policy.getAction()).thenReturn(0);
+        when(policy.getActiveStatus()).thenReturn(0);
+        when(policy.getSrcAddress()).thenReturn("0.0.0.0");
+        when(policy.getDstAddress()).thenReturn("127.0.0.1");
+        when(policy.getService()).thenReturn(0);
 
         testPolicies.add(policy);
 
