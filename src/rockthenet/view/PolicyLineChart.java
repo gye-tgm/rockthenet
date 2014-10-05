@@ -21,6 +21,10 @@ public class PolicyLineChart {
 
         this.lineChart.setTitle("Policy Line Chart");
         this.lineChart.setCreateSymbols(false);
+
+        // If you want this to be fix, then set it to false
+        // this.lineChart.getXAxis().setAutoRanging(false);
+        ((NumberAxis)this.lineChart.getXAxis()).setUpperBound(1.5);
     }
 
     public void addPolicy(ArrayList<ThruPutData> list, String policyName) {

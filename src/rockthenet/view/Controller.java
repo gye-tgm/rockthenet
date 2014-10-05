@@ -78,10 +78,25 @@ public class Controller implements Refreshable {
         when(policy.getDstAddress()).thenReturn("127.0.0.1");
         when(policy.getService()).thenReturn(0);
 
+        JNS5GTPolicy policy2 = mock(JNS5GTPolicy.class);
+        when(policy2.getName()).thenReturn("Policy 2");
+        when(policy2.getThruPut()).thenReturn(1293, 4192, 3912, 5993, 4393, 83, 999, 444, 5192, 334, 12, 551, 1200, 5060);
+        when(policy2.getId()).thenReturn(2);
+        when(policy2.getSrcZone()).thenReturn("Trust");
+        when(policy2.getDstZone()).thenReturn("Untrust");
+        when(policy2.getAction()).thenReturn(0);
+        when(policy2.getActiveStatus()).thenReturn(0);
+        when(policy2.getSrcAddress()).thenReturn("0.0.0.0");
+        when(policy2.getDstAddress()).thenReturn("127.0.0.1");
+        when(policy2.getService()).thenReturn(0);
+
         testPolicies.add(policy);
+        testPolicies.add(policy2);
 
         when(firewall.getPolicies()).thenReturn(testPolicies);
         when(firewall.getPolicy(1)).thenReturn(policy);
+        when(firewall.getPolicy(2)).thenReturn(policy2);
+
         policyLineChart = new PolicyLineChart(lineChart);
         monitorModel = new ThruPutMonitorModel(firewall);
     }
@@ -119,7 +134,7 @@ public class Controller implements Refreshable {
     protected void refreshLineChart(){
         lineChart.getData().clear();
 
-        int[] selected = {1};
+        int[] selected = {1, 2};
 
         monitorModel.refresh();
         for(int i = 0; i < selected.length; i++){
