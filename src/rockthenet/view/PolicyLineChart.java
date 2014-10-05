@@ -21,7 +21,7 @@ public class PolicyLineChart {
 
         this.lineChart.setTitle("Policy Line Chart");
         this.lineChart.setCreateSymbols(false);
-
+        this.lineChart.setAnimated(false);
         // If you want this to be fix, then set it to false
         // this.lineChart.getXAxis().setAutoRanging(false);
         ((NumberAxis)this.lineChart.getXAxis()).setUpperBound(1.5);
