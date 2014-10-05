@@ -18,10 +18,10 @@
             </rowConstraints>
             <children>
                 <Label text="E-mail"/>
-                <TextField fx:id="email" promptText="example: rockthenet@gmail.com" GridPane.columnIndex="2"/>
+                <TextField fx:id="email" promptText="rockthenet@gmail.com" GridPane.columnIndex="2"/>
                 <Label text="Refresh Intervall (ms)" GridPane.rowIndex="1"/>
-                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0"
-                           promptText="example: 1000 (=1 second)" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0" promptText="1000 (=1 second)"
+                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                 <CheckBox fx:id="emailNotificationsEnabled" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0"
                           GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
                 <CheckBox fx:id="refreshIntervallEnabled" mnemonicParsing="false" GridPane.columnIndex="1"

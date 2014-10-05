@@ -24,6 +24,8 @@ public class ConnectionDialogController {
     private TextField port;
     @FXML
     private TextField community;
+    @FXML
+    private TextField security;
 
     private Stage dialogStage;
     private boolean okClicked = false;
@@ -65,6 +67,7 @@ public class ConnectionDialogController {
         if (isInputValid()) {
             okClicked = true;
             dialogStage.close();
+            // TODO: add real connection with received data
         }
     }
 
@@ -100,6 +103,9 @@ public class ConnectionDialogController {
 
         if (community.getText() == null || community.getText().length() == 0)
             errorMessage += "No Community specified!\n";
+
+        if (security.getText() == null || security.getText().length() == 0)
+            errorMessage += "No Security specified!\n";
 
         if (errorMessage.length() == 0) {
             return true;

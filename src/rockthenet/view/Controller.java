@@ -7,6 +7,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import rockthenet.Main;
 
 import java.util.ArrayList;
@@ -36,9 +38,13 @@ public class Controller {
 
     @FXML
     private void initialize() {
+        Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
+        refreshButton.setGraphic(new ImageView(image));
+
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
+
         refreshTime = 4;
         Refresher refresher = new Refresher(refreshTime,this);
     }
@@ -93,7 +99,7 @@ public class Controller {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                 refreshLineChart();
+                refreshLineChart();
             }
         });
     }
