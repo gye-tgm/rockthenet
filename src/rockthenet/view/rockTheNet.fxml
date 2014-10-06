@@ -5,8 +5,8 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0"
+            prefWidth="915.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="rockthenet.view.Controller">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -31,7 +31,7 @@
         </MenuBar>
     </top>
     <bottom>
-        <LineChart fx:id="lineChart" prefHeight="256" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <LineChart fx:id="lineChart" prefHeight="200" prefWidth="600.0" BorderPane.alignment="CENTER">
             <xAxis>
                 <!--<CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0" /> -->
                 <NumberAxis id="xAxis" label="Seconds" side="BOTTOM"/>

@@ -6,7 +6,6 @@ import rockthenet.firewall.Policy;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This class represents the firewall designed for the JNS5GT Firewall appliance.
@@ -24,9 +23,10 @@ public class JNS5GTFirewall extends Firewall {
         super("Juniper Netscreen 5GT", retriever, writer);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void refreshPolicies() {
-        setPolicies((ArrayList<Policy> ) dataRetriever.get("policies"));
+		setPolicies((ArrayList<Policy>) dataRetriever.get("policies"));
     }
 
     @Override

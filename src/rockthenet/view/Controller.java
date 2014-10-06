@@ -3,7 +3,6 @@ package rockthenet.view;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -15,11 +14,9 @@ import rockthenet.Refresher;
 import rockthenet.ThruPutMonitorModel;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
-import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,8 +34,11 @@ public class Controller implements Refreshable {
     private MenuItem newConnection;
     @FXML
     private MenuItem about;
-    @FXML
+    
+    @SuppressWarnings("rawtypes")
+	@FXML
     private LineChart lineChart;
+    
     @FXML
     private Button refreshButton;
 

@@ -34,8 +34,6 @@ public class ConnectionFactory {
 	 * @param username the name of the user
 	 * @param authPassword the authentication password
 	 * @param privPassword the privacy password
-	 * @param authProtocol the authentication protocol (algorithm)
-	 * @param privProtocol the privacy protocol (algorithm)
 	 * 
 	 * @return a ready to used {@link SNMPv2cConnection} with the specified parameters
 	 * @throws ConnectionException thrown if connecting failed (see Exception-message for more information)
