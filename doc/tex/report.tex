@@ -46,15 +46,60 @@
 \newpage
 
 \section{Task description}
-% TODO
-\section{Design}
-% TODO
-\includegraphics[width=\textwidth]{images/uml}
- 
-\section{Effort estimation}
 
 \subsection{Basic Tasks}
-\begin{tabular} {| l | l | l | l |} \hline
+Implement a simple-to-use application to monitor and configure a hardware firewall appliance “Juniper NetScreen 5GT “. The firewall allows read access over the SNMP-protocol (your app should be able to test if SNMPv3 is available and if not fallback on SNMPv2c) and write access over Telnet.
+\\\\
+Your app should accomplish following tasks:
+\begin{itemize}
+\item List all configured firewall rules (policies) on the device, add the details of the mentioned services and zones as well.
+\item Allow refreshing of the list by clicking a button and by a configurable time-intervall. Your GUI should remain responsive even with short refresh-intervals!
+\item Visualize the thru-put for a highlighted firewall-rule (nice2have: multiple rows) in a line-chart (configurable refresh-interval, unit bytes/sec)
+\item Encapsulate the data retrieval for further reuse and easy expansion. An UML-model of your design will help you defend it at the review!
+\item Build a visual appealing and easy to use interface (there is more than Swing out there).
+\end{itemize} 
+
+\subsection{Additional Tasks}
+\begin{itemize}
+\item Since there is only one firewall-appliance available, the time each team can test with the hardware will be strictly limited. Therefore it is essentially to use mock-objects to allow testing the app during times where the hardware is not available.
+\item An additional benefit of using mock-objects will be, that a CI-Server can use them for automated building and testing.
+\item You only need to consider firewall-rules for TCP and UDP connections in IPv4.
+\item You can find Information about the SNMP-Mibs special for the manufacturer of the used appliance here (maybe not all of the Mibs work with the used model): 
+\item http://www.oidview.com/mibs/3224/md-3224-1.html
+For exploring the SNMP-Data coming from the appliance you can use tools like this:
+\item http://ireasoning.com/mibbrowser.shtml
+\end{itemize} 
+
+\subsection{Advanced tasks (obligatory for grades better than B3)}
+Additionally to the basic tasks your app should accomplish the following:
+\begin{itemize}
+\item Alarm the user visually and per email if the config of the firewall-rules changes. To avoid polling use the SNMP-trap mechanism.
+\item Allow managing of firewall-rules (CRUD). To accomplish this, you will have to send configuration commands via telnet or ssh. An admin-account is available per request.
+\item Use multicast-groups to build a simple transaction system to serialize administrative tasks on the firewall (for example pass an “admin token” to recognize the collaborator who is all    owed to write to the firewall). This should also work in a heterogenous environment (different implementations, different OSes), so you have to coordinate with other teams.
+\item Make sure, that your interface to the firewall allows an easy change of the firewall-model (new releases, manufacturer, ...). It is not necessary to make this configurable in the GUI but must (explicitly) be considered in your software-design!
+\end{itemize} 
+
+\subsection{Teams}
+Build teams with 3 to 5 participants (5 only if two or more members choose advanced level and at least one member chooses basic level). Each individual team-member has to implement, test and document code and is allowed to choose the level of difficulty he/she wants to achieve. For example: if you have a group of four students and two of them want to achieve advanced level, they can focus their implementation work on the advanced tasks. The other two team-members focus on the basic functionality. In any case there must be a working product, advanced tasks can not stand for themselves.
+
+\subsection{Grading}
+A team can apply for submission with a (mostly) functional product.
+Each team-member will be graded separately, based on the documentation (and git-logs) which name him/her as author in all three main competencies as listed.
+Advanced tasks will only be considered if the basic tasks are fulfilled for the most part in this team.
+
+\subsection{Submission}
+\begin{itemize}
+\item Every group must have its own design/solution! Meta-group solutions will end in massive loss of points!
+\item As for group work usual, a protocol with the UML-Design, the work-sharing, the timetable and test documentation is mandatory!
+\item Upload your solution as a ZIP file. Please submit only the sources of your solution and a build file (build.xml, pom.xml, Makefile etc.) not the compiled class files and only approved third-party libraries. \item Your submission must compile and run!
+\item Before the submission deadline, you can upload your solution as often as you like. Note that any existing submission will be replaced by uploading a new one.
+\end{itemize}
+
+\newpage
+
+\section{Effort estimation}
+\subsection{Basic Tasks}
+\begin{tabular} {| l | c | c | c |} \hline
 Task &	Original Estimate & Remaining Estimate & Time spent \\ \hline
 Preparation for the Tasks &	20 &	0.00 & 24.50 \\ \hline
 Listing firewall rules &	7 &	2 &	9.50 \\ \hline
@@ -66,7 +111,7 @@ Final Documentation  &	8	& 2	& 5.00 \\ \hline
 Basic Total	& 63 &	31.00 &	56.00 \\ \hline
 \end{tabular}
 \subsection{Advanced Tasks}
-\begin{tabular} {| l | l | l | l |}\hline
+\begin{tabular} {| l | c | c | c |}\hline
 Task &	Original Estimate & Remaining Estimate & Time spent \\ \hline
 Alarm the user &	7	& 5	& 0 \\ \hline
 Firewall rules CRUD &	6 &	8 & 	0 \\ \hline
@@ -76,11 +121,75 @@ Advanced Total & 26 &	28 &	2 \\ \hline
 \end{tabular}
 
 \subsection{Total}
-\begin{description}
-	\item[Original Estimate]: 89
-	\item[Remaining Estimate]: 31
-	\item[Time Spent]: 58
-\end{description}
+\begin{tabular} {| l | c | c | c |}\hline
+	Task &	Original Estimate & Remaining Estimate & Time spent \\ \hline
+	Total & 89 & 31 & 58 \\ \hline
+\end{tabular}
+
+\section{Design}
+\subsection{User Stories}
+ \textbf{Basic tasks:}
+\begin{itemize}
+\item As a user, I want to connect to my firewall device by entering its IP-address.
+\begin{itemize}
+\item As a user, I want to connect with SNMPv3.
+\item As a user, I want to fallback to SNMPv2c when SNMPv3 is not available.
+\end{itemize}
+\item As a user, I want a visually appealing graphical user interface.
+\item As a user, I want to list all firewall-rules configured on my device.
+\begin{itemize}
+\item As a user, I want to see the port of a firewall rule.
+\item As a user, I want to see the zone of a firewall rule.
+\item As a user, I want to see the service of a firewall rule.
+\item As a user, I only want to see the TCP and UDP firewall rules.
+\end{itemize}
+\item As a user, I want the rules to be refreshed.
+\begin{itemize}
+\item As a user, I want the rules to be refreshed automatically.
+\begin{itemize}
+\item As a user, I want to configure the refresh intervals.
+\end{itemize}
+\item As a user, I want to refresh the rules manually by pressing on a button.
+\end{itemize}
+\item As a user, I want to visually monitor the thru-put of a firewall-rules.
+\begin{itemize}
+\item As a user, I want to visually see the thru-put in line-chart.
+\item As a user, I want to monitor multiple rules at the same time.
+\end{itemize}
+\item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
+\item As a developer, I want all network packages to be logged in a log file for debugging purposes.
+\end{itemize}
+ \textbf{Advanced tasks:}
+\begin{itemize}
+\item As a user, I want to be notified if a rule has been changed without my assistance.
+\begin{itemize}
+\item As a user, I want to be notified by a pop-up window.
+\item As a user, I want to be optionally notified by email.
+\item As a user, I want to configure my email-address.
+\begin{itemize}
+\item As a user, I want to configure the email-address in a config-file.
+\item As a user, I want to configure the email-address in the GUI.
+\end{itemize}
+\end{itemize}
+\item As a user, I want to configure all firewall-rules on the device.
+\begin{itemize}
+\item As a user, I want to create a fully new rule.
+\item As a user, I want to fully edit an existing rule.
+\item As a user, I want to delete an existing rule.
+\item As a user, I want to login before editing a rule.
+\begin{itemize}
+\item As a user, I want to stay logged in for the whole session after I have logged in for the first time.
+\end{itemize}
+\end{itemize}
+\item As a user, I want to have a transaction system for write access on the firewall, so that no editing conflicts can occur when multiple applications are trying to modify at the same time.
+\item As a developer, I want to be able to easily modify the software so that it works with other firewall hardwares.
+\begin{itemize}
+\item As a developer, I only want to exchange the SNMP-commands to make the application work with other firewall hardwares.
+\end{itemize}
+\end{itemize}
+
+\subsection{Basic}
+\includegraphics[width=\textwidth]{images/uml}
 
 \section{Installation and Preparation}
 
@@ -200,10 +309,6 @@ The MIB is structured like a tree (examples can be found in the Wikipedia articl
 One can for example GET/SET the variables by using the OI of the specified object.
 
 Also one can use a MIB browser to explore the structure [2].
-
-[1] http://www.oidview.com/mibs/2636/JUNIPER-NSM-TRAPS.html
-[2] http://ireasoning.com/mibbrowser.shtml 
-[3] http://www.snmp4j.org/doc/org/snmp4j/Snmp.html 
 \subsubsection{Connection}
 \subsubsection{MIBs}
 \subsection{Multicast-Groups}
@@ -249,73 +354,11 @@ The important methods of the MulticastSocket class are:
 
 [1] http://docs.oracle.com/javase/7/docs/api/java/net/MulticastSocket.html
 
-\section{User Stories}
- \textbf{Basic tasks:}
-\begin{itemize}
-\item As a user, I want to connect to my firewall device by entering its IP-address.
-\begin{itemize}
-\item As a user, I want to connect with SNMPv3.
-\item As a user, I want to fallback to SNMPv2c when SNMPv3 is not available.
-\end{itemize}
-\item As a user, I want a visually appealing graphical user interface.
-\item As a user, I want to list all firewall-rules configured on my device.
-\begin{itemize}
-\item As a user, I want to see the port of a firewall rule.
-\item As a user, I want to see the zone of a firewall rule.
-\item As a user, I want to see the service of a firewall rule.
-\item As a user, I only want to see the TCP and UDP firewall rules.
-\end{itemize}
-\item As a user, I want the rules to be refreshed.
-\begin{itemize}
-\item As a user, I want the rules to be refreshed automatically.
-\begin{itemize}
-\item As a user, I want to configure the refresh intervals.
-\end{itemize}
-\item As a user, I want to refresh the rules manually by pressing on a button.
-\end{itemize}
-\item As a user, I want to visually monitor the thru-put of a firewall-rules.
-\begin{itemize}
-\item As a user, I want to visually see the thru-put in line-chart.
-\item As a user, I want to monitor multiple rules at the same time.
-\end{itemize}
-\item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
-\item As a developer, I want all network packages to be logged in a log file for debugging purposes.
-\end{itemize}
- \textbf{Advanced tasks:}
-\begin{itemize}
-\item As a user, I want to be notified if a rule has been changed without my assistance.
-\begin{itemize}
-\item As a user, I want to be notified by a pop-up window.
-\item As a user, I want to be optionally notified by email.
-\item As a user, I want to configure my email-address.
-\begin{itemize}
-\item As a user, I want to configure the email-address in a config-file.
-\item As a user, I want to configure the email-address in the GUI.
-\end{itemize}
-\end{itemize}
-\item As a user, I want to configure all firewall-rules on the device.
-\begin{itemize}
-\item As a user, I want to create a fully new rule.
-\item As a user, I want to fully edit an existing rule.
-\item As a user, I want to delete an existing rule.
-\item As a user, I want to login before editing a rule.
-\begin{itemize}
-\item As a user, I want to stay logged in for the whole session after I have logged in for the first time.
-\end{itemize}
-\end{itemize}
-\item As a user, I want to have a transaction system for write access on the firewall, so that no editing conflicts can occur when multiple applications are trying to modify at the same time.
-\begin{itemize}
-\item ???
-\item ???
-\item ...
-\end{itemize}
-\item As a developer, I want to be able to easily modify the software so that it works with other firewall hardwares.
-\begin{itemize}
-\item As a developer, I only want to exchange the SNMP-commands to make the application work with other firewall hardwares.
-\end{itemize}
-\end{itemize}
 \section{Test report}
 \section{Occurred problems}
-\bibliography{protokoll}{}
+
+\nocite{*}
 \bibliographystyle{plain}
+\bibliography{bibliography}{}
+
 \end{document}
