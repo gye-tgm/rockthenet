@@ -22,7 +22,7 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
  * This class implements a connection via the <i>SNMPv3</i> protocol.
  * 
  * @author Elias Frantar
- * @version 2014-10-05
+ * @version 2014-10-06
  */
 public class SNMPv3Connection extends SNMPConnection {
 	/**
@@ -66,7 +66,7 @@ public class SNMPv3Connection extends SNMPConnection {
 		target.setVersion(SnmpConstants.version3);
 		target.setAddress(targetAddress);
 		target.setSecurityLevel(SecurityLevel.AUTH_PRIV);
-		target.setSecurityName(new OctetString("SHADES"));
+		target.setSecurityName(new OctetString("SHADES")); // SHA and DES
 		this.target = target;
 		
 		this.user = new UsmUser(new OctetString(username), authProtocol, new OctetString(authPassword), privProtocol, new OctetString(privPassword));

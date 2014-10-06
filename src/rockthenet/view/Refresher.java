@@ -1,31 +1,25 @@
-package rockthenet;
-
-
-import rockthenet.Refreshable;
+package rockthenet.view;
 
 /**
  * Created by Niko on 05/10/14.
  */
 public class Refresher extends Thread {
-    private int interval;
-    private Refreshable refreshObject;
 
-    /**
-     *
-     * @param interval the interval in milliseconds
-     * @param refreshObject the object to refresh
-     */
-    public Refresher(int interval, Refreshable refreshObject){
+    private int interval;
+    private Controller controller;
+
+    public Refresher(int interval, Controller controller){
         this.interval = interval;
-        this.refreshObject = refreshObject;
+        this.controller = controller;
         this.setDaemon(true);
+        start();
     }
 
     public void run(){
         try{
             while(true){
-                refreshObject.refresh();
-                sleep(interval);
+                sleep(interval*1000);
+                controller.refresh();
             }
         }catch(InterruptedException e) {
             System.out.println("interrupted.");

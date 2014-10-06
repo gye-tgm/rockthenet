@@ -23,7 +23,6 @@ import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
-import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 import rockthenet.firewall.jns5gt.JNS5GTRetriever;
 import rockthenet.firewall.jns5gt.JNS5GTWriter;
@@ -46,8 +45,11 @@ public class Controller implements Refreshable {
     private MenuItem newConnection;
     @FXML
     private MenuItem about;
-    @FXML
+    
+    @SuppressWarnings("rawtypes")
+	@FXML
     private LineChart lineChart;
+    
     @FXML
     private Button refreshButton;
     @FXML
