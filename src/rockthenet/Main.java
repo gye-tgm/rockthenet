@@ -8,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
-import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 import rockthenet.view.ConnectionDialogController;
 import rockthenet.view.Controller;
 import rockthenet.view.SettingsDialogController;
@@ -22,12 +21,14 @@ public class Main extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private Controller mainController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Rock the Firewall");
         initRootLayout();
+        // TODO: KIll main after closing Appplication
     }
 
     /**
@@ -40,6 +41,11 @@ public class Main extends Application {
             loader.setLocation(getClass().getResource("view/rockTheNet.fxml"));
             rootLayout = (BorderPane) loader.load();
 
+            // Application-Icon
+//            primaryStage.getIcons().add(new
+//                    Image(getClass().getResourceAsStream("resources/firewall-icon.ico")));
+
+
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
@@ -48,6 +54,8 @@ public class Main extends Application {
             // Controller stuff
             Controller controller = loader.getController();
             controller.setMain(this);
+            mainController = controller;
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,6 +119,7 @@ public class Main extends Application {
             // controller stuff
             ConnectionDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setController(mainController);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

@@ -27,6 +27,7 @@ public class ConnectionDialogController {
     @FXML
     private TextField security;
 
+    private Controller controller;
     private Stage dialogStage;
     private boolean okClicked = false;
 
@@ -67,7 +68,7 @@ public class ConnectionDialogController {
         if (isInputValid()) {
             okClicked = true;
             dialogStage.close();
-            // TODO: add real connection with received data
+            controller.establishConnection(ip.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText());
         }
     }
 
@@ -94,7 +95,7 @@ public class ConnectionDialogController {
 
         try {
             if (port.getText() == null || port.getText().length() == 0
-                    || Integer.parseInt(port.getText()) > 0 &&
+                    || Integer.parseInt(port.getText()) < 1 &&
                     Integer.parseInt(port.getText()) > 65535)
                 errorMessage += "Valid Port range is 1-65535\n";
         } catch (NumberFormatException nfe) {
@@ -118,5 +119,9 @@ public class ConnectionDialogController {
                     .showError();
             return false;
         }
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }

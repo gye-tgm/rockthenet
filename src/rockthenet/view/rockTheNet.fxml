@@ -31,7 +31,7 @@
         </MenuBar>
     </top>
     <bottom>
-        <LineChart fx:id="lineChart" prefHeight="256" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <LineChart fx:id="lineChart" prefHeight="171.0" prefWidth="641.0" BorderPane.alignment="CENTER">
             <xAxis>
                 <!--<CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0" /> -->
                 <NumberAxis id="xAxis" label="Seconds" side="BOTTOM"/>
@@ -44,15 +44,17 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <center>
-                <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS"
+                            BorderPane.alignment="CENTER">
                     <content>
-                        <TableView>
+                        <TableView fx:id="tableView">
                             <columns>
-                                <TableColumn prefWidth="149.0" text="Name"/>
-                                <TableColumn prefWidth="149.0" text="Source-Zone"/>
-                                <TableColumn prefWidth="161.0" text="Destination-Zone"/>
-                                <TableColumn prefWidth="159.0" text="Source-Address"/>
-                                <TableColumn minWidth="0.0" prefWidth="160.0" text="Destination-Address"/>
+                                <TableColumn prefWidth="71.0" text="LineChart"/>
+                                <TableColumn prefWidth="166.0" text="Name"/>
+                                <TableColumn prefWidth="172.0" text="Source-Zone"/>
+                                <TableColumn prefWidth="167.0" text="Destination-Zone"/>
+                                <TableColumn prefWidth="168.0" text="Source-Address"/>
+                                <TableColumn minWidth="0.0" prefWidth="183.0" text="Destination-Address"/>
                                 <TableColumn minWidth="0.0" prefWidth="122.0" text="Service"/>
                                 <TableColumn minWidth="0.0" prefWidth="127.0" text="Action"/>
                                 <TableColumn minWidth="0.0" prefWidth="127.0" text="Enabled"/>
