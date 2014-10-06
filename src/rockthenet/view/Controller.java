@@ -23,6 +23,7 @@ import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
+import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 import rockthenet.firewall.jns5gt.JNS5GTRetriever;
 import rockthenet.firewall.jns5gt.JNS5GTWriter;
