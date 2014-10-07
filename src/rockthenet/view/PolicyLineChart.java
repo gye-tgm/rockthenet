@@ -32,9 +32,9 @@ public class PolicyLineChart {
     }
 
     /**
-     * Adds a policy to the line chart
-     * @param list
-     * @param policyName
+     * Adds a policy to the line chart, it will be displayed right after adding.
+     * @param list the list of data which will be needed for the poly line
+     * @param policyName the policy name that will be shown as the key
      */
 	public void addPolicy(ArrayList<ThruPutData> list, String policyName) {
         XYChart.Series series = new XYChart.Series();
@@ -45,10 +45,19 @@ public class PolicyLineChart {
         lineChart.getData().add(series);
     }
 
+    /**
+     * The clean method removes every policy off the display.
+     */
     public void clean(){
         lineChart.getData().clear();
     }
 
+    /**
+     * Adds all policies of the given model with the selected id values.
+     * @param monitorModel the model that has the wanted data
+     * @param selected the ids of the policies that should be added
+     * @param firewall the firewall for retrieving additional values
+     */
     public void addPolicies(ThruPutMonitorModel monitorModel, int[] selected, Firewall firewall) {
         for(int i = 0; i < selected.length; i++){
             if(monitorModel.getPolicyHistory(selected[i]) != null)
