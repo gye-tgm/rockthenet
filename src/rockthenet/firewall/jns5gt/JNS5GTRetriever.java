@@ -45,7 +45,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
     public List<JNS5GTPolicy> retrievePolicies(){
         HashMap<Integer, JNS5GTPolicy> policies = new HashMap<>();
         try {
-            VariableBinding[] variableBindings = readConnection.getTable(mibHelper.getOID("netscreenPolicyMibModule"));
+            VariableBinding[] variableBindings = readConnection.getTable("1.3.6.1.4.1.3224.10");
             // TODO: nsPlyTable was old
             for(int i = 0; i < variableBindings.length; i++){
                 // We first retrieve the id of the rule

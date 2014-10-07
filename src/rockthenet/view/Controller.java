@@ -41,6 +41,7 @@ import static org.mockito.Mockito.when;
  *
  * Created by Samuel on 29.09.2014.
  */
+@SuppressWarnings("unchecked")
 public class Controller implements Refreshable {
 
     @FXML
@@ -72,13 +73,13 @@ public class Controller implements Refreshable {
     private JNS5GTWriter writer;
 
 
-    @FXML
+	@FXML
     private void initialize() {
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
 
         //TODO: fix Table resize
-
+        
         // Table-Stuff
         policies = FXCollections.observableArrayList();
         policies.add(new PolicyRow());
@@ -86,42 +87,51 @@ public class Controller implements Refreshable {
         policies.add(new PolicyRow());
 
         tableView.setItems(policies);
+        tableView.setEditable(true);
+        
         // Columns
         TableColumn<PolicyRow, Boolean> lineChartEnabled = new TableColumn<>("LineChart");
+        TableColumn<PolicyRow, String> name = new TableColumn<>("Name");
+        TableColumn<PolicyRow, String> srcZone = new TableColumn<>("Source-Zone");
+        TableColumn<PolicyRow, String> dstZone = new TableColumn<>("Destination-Zone");
+        TableColumn<PolicyRow, String> srcAddress = new TableColumn<>("Source-Address");
+        TableColumn<PolicyRow, String> dstAddress = new TableColumn<>("Destination-Address");
+        TableColumn<PolicyRow, Integer> service = new TableColumn<>("Service");
+        TableColumn<PolicyRow, Integer> action = new TableColumn<>("Action");
+        TableColumn<PolicyRow, Integer> activeStatusProperty = new TableColumn<>("Enabled");
+        
+        lineChartEnabled.setCellValueFactory(new PropertyValueFactory<PolicyRow, Boolean>("lineChartEnabled"));
         lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
         lineChartEnabled.setEditable(true);
-        TableColumn<PolicyRow, String> name = new TableColumn<>("Name");
-        name.setCellValueFactory(new PropertyValueFactory("name"));
-        TableColumn<PolicyRow, String> srcZone = new TableColumn<>("Source-Zone");
-        srcZone.setCellValueFactory(new PropertyValueFactory("srcZone"));
-        TableColumn<PolicyRow, String> dstZone = new TableColumn<>("Destination-Zone");
-        dstZone.setCellValueFactory(new PropertyValueFactory("dstZone"));
-        TableColumn<PolicyRow, String> srcAddress = new TableColumn<>("Source-Address");
-        srcAddress.setCellValueFactory(new PropertyValueFactory("srcAddress"));
-        TableColumn<PolicyRow, String> dstAddress = new TableColumn<>("Destination-Address");
-        dstAddress.setCellValueFactory(new PropertyValueFactory("dstAddress"));
-        TableColumn<PolicyRow, Integer> service = new TableColumn<>("Service");
-        service.setCellValueFactory(new PropertyValueFactory("service"));
-        TableColumn<PolicyRow, Integer> action = new TableColumn<>("Action");
-        action.setCellValueFactory(new PropertyValueFactory("action"));
-        TableColumn<PolicyRow, Integer> activeStatusProperty = new TableColumn<>("Enabled");
-        activeStatusProperty.setCellValueFactory(new PropertyValueFactory("activeStatusProperty"));
-
-        tableView.getColumns().setAll(lineChartEnabled, name, srcZone, dstZone, srcAddress, dstAddress,
-                service, action, activeStatusProperty);
-
-        tableView.setEditable(true);
+        
+        name.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("name"));
+        srcZone.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("srcZone"));
+        dstZone.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("dstZone"));
+        srcAddress.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("srcAddress"));
+        dstAddress.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("dstAddress"));
+        service.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("service"));
+        action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
+        activeStatusProperty.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatusProperty"));
+        
+        tableView.getColumns().setAll(lineChartEnabled, name, srcZone, dstZone, srcAddress, dstAddress, service, action, activeStatusProperty);
 
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
 
 
+
         (new Refresher(4000, this)).start();
 
         // TODO: Only for testing purposes
-        firewall = mock(Firewall.class);
+        firewall = getFirewall();
 
+        policyLineChart = new PolicyLineChart(lineChart);
+        monitorModel = new ThruPutMonitorModel(firewall);
+    }
+
+    private Firewall getTestFirewall(){
+        Firewall firewall = mock(Firewall.class);
         ArrayList<Policy> testPolicies = new ArrayList<>();
         JNS5GTPolicy policy = mock(JNS5GTPolicy.class);
         when(policy.getName()).thenReturn("Policy 1");
@@ -153,11 +163,22 @@ public class Controller implements Refreshable {
         when(firewall.getPolicies()).thenReturn(testPolicies);
         when(firewall.getPolicy(1)).thenReturn(policy);
         when(firewall.getPolicy(2)).thenReturn(policy2);
-
-        policyLineChart = new PolicyLineChart(lineChart);
-        monitorModel = new ThruPutMonitorModel(firewall);
+        return firewall;
     }
 
+    private Firewall getFirewall(){
+        try {
+            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"), new JNS5GTWriter());
+            return firewall;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MibLoaderException e) {
+            e.printStackTrace();
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+        return  firewall;
+    }
     /**
      * Enables the New Connection Dialog Scene(Window)
      */
@@ -212,19 +233,16 @@ public class Controller implements Refreshable {
     }
 
     @FXML
-    private void refreshButtonPressed(){
+    private void refreshButtonPressed() {
         refreshLineChart();
     }
 
-    protected void refreshLineChart(){
-        lineChart.getData().clear();
+    protected void refreshLineChart() {
+        int[] selected = {1, 2, 3};
 
-        int[] selected = {1, 2};
-
+        policyLineChart.clean();
         monitorModel.refresh();
-        for(int i = 0; i < selected.length; i++){
-            policyLineChart.addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
-        }
+        policyLineChart.addPolicies(monitorModel, selected, firewall);
     }
 
     @Override

@@ -27,12 +27,12 @@ public class PolicyRow {
     }
 
     /**
-     * Turns a Policy into a PolicyRow, usable in ObersvableList
+     * Turns a Policy into a PolicyRow, usable in OberservableList
      *
      * @param policy
      */
     public PolicyRow(Policy policy) {
-        setLineChartEnabled(Boolean.FALSE);
+        setLineChartEnabled(Boolean.TRUE);
         setId(policy.getId());
         setSrcZone(policy.getSrcZone());
         setDstZone(policy.getDstZone());
@@ -70,135 +70,27 @@ public class PolicyRow {
         setName(name);
     }
 
-    public Boolean getLineChartEnabled() {
-        return lineChartEnabled.get();
-    }
-
-    public Integer getId() {
-        return idProperty().get();
-    }
-
-    public String getSrcZone() {
-        return srcZoneProperty().get();
-    }
-
-    public String getDstZone() {
-        return dstZoneProperty().get();
-    }
-
-    public String getSrcAddress() {
-        return srcAddressProperty().get();
-    }
-
-    public String getDstAddress() {
-        return dstAddressProperty().get();
-    }
-
-    public Integer getService() {
-        return serviceProperty().get();
-    }
-
-    public Integer getAction() {
-        return actionProperty().get();
-    }
-
-    public Integer getActiveStatus() {
-        return activeStatusProperty().get();
-    }
-
-    public String getName() {
-        return nameProperty().get();
-    }
-
-
-    public void setLineChartEnabled(Boolean lineChartEnabled) {
-        lineChartEnabledProperty().set(lineChartEnabled);
-    }
-
-    public void setId(Integer id) {
-        idProperty().set(id);
-    }
-
-    public void setSrcZone(String srcZone) {
-        srcZoneProperty().set(srcZone);
-    }
-
-    public void setDstZone(String dstZone) {
-        dstZoneProperty().set(dstZone);
-    }
-
-    public void setSrcAddress(String srcAddress) {
-        srcAddressProperty().set(srcAddress);
-    }
-
-    public void setDstAddress(String dstAddress) {
-        dstAddressProperty().set(dstAddress);
-    }
-
-    public void setService(Integer service) {
-        serviceProperty().set(service);
-    }
-
-    public void setAction(Integer action) {
-        actionProperty().set(action);
-    }
-
-    public void setActiveStatus(Integer activeStatus) {
-        activeStatusProperty().set(activeStatus);
-    }
-
-    public void setName(String name) {
-        nameProperty().set(name);
-    }
-
-    public BooleanProperty lineChartEnabledProperty() {
-        if (lineChartEnabled == null) lineChartEnabled = new SimpleBooleanProperty(this, "lineChartEnabled");
-        return lineChartEnabled;
-    }
-
-    public IntegerProperty idProperty() {
-        if (id == null) id = new SimpleIntegerProperty(this, "id");
-        return id;
-    }
-
-    public StringProperty nameProperty() {
-        if (name == null) name = new SimpleStringProperty(this, "name");
-        return name;
-    }
-
-    public StringProperty srcZoneProperty() {
-        if (srcZone == null) srcZone = new SimpleStringProperty(this, "srcZone");
-        return srcZone;
-    }
-
-    public StringProperty dstZoneProperty() {
-        if (dstZone == null) dstZone = new SimpleStringProperty(this, "dstZone");
-        return dstZone;
-    }
-
-    public StringProperty srcAddressProperty() {
-        if (srcAddress == null) srcAddress = new SimpleStringProperty(this, "srcAddress");
-        return srcAddress;
-    }
-
-    public StringProperty dstAddressProperty() {
-        if (dstAddress == null) dstAddress = new SimpleStringProperty(this, "dstAddress");
-        return dstAddress;
-    }
-
-    public IntegerProperty serviceProperty() {
-        if (service == null) service = new SimpleIntegerProperty(this, "service");
-        return service;
-    }
-
-    public IntegerProperty actionProperty() {
-        if (action == null) action = new SimpleIntegerProperty(this, "action");
-        return action;
-    }
-
-    public IntegerProperty activeStatusProperty() {
-        if (activeStatus == null) activeStatus = new SimpleIntegerProperty(this, "activeStatus");
-        return activeStatus;
-    }
-
+    /* Getters */
+    public BooleanProperty getLineChartEnabled() 				{ return lineChartEnabled; }
+    public IntegerProperty getId() 								{ return id; }
+    public StringProperty getSrcZone() 							{ return srcZone; }
+    public StringProperty getDstZone() 							{ return dstZone; }
+    public StringProperty getSrcAddress() 						{ return srcAddress; }
+    public StringProperty getDstAddress() 						{ return dstAddress; }
+    public IntegerProperty getService() 						{ return service; }
+    public IntegerProperty getAction() 							{ return action; }
+    public IntegerProperty getActiveStatus() 					{ return activeStatus; }
+    public StringProperty getName()  							{ return name; }
+    
+    /* Setters */
+    public void setLineChartEnabled(Boolean lineChartEnabled) 	{ this.lineChartEnabled.set(lineChartEnabled); }
+    public void setId(Integer id) 								{ this.id.set(id); }
+    public void setSrcZone(String srcZone) 						{ this.srcZone.set(srcZone); }
+    public void setDstZone(String dstZone) 						{ this.dstZone.set(dstZone); }
+    public void setSrcAddress(String srcAddress) 				{ this.srcAddress.set(srcAddress); }
+    public void setDstAddress(String dstAddress) 				{ this.dstAddress.set(dstAddress); }
+    public void setService(Integer service) 					{ this.service.set(service); }
+    public void setAction(Integer action) 						{ this.action.set(action); }
+    public void setActiveStatus(Integer activeStatus) 			{ this.activeStatus.set(activeStatus); }
+    public void setName(String name) 							{ this.name.set(name); }
 }

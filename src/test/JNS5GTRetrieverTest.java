@@ -55,7 +55,7 @@ public class JNS5GTRetrieverTest {
                 new VariableBinding(new OID(mibHelper.getOID("nsPlyActiveStatus") + ".1.0"), new Integer32(2)),
         };
 
-        when(readConnection.getTable(mibHelper.getOID("netscreenPolicyMibModule"))).thenReturn(variableBindings);
+        when(readConnection.getTable("1.3.6.1.4.1.3224.10")).thenReturn(variableBindings);
 
         JNS5GTRetriever retriever = new JNS5GTRetriever(readConnection);
         List<JNS5GTPolicy> actualPolicies = (ArrayList<JNS5GTPolicy>) retriever.get("policies");
@@ -63,9 +63,18 @@ public class JNS5GTRetrieverTest {
     }
 
     @Test(expected = ConnectionException.class)
-    public void testRetrievePoliciesWithConnection() throws ConnectionException {
+    public void testRetrievePoliciesWithFailedConnection() throws ConnectionException {
         // TODO: this needs to be fixed
         JNS5GTRetriever retriever = new JNS5GTRetriever("NOSUCHADDRESSSAVAILABLE", 161, "5xHIT");
+        for (JNS5GTPolicy policy : retriever.retrievePolicies()) {
+            System.out.println(policy.toString() + "\n");
+        }
+    }
+
+    @Test
+    public void testRetrievePoliciesWithConnection() throws ConnectionException {
+        // TODO: this needs to be fixed
+        JNS5GTRetriever retriever = new JNS5GTRetriever("10.0.100.10", 161, "5xHIT");
         for (JNS5GTPolicy policy : retriever.retrievePolicies()) {
             System.out.println(policy.toString() + "\n");
         }
