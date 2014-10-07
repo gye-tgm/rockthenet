@@ -44,12 +44,11 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <center>
-                <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS"
-                            BorderPane.alignment="CENTER">
-                    <content>
-                        <TableView fx:id="tableView">
-                        </TableView>
-                    </content>
+	            <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+	            	<content>
+	                	<TableView fx:id="tableView">
+	                    </TableView>
+	                </content>
                 </ScrollPane>
             </center>
             <bottom>

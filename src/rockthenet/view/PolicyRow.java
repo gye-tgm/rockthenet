@@ -20,67 +20,44 @@ public class PolicyRow {
     private StringProperty name;
 
     /**
-     * Default constructor of the policy
-     */
-    public PolicyRow() {
-        this(Boolean.FALSE, 0, "N/A", "N/A", "N/A", "N/A", -1, -1, -1, "");
-    }
-
-    /**
      * Turns a Policy into a PolicyRow, usable in OberservableList
      *
      * @param policy
      */
     public PolicyRow(Policy policy) {
-        setLineChartEnabled(Boolean.TRUE);
-        setId(policy.getId());
-        setSrcZone(policy.getSrcZone());
-        setDstZone(policy.getDstZone());
-        setSrcAddress(policy.getSrcAddress());
-        setDstAddress(policy.getDstAddress());
-        setService(policy.getService());
-        setAction(policy.getAction());
-        setActiveStatus(policy.getActiveStatus());
-        setName(policy.getName());
+        lineChartEnabled = new SimpleBooleanProperty(false);
+        id = new SimpleIntegerProperty(policy.getId());
+        srcZone = new SimpleStringProperty(policy.getSrcZone());
+        dstZone = new SimpleStringProperty(policy.getDstZone());
+        srcAddress = new SimpleStringProperty(policy.getSrcAddress());
+        dstAddress = new SimpleStringProperty(policy.getDstAddress());
+        service = new SimpleIntegerProperty(policy.getService());
+        action = new SimpleIntegerProperty(policy.getAction());
+        activeStatus = new SimpleIntegerProperty(policy.getActiveStatus());
+        name = new SimpleStringProperty(policy.getName());
     }
-
-    /**
-     * Constructs a policy with the given properties.
-     *
-     * @param id           the id of the firewall policy, which every policy should have
-     * @param srcZone      the source zone
-     * @param dstZone      the destination zone
-     * @param srcAddress   the source address
-     * @param dstAddress   the destination address
-     * @param service      the service of the policy as an integer
-     * @param action       the action of the policy
-     * @param activeStatus the active status
-     * @param name         the name of the policy
-     */
-    public PolicyRow(Boolean lineChartEnabled, Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service, Integer action, Integer activeStatus, String name) {
-        setLineChartEnabled(lineChartEnabled);
-        setId(id);
-        setSrcZone(srcZone);
-        setDstZone(dstZone);
-        setSrcAddress(srcAddress);
-        setDstAddress(dstAddress);
-        setService(service);
-        setAction(action);
-        setActiveStatus(activeStatus);
-        setName(name);
+    
+    @Override
+    public boolean equals(Object o) { // TODO: implement save equals
+    	if (!(o instanceof Policy))
+    		return false;
+    	
+    	return id.equals(((Policy) o).getId());
     }
 
     /* Getters */
-    public BooleanProperty getLineChartEnabled() 				{ return lineChartEnabled; }
-    public IntegerProperty getId() 								{ return id; }
-    public StringProperty getSrcZone() 							{ return srcZone; }
-    public StringProperty getDstZone() 							{ return dstZone; }
-    public StringProperty getSrcAddress() 						{ return srcAddress; }
-    public StringProperty getDstAddress() 						{ return dstAddress; }
-    public IntegerProperty getService() 						{ return service; }
-    public IntegerProperty getAction() 							{ return action; }
-    public IntegerProperty getActiveStatus() 					{ return activeStatus; }
-    public StringProperty getName()  							{ return name; }
+    public Boolean getLineChartEnabled() 						{ return lineChartEnabled.get(); }
+    public Integer getId() 										{ return id.get(); }
+    public String  getSrcZone() 								{ return srcZone.get(); }
+    public String  getDstZone() 								{ return dstZone.get(); }
+    public String  getSrcAddress() 								{ return srcAddress.get(); }
+    public String  getDstAddress() 								{ return dstAddress.get(); }
+    public Integer getService() 								{ return service.get(); }
+    public Integer getAction() 									{ return action.get(); }
+    public Integer getActiveStatus() 							{ return activeStatus.get(); }
+    public String  getName()  									{ return name.get(); }
+    
+    public BooleanProperty lineChartEnabledProperty()			{ return lineChartEnabled; }
     
     /* Setters */
     public void setLineChartEnabled(Boolean lineChartEnabled) 	{ this.lineChartEnabled.set(lineChartEnabled); }

@@ -33,6 +33,7 @@ import rockthenet.firewall.jns5gt.JNS5GTWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -75,35 +76,35 @@ public class Controller implements Refreshable {
 
 	@FXML
     private void initialize() {
+        firewall = getFirewall(); // TODO: only for testing
+        
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
-
-        //TODO: fix Table resize
         
-        // Table-Stuff
         policies = FXCollections.observableArrayList();
-        policies.add(new PolicyRow());
-        policies.add(new PolicyRow());
-        policies.add(new PolicyRow());
 
         tableView.setItems(policies);
         tableView.setEditable(true);
         
         // Columns
         TableColumn<PolicyRow, Boolean> lineChartEnabled = new TableColumn<>("LineChart");
-        TableColumn<PolicyRow, String> name = new TableColumn<>("Name");
-        TableColumn<PolicyRow, String> srcZone = new TableColumn<>("Source-Zone");
-        TableColumn<PolicyRow, String> dstZone = new TableColumn<>("Destination-Zone");
-        TableColumn<PolicyRow, String> srcAddress = new TableColumn<>("Source-Address");
-        TableColumn<PolicyRow, String> dstAddress = new TableColumn<>("Destination-Address");
+        TableColumn<PolicyRow, Integer> id = new TableColumn<>("Id");
+        TableColumn<PolicyRow, String>  name = new TableColumn<>("Name");
+        TableColumn<PolicyRow, String>  srcZone = new TableColumn<>("Source-Zone");
+        TableColumn<PolicyRow, String>  dstZone = new TableColumn<>("Destination-Zone");
+        TableColumn<PolicyRow, String>  srcAddress = new TableColumn<>("Source-Address");
+        TableColumn<PolicyRow, String>  dstAddress = new TableColumn<>("Destination-Address");
         TableColumn<PolicyRow, Integer> service = new TableColumn<>("Service");
         TableColumn<PolicyRow, Integer> action = new TableColumn<>("Action");
-        TableColumn<PolicyRow, Integer> activeStatusProperty = new TableColumn<>("Enabled");
+        TableColumn<PolicyRow, Integer> activeStatus = new TableColumn<>("Enabled");
+        
+        tableView.getColumns().setAll(lineChartEnabled, id, name, srcZone, dstZone, srcAddress, dstAddress, service, action, activeStatus);
         
         lineChartEnabled.setCellValueFactory(new PropertyValueFactory<PolicyRow, Boolean>("lineChartEnabled"));
         lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
         lineChartEnabled.setEditable(true);
         
+        id.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("id"));
         name.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("name"));
         srcZone.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("srcZone"));
         dstZone.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("dstZone"));
@@ -111,20 +112,15 @@ public class Controller implements Refreshable {
         dstAddress.setCellValueFactory(new PropertyValueFactory<PolicyRow, String>("dstAddress"));
         service.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("service"));
         action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
-        activeStatusProperty.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatusProperty"));
+        activeStatus.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatus"));
+         
         
-        tableView.getColumns().setAll(lineChartEnabled, name, srcZone, dstZone, srcAddress, dstAddress, service, action, activeStatusProperty);
-
+        
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
 
-
-
         (new Refresher(4000, this)).start();
-
-        // TODO: Only for testing purposes
-        firewall = getFirewall();
 
         policyLineChart = new PolicyLineChart(lineChart);
         monitorModel = new ThruPutMonitorModel(firewall);
@@ -238,11 +234,16 @@ public class Controller implements Refreshable {
     }
 
     protected void refreshLineChart() {
-        int[] selected = {1, 2, 3};
+    	List<Integer> selected = new ArrayList<>();
+    	for (PolicyRow row : policies) 
+    		if (row.getLineChartEnabled()) {
+    			System.out.println(row.getId());
+    			selected.add(row.getId());
+    		}
 
         policyLineChart.clean();
         monitorModel.refresh();
-        policyLineChart.addPolicies(monitorModel, selected, firewall);
+        policyLineChart.addPolicies(monitorModel, convertIntegers(selected), firewall);
     }
 
     @Override
@@ -251,7 +252,31 @@ public class Controller implements Refreshable {
             @Override
             public void run() {
                 refreshLineChart();
+                
+                policies.clear();
+                for (Policy policy : firewall.getPolicies())
+                	policies.add(new PolicyRow(policy));
+                
+                /*
+                for (Policy policy : firewall.getPolicies()) {
+                	policies.contains(policy);
+                	policies.add(new PolicyRow(policy));
+                }
+                */
             }
         });
+    }
+    
+    /**
+     * http://stackoverflow.com/questions/718554/how-to-convert-an-arraylist-containing-integers-to-primitive-int-array
+     */
+    public static int[] convertIntegers(List<Integer> integers)
+    {
+        int[] ret = new int[integers.size()];
+        for (int i=0; i < ret.length; i++)
+        {
+            ret[i] = integers.get(i).intValue();
+        }
+        return ret;
     }
 }
