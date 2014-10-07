@@ -31,7 +31,7 @@
         </MenuBar>
     </top>
     <bottom>
-        <LineChart fx:id="lineChart" prefHeight="171.0" prefWidth="641.0" BorderPane.alignment="CENTER">
+        <LineChart fx:id="lineChart" prefHeight="256.0" prefWidth="641.0" BorderPane.alignment="CENTER">
             <xAxis>
                 <!--<CategoryAxis label="time passed" prefHeight="0.0" prefWidth="743.0" side="BOTTOM" tickLength="1.0" /> -->
                 <NumberAxis id="xAxis" label="Seconds" side="BOTTOM"/>

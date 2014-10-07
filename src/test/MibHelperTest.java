@@ -23,9 +23,9 @@ public class MibHelperTest {
 
     @Test
     public void testGetOID(){
-        String[] names = {"nsPlyId", "nsPlySrcZone", "nsPlyDstZone", "nsPlySrcAddr", "nsPlyDstAddr", "nsPlyService", "nsPlyAction", "nsPlyActiveStatus", "nsPlyName"};
+        String[] names = {"nsPlyId", "nsPlySrcZone", "nsPlyDstZone", "nsPlySrcAddr", "nsPlyDstAddr", "nsPlyService", "nsPlyAction", "nsPlyActiveStatus", "nsPlyName", "netscreenPolicy"};
         for(int i = 0; i < names.length; i++) {
-            System.out.println(names[i] + " " + mibHelper.getOID("nsPlyId"));
+            System.out.println(names[i] + " " + mibHelper.getOID(names[i]));
         }
     }
 }

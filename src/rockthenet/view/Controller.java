@@ -21,6 +21,7 @@ import rockthenet.ThruPutMonitorModel;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ConnectionFactory;
 import rockthenet.connections.ReadConnection;
+
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
 import rockthenet.firewall.jns5gt.JNS5GTFirewall;
@@ -107,17 +108,23 @@ public class Controller implements Refreshable {
                 service, action, activeStatusProperty);
 
 
-
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
 
 
+
         (new Refresher(4000, this)).start();
 
         // TODO: Only for testing purposes
-        firewall = mock(Firewall.class);
+        firewall = getTestFirewall();
 
+        policyLineChart = new PolicyLineChart(lineChart);
+        monitorModel = new ThruPutMonitorModel(firewall);
+    }
+
+    private Firewall getTestFirewall(){
+        Firewall firewall = mock(Firewall.class);
         ArrayList<Policy> testPolicies = new ArrayList<>();
         JNS5GTPolicy policy = mock(JNS5GTPolicy.class);
         when(policy.getName()).thenReturn("Policy 1");
@@ -149,11 +156,22 @@ public class Controller implements Refreshable {
         when(firewall.getPolicies()).thenReturn(testPolicies);
         when(firewall.getPolicy(1)).thenReturn(policy);
         when(firewall.getPolicy(2)).thenReturn(policy2);
-
-        policyLineChart = new PolicyLineChart(lineChart);
-        monitorModel = new ThruPutMonitorModel(firewall);
+        return firewall;
     }
 
+    private Firewall getFirewall(){
+        try {
+            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"), new JNS5GTWriter());
+            return firewall;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MibLoaderException e) {
+            e.printStackTrace();
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+        return  firewall;
+    }
     /**
      * Enables the New Connection Dialog Scene(Window)
      */
@@ -215,11 +233,12 @@ public class Controller implements Refreshable {
     protected void refreshLineChart(){
         lineChart.getData().clear();
 
-        int[] selected = {1, 2};
+        int[] selected = {1, 2, 3};
 
         monitorModel.refresh();
         for(int i = 0; i < selected.length; i++){
-            policyLineChart.addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
+            if(monitorModel.getPolicyHistory(selected[i]) != null)
+                policyLineChart.addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
         }
     }
 
