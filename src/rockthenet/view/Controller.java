@@ -117,7 +117,7 @@ public class Controller implements Refreshable {
         (new Refresher(4000, this)).start();
 
         // TODO: Only for testing purposes
-        firewall = getTestFirewall();
+        firewall = getFirewall();
 
         policyLineChart = new PolicyLineChart(lineChart);
         monitorModel = new ThruPutMonitorModel(firewall);
@@ -231,15 +231,11 @@ public class Controller implements Refreshable {
     }
 
     protected void refreshLineChart(){
-        lineChart.getData().clear();
-
         int[] selected = {1, 2, 3};
 
+        policyLineChart.clean();
         monitorModel.refresh();
-        for(int i = 0; i < selected.length; i++){
-            if(monitorModel.getPolicyHistory(selected[i]) != null)
-                policyLineChart.addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
-        }
+        policyLineChart.addPolicies(monitorModel, selected, firewall);
     }
 
     @Override
