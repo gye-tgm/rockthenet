@@ -9,11 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.percederberg.mibble.MibLoaderException;
+
 import org.controlsfx.dialog.Dialogs;
+
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
@@ -85,7 +88,8 @@ public class Controller implements Refreshable {
         tableView.setItems(policies);
         // Columns
         TableColumn<PolicyRow, Boolean> lineChartEnabled = new TableColumn<>("LineChart");
-        lineChartEnabled.setCellValueFactory(new PropertyValueFactory("lineChartEnabled"));
+        lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
+        lineChartEnabled.setEditable(true);
         TableColumn<PolicyRow, String> name = new TableColumn<>("Name");
         name.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn<PolicyRow, String> srcZone = new TableColumn<>("Source-Zone");
@@ -106,7 +110,7 @@ public class Controller implements Refreshable {
         tableView.getColumns().setAll(lineChartEnabled, name, srcZone, dstZone, srcAddress, dstAddress,
                 service, action, activeStatusProperty);
 
-
+        tableView.setEditable(true);
 
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
