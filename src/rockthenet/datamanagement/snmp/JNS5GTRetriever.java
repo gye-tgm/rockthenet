@@ -1,5 +1,6 @@
 package rockthenet.datamanagement.snmp;
 
+import net.percederberg.mibble.MibLoaderException;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
@@ -9,6 +10,7 @@ import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,10 +22,9 @@ import java.util.List;
  */
 public class JNS5GTRetriever extends SnmpRetriever {
     private ReadConnection readConnection;
-    private MibHelper mibHelper;
 
-    public JNS5GTRetriever(ReadConnection readConnection) throws ConnectionException {
-        this.mibHelper = new MibHelper("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
+    public JNS5GTRetriever(ReadConnection readConnection) throws ConnectionException, IOException, MibLoaderException {
+        super("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
         this.readConnection = readConnection;
     }
     /**
@@ -33,7 +34,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
      * @param port the port number of the firewall appliance
      * @param readCommunity the read community
      */
-    public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException {
+    public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException, IOException, MibLoaderException {
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
         this(SnmpConnectionFactory.createSNMPv2cConnection(address, port, readCommunity, readCommunity)); // TODO: communityName != securityName
     }
@@ -51,7 +52,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
                 // We first retrieve the id of the rule
                 int[] arr = variableBindings[i].getOid().toIntArray();
                 Integer id = arr[arr.length - 2];
-                String oidString = mibHelper.getName(new OID(Arrays.copyOf(arr, arr.length - 2)).toString());
+                String oidString = dictionary.getOidToVariable(new OID(Arrays.copyOf(arr, arr.length - 2)).toString());
                 // Then put it into the hashmap if not already done.
                 if(!policies.containsKey(id)) {
                     policies.put(id, new JNS5GTPolicy());

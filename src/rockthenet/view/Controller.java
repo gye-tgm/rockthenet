@@ -117,7 +117,7 @@ public class Controller implements Refreshable {
         newConnection.setOnAction((event) -> newConnectionDialog());
         about.setOnAction((event) -> aboutDialog());
 
-        (new Refresher(4000, this)).start();
+        (new Refresher(this)).start();
 
         /* TODO: remove */
         for (Policy policy : firewall.getPolicies())
