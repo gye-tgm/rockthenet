@@ -113,8 +113,6 @@ public class Controller implements Refreshable {
         service.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("service"));
         action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
         activeStatus.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatus"));
-         
-        
         
         settings.setOnAction((event) -> settingsDialog());
         newConnection.setOnAction((event) -> newConnectionDialog());
@@ -122,6 +120,10 @@ public class Controller implements Refreshable {
 
         (new Refresher(4000, this)).start();
 
+        /* TODO: remove */
+        for (Policy policy : firewall.getPolicies())
+        	policies.add(new PolicyRow(policy));
+        
         policyLineChart = new PolicyLineChart(lineChart);
         monitorModel = new ThruPutMonitorModel(firewall);
     }
@@ -237,7 +239,6 @@ public class Controller implements Refreshable {
     	List<Integer> selected = new ArrayList<>();
     	for (PolicyRow row : policies) 
     		if (row.getLineChartEnabled()) {
-    			System.out.println(row.getId());
     			selected.add(row.getId());
     		}
 
@@ -253,15 +254,9 @@ public class Controller implements Refreshable {
             public void run() {
                 refreshLineChart();
                 
-                policies.clear();
+                /* TODO: implement properly
                 for (Policy policy : firewall.getPolicies())
                 	policies.add(new PolicyRow(policy));
-                
-                /*
-                for (Policy policy : firewall.getPolicies()) {
-                	policies.contains(policy);
-                	policies.add(new PolicyRow(policy));
-                }
                 */
             }
         });
