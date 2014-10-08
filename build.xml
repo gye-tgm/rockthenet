@@ -6,8 +6,9 @@
   <property name="exec.dir" value="out/production/rockthenet" />
   <property name="lib.dir" value="lib" />
   <property name="report.dir" value="report" />
+  <property name="junit.out" value="${report.dir}" />
   <property name="doc.dir" value="jdoc" />
-
+  <property name="src.dir" value="src" />
   <property name="test.dir" value="src/test" />
   
   <target name="run-gui" depends="all" description="Runs the GUI.">
@@ -30,21 +31,29 @@
     <mkdir dir="${doc.dir}" />
     <javadoc sourcepath="src" destdir="${doc.dir}" />
   </target>
-  <target name="test" depends="compile.module.rockthenet.tests">
-    <junit>
-      <classpath>
-	<pathelement id="rockthenet.runtime.module.classpath" />    
-      </classpath>    
-      <batchtest>
-	 <fileset dir="${test.dir}">
-	      <include name="**/*Test*" />
-	 </fileset>
-      </batchtest>
-      <formatter type="brief" usefile="false"/>
-    </junit>
-  </target>   
+
+  <target name="junit-test" description="run all junit tests" depends="compile">
+      <!-- Debug output
+	      <property name="test.class.path" refid="test.class.path"/>
+	      <echo message="${test.class.path}"/>
+      -->
+      <junit printsummary="yes" haltonfailure="${haltonfailure}">
+	  <classpath refid="rockthenet.module.classpath"/>
+	  <formatter type="xml"/>
+	  <batchtest fork="yes" todir="${report.dir}">
+	      <fileset dir="${src.dir}">
+		  <include name="**/*Test.java"/>
+	      </fileset>
+	  </batchtest>
+      </junit>
+      <junitreport todir="${junit.out}">
+	  <fileset dir="${junit.out}">
+	      <include name="TEST-*.xml"/>
+	  </fileset>
+	  <report todir="${junit.out}" format="frames"/>
+      </junitreport>
+  </target>
   <target name="clean-doc">
     <delete dir="${doc.dir}" />
   </target>
-
 </project>
