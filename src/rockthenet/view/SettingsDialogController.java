@@ -98,12 +98,16 @@ public class SettingsDialogController {
         String errorMessage = "";
         EmailValidator emailValidator = new EmailValidator();
 
-        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
-            errorMessage += "Invalid e-mail address!\n";
+        if (emailNotificationsEnabled.isSelected()) {
+	        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
+	            errorMessage += "Invalid e-mail address!\n";
+	        }
         }
 
-        if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0) {
-            errorMessage += "Invalid refresh interval!\n";
+        if (refreshIntervallEnabled.isSelected()) {
+	        if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0) {
+	            errorMessage += "Invalid refresh interval!\n";
+	        }
         }
 
         if (errorMessage.length() == 0) {

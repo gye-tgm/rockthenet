@@ -19,13 +19,13 @@
             <children>
                 <Label text="E-mail"/>
                 <TextField fx:id="email" promptText="rockthenet@gmail.com" GridPane.columnIndex="2"/>
-                <Label text="Refresh Intervall (ms)" GridPane.rowIndex="1"/>
-                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0" promptText="1000 (=1 second)"
+                <Label text="Refresh Intervall (s)" GridPane.rowIndex="1"/>
+                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0" text="5"
                            GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                 <CheckBox fx:id="emailNotificationsEnabled" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0"
                           GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
                 <CheckBox fx:id="refreshIntervallEnabled" mnemonicParsing="false" GridPane.columnIndex="1"
-                          GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                          GridPane.halignment="CENTER" GridPane.rowIndex="1" selected="true" />
             </children>
         </GridPane>
         <HBox layoutX="197.1875" layoutY="241.0" spacing="5.0" AnchorPane.bottomAnchor="10.0"
