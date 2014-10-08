@@ -12,6 +12,10 @@ import java.util.Iterator;
  * @author Gary Ye
  */
 public class VariableToOidDictionary extends BidirectionalDictionary<String, String> {
+    public VariableToOidDictionary(){}
+    public VariableToOidDictionary(String filename) throws IOException, MibLoaderException {
+        load(new File(filename));
+    }
     public void load(File file) throws IOException, MibLoaderException {
         MibLoader mibLoader = new MibLoader();
         mibLoader.addDir(file.getParentFile());
