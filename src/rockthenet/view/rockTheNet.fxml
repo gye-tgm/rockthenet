@@ -44,12 +44,13 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <center>
-	            <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
-	            	<content>
-	                	<TableView fx:id="tableView">
-	                    </TableView>
-	                </content>
-                </ScrollPane>
+                <AnchorPane BorderPane.alignment="CENTER">
+                    <children>
+                        <TableView fx:id="tableView" centerShape="false" prefHeight="174.0" prefWidth="791.0"
+                                   tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </children>
+                </AnchorPane>
             </center>
             <bottom>
                 <BorderPane BorderPane.alignment="CENTER">

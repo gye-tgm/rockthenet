@@ -14,22 +14,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.percederberg.mibble.MibLoaderException;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
-import rockthenet.firewall.ThruPutMonitorModel;
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.connections.ReadConnection;
-import rockthenet.firewall.Firewall;
-import rockthenet.firewall.Policy;
-import rockthenet.firewall.jns5gt.JNS5GTFirewall;
-import rockthenet.firewall.jns5gt.JNS5GTPolicy;
+import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
+import rockthenet.firewall.Firewall;
+import rockthenet.firewall.Policy;
+import rockthenet.firewall.ThruPutMonitorModel;
+import rockthenet.firewall.jns5gt.JNS5GTFirewall;
+import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,6 +60,7 @@ public class Controller implements Refreshable {
     private TableView<PolicyRow> tableView;
     private ObservableList<PolicyRow> policies;
 
+
     private Main main;
 
     private PolicyLineChart policyLineChart;
@@ -77,7 +76,7 @@ public class Controller implements Refreshable {
 	@FXML
     private void initialize() {
         firewall = getTestFirewall(); // TODO: only for testing
-        
+
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
         
@@ -92,6 +91,7 @@ public class Controller implements Refreshable {
         TableColumn<PolicyRow, String>  name = new TableColumn<>("Name");
         TableColumn<PolicyRow, String>  srcZone = new TableColumn<>("Source-Zone");
         TableColumn<PolicyRow, String>  dstZone = new TableColumn<>("Destination-Zone");
+        dstZone.setPrefWidth(80.0);
         TableColumn<PolicyRow, String>  srcAddress = new TableColumn<>("Source-Address");
         TableColumn<PolicyRow, String>  dstAddress = new TableColumn<>("Destination-Address");
         TableColumn<PolicyRow, Integer> service = new TableColumn<>("Service");
