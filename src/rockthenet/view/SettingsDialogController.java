@@ -9,7 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import org.controlsfx.dialog.Dialogs;
+
+import rockthenet.SessionSettings;
 import rockthenet.validators.EmailValidator;
 
 /**
@@ -73,7 +76,7 @@ public class SettingsDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            okClicked = true;
+            SessionSettings.getInstance().setRefreshInterval(Integer.parseInt(refreshIntervall.getText()));
             dialogStage.close();
         }
     }
