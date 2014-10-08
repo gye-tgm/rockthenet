@@ -1,4 +1,4 @@
-package rockthenet.connections;
+package rockthenet.connections.snmp;
 
 import java.io.IOException;
 
@@ -16,11 +16,13 @@ import org.snmp4j.util.DefaultPDUFactory;
 import org.snmp4j.util.RetrievalEvent;
 import org.snmp4j.util.TreeEvent;
 import org.snmp4j.util.TreeUtils;
+import rockthenet.connections.ConnectionException;
+import rockthenet.connections.ReadConnection;
 
 import java.util.List;
 
 /**
- * The abstract base-class for all SNMP-type {@link Connection}s.<br>
+ * The abstract base-class for all SNMP-type {@link rockthenet.connections.Connection}s.<br>
  * Contains generic implementations for all {@code get()}-requests.
  * 
  * <p>When extending this class, {@link #establish()} has to be implemented. 
@@ -49,7 +51,7 @@ public abstract class SNMPConnection implements ReadConnection {
 	 * @param address the address the address of the SNMP-server (IP or URL)
 	 * @param port the port of the SNMP-server
 	 * @return the converted address
-	 * @throws ConnectionException thrown if the given parameters do not form a valid address
+	 * @throws rockthenet.connections.ConnectionException thrown if the given parameters do not form a valid address
 	 */
 	protected Address parseAddress(String address, int port) throws ConnectionException {
 		Address parsedAddress = GenericAddress.parse("udp:" + address + "/" + port);

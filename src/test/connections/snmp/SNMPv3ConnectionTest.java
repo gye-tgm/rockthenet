@@ -1,4 +1,4 @@
-package test.connections;
+package test.connections.snmp;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.ConnectionFactory;
+import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.connections.ReadConnection;
 
 /* TODO: add a real MOTable for testing */
@@ -50,7 +50,7 @@ public class SNMPv3ConnectionTest {
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_1), new MOAccessImpl(1), new OctetString(OID_1_TEXT)));
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_2), new MOAccessImpl(1), new OctetString(OID_2_TEXT)));	
 		
-		connection = ConnectionFactory.createSNMPv3Connection(ADDRESS, PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
+		connection = SnmpConnectionFactory.createSNMPv3Connection(ADDRESS, PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	@After
 	public void tearDown() {
@@ -120,12 +120,12 @@ public class SNMPv3ConnectionTest {
 	@Test (expected = ConnectionException.class)
 	public void invalidAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv3Connection("aaa", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
+		connection = SnmpConnectionFactory.createSNMPv3Connection("aaa", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	@Test (expected = ConnectionException.class)
 	public void notExistingAddressTest() throws ConnectionException {
 		connection.close();
-		connection = ConnectionFactory.createSNMPv3Connection("10.10.10.10", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
+		connection = SnmpConnectionFactory.createSNMPv3Connection("10.10.10.10", PORT, USER_NAME, AUTH_PASSWORD, PRIV_PASSWORD);
 	}
 	
 	@Test (expected = ConnectionException.class)

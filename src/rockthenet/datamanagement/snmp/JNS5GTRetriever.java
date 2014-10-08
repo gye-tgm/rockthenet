@@ -1,13 +1,13 @@
-package rockthenet.firewall.jns5gt;
+package rockthenet.datamanagement.snmp;
 
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.ConnectionFactory;
+import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.connections.ReadConnection;
-import rockthenet.firewall.SnmpRetriever;
+import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
      */
     public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException {
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
-        this(ConnectionFactory.createSNMPv2cConnection(address, port, readCommunity, readCommunity)); // TODO: communityName != securityName
+        this(SnmpConnectionFactory.createSNMPv2cConnection(address, port, readCommunity, readCommunity)); // TODO: communityName != securityName
     }
 
     /**

@@ -1,6 +1,8 @@
 package rockthenet.firewall.jns5gt;
 
 import net.percederberg.mibble.MibLoaderException;
+import rockthenet.datamanagement.snmp.JNS5GTRetriever;
+import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
 

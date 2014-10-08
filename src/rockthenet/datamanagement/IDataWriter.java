@@ -1,4 +1,4 @@
-package rockthenet.firewall;
+package rockthenet.datamanagement;
 
 /**
  * An interface for a data writer, which writes the data to the data source.

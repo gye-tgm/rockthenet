@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="rockthenet" default="all" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
   <import file="rtnbuild.xml"/>
+
   <property name="build.dir" value="out/production/rockthenet" />
   <property name="exec.dir" value="out/production/rockthenet" />
   <property name="lib.dir" value="lib" />
   <property name="report.dir" value="report" />
   <property name="doc.dir" value="jdoc" />
-  <property name="id" value="default" />
+
+  <property name="test.dir" value="src/test" />
   
   <target name="run-gui" depends="all" description="Runs the GUI.">
     <echo message="Exec dir in ${exec.dir}" /> 
     <java classname="rockthenet.Main"
 	  fork="true"
-	  dir="${exec.dir}" 
+	  dir="${exec.dir}"
       />
   </target>
 
@@ -20,21 +22,27 @@
     <delete dir="${build.dir}" />
   </target>
 
-  <target name="rebuild" depends="clean, all" description="Clean and build products." />
+  <target name="compile" depends="compile.module.rockthenet.tests" />
+
+  <target name="rebuild" depends="clean, compile" description="Clean and build products." />
   
   <target name="create-doc">
     <mkdir dir="${doc.dir}" />
     <javadoc sourcepath="src" destdir="${doc.dir}" />
   </target>
-  <target name="test" depends="all" description="Testing">
-    <junit dir="${exec.dir}" printsummary="yes" fork="no" haltonerror="no" haltonfailure="no">
-        <classpath>
-            <path refid="library.junit-4.11.classpath"/>
-            <path refid="rockthenet.module.production.classpath"/>
-        </classpath>
-	<test name="test.JNS5GTRetrieverTest" outfile="${report.dir}/junit_test_results"/>
-    </junit> 
-  </target> 
+  <target name="test" depends="compile.module.rockthenet.tests">
+    <junit>
+      <classpath>
+	<pathelement id="rockthenet.runtime.module.classpath" />    
+      </classpath>    
+      <batchtest>
+	 <fileset dir="${test.dir}">
+	      <include name="**/*Test*" />
+	 </fileset>
+      </batchtest>
+      <formatter type="brief" usefile="false"/>
+    </junit>
+  </target>   
   <target name="clean-doc">
     <delete dir="${doc.dir}" />
   </target>

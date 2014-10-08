@@ -1,4 +1,4 @@
-package rockthenet;
+package rockthenet.firewall;
 
 public class ThruPutData {
     private int timeUnit;

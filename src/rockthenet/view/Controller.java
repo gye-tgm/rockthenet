@@ -20,16 +20,16 @@ import org.controlsfx.dialog.Dialogs;
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
-import rockthenet.ThruPutMonitorModel;
+import rockthenet.firewall.ThruPutMonitorModel;
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.ConnectionFactory;
+import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
 import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
-import rockthenet.firewall.jns5gt.JNS5GTRetriever;
-import rockthenet.firewall.jns5gt.JNS5GTWriter;
+import rockthenet.datamanagement.snmp.JNS5GTRetriever;
+import rockthenet.datamanagement.snmp.JNS5GTWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class Controller implements Refreshable {
 
 	@FXML
     private void initialize() {
-        firewall = getFirewall(); // TODO: only for testing
+        firewall = getTestFirewall(); // TODO: only for testing
         
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
@@ -184,7 +184,7 @@ public class Controller implements Refreshable {
 
     protected void establishConnection(String address, int port, String commmunityName, String securityName) {
         try {
-            readConnection = ConnectionFactory.createSNMPv2cConnection(address, port, commmunityName, securityName);
+            readConnection = SnmpConnectionFactory.createSNMPv2cConnection(address, port, commmunityName, securityName);
             retriever = new JNS5GTRetriever(readConnection);
             writer = new JNS5GTWriter();
             firewall = new JNS5GTFirewall(retriever, writer);

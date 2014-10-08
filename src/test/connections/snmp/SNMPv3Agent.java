@@ -1,4 +1,4 @@
-package test.connections;
+package test.connections.snmp;
 
 import java.io.File;
 import java.io.IOException;

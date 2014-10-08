@@ -1,4 +1,4 @@
-package test;
+package test.datamanagement.snmp;
 
 import org.junit.Test;
 import org.snmp4j.smi.Integer32;
@@ -9,7 +9,7 @@ import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
-import rockthenet.firewall.jns5gt.JNS5GTRetriever;
+import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 
 import java.util.ArrayList;
 import java.util.List;

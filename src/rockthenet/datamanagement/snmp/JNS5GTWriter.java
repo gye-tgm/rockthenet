@@ -1,6 +1,6 @@
-package rockthenet.firewall.jns5gt;
+package rockthenet.datamanagement.snmp;
 
-import rockthenet.firewall.IDataWriter;
+import rockthenet.datamanagement.IDataWriter;
 
 /**
  * Created by gary on 28/09/14.

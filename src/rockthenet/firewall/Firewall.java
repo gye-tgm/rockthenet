@@ -1,5 +1,8 @@
 package rockthenet.firewall;
 
+import rockthenet.datamanagement.IDataRetriever;
+import rockthenet.datamanagement.IDataWriter;
+
 import javax.security.auth.Refreshable;
 import java.util.List;
 

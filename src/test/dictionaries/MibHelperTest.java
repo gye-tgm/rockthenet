@@ -1,4 +1,4 @@
-package test;
+package test.dictionaries;
 
 import org.junit.After;
 import org.junit.Before;

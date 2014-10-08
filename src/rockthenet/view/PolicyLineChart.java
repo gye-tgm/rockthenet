@@ -2,8 +2,8 @@ package rockthenet.view;
 
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import rockthenet.ThruPutData;
-import rockthenet.ThruPutMonitorModel;
+import rockthenet.firewall.ThruPutData;
+import rockthenet.firewall.ThruPutMonitorModel;
 import rockthenet.firewall.Firewall;
 
 import java.util.ArrayList;

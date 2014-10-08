@@ -1,4 +1,4 @@
-package rockthenet.connections;
+package rockthenet.connections.snmp;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.smi.Address;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
+import rockthenet.connections.ConnectionException;
 
 /**
  * This class implements a connection via the <i>SNMPv2c</i> protocol.
@@ -27,7 +28,7 @@ public class SNMPv2cConnection extends SNMPConnection {
 	 * @param communityName the name of the community to connect to
 	 * @param securityName the security name of the community to connect to
 	 * 
-	 * @throws ConnectionException thrown if invalid address-parameters where passed
+	 * @throws rockthenet.connections.ConnectionException thrown if invalid address-parameters where passed
 	 */
 	protected SNMPv2cConnection(String address, int port, String communityName, String securityName) throws ConnectionException {
 		Address targetAddress = parseAddress(address, port);

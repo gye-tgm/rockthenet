@@ -1,4 +1,4 @@
-package rockthenet.connections;
+package rockthenet.connections.snmp;
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ import org.snmp4j.smi.Address;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
+import rockthenet.connections.ConnectionException;
 
 /**
  * This class implements a connection via the <i>SNMPv3</i> protocol.

@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
-import rockthenet.IPValidator;
+import rockthenet.validators.IPValidator;
 
 /**
  * Dialog to edit the settings

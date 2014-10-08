@@ -1,7 +1,5 @@
-package rockthenet;
+package rockthenet.firewall;
 
-import rockthenet.firewall.Firewall;
-import rockthenet.firewall.Policy;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.util.ArrayList;

@@ -10,7 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
-import rockthenet.EmailValidator;
+import rockthenet.validators.EmailValidator;
 
 /**
  * Dialog to edit the settings
