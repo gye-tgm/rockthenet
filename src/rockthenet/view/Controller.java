@@ -20,7 +20,6 @@ import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ReadConnection;
-import rockthenet.connections.snmp.SnmpConnectionFactory;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
@@ -186,10 +185,7 @@ public class Controller implements Refreshable {
 
     protected void establishConnection(String address, int port, String commmunityName, String securityName) {
         try {
-            readConnection = SnmpConnectionFactory.createSNMPv2cConnection(address, port, commmunityName, securityName);
-            retriever = new JNS5GTRetriever(readConnection);
-            writer = new JNS5GTWriter();
-            firewall = new JNS5GTFirewall(retriever, writer);
+            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
         } catch (ConnectionException e) {
             Dialogs.create()
                     .title("Something went wrong...")
