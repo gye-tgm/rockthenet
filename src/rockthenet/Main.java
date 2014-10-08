@@ -1,6 +1,7 @@
 package rockthenet;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -27,8 +28,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Rock the Firewall");
+        this.primaryStage.setOnCloseRequest((event) -> Platform.exit());
         initRootLayout();
-        // TODO: KIll main after closing Appplication
     }
 
     /**
@@ -143,6 +144,7 @@ public class Main extends Application {
                         "\n(Juniper NetScreen 5GT implemented)")
                 .showInformation();
     }
+
 
     public static void main(String[] args) {
         launch(args);
