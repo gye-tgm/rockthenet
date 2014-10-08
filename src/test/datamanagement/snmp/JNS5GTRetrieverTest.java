@@ -1,5 +1,6 @@
 package test.datamanagement.snmp;
 
+import net.percederberg.mibble.MibLoaderException;
 import org.junit.Test;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
@@ -11,6 +12,7 @@ import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class JNS5GTRetrieverTest {
     }
 
     @Test(expected = ConnectionException.class)
-    public void testRetrievePoliciesWithFailedConnection() throws ConnectionException {
+    public void testRetrievePoliciesWithFailedConnection() throws ConnectionException, IOException, MibLoaderException {
         // TODO: this needs to be fixed
         JNS5GTRetriever retriever = new JNS5GTRetriever("NOSUCHADDRESSSAVAILABLE", 161, "5xHIT");
         for (JNS5GTPolicy policy : retriever.retrievePolicies()) {
@@ -72,7 +74,7 @@ public class JNS5GTRetrieverTest {
     }
 
     @Test
-    public void testRetrievePoliciesWithConnection() throws ConnectionException {
+    public void testRetrievePoliciesWithConnection() throws ConnectionException, IOException, MibLoaderException {
         // TODO: this needs to be fixed
         JNS5GTRetriever retriever = new JNS5GTRetriever("10.0.100.10", 161, "5xHIT");
         for (JNS5GTPolicy policy : retriever.retrievePolicies()) {
