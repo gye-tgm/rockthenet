@@ -75,7 +75,7 @@ public class Controller implements Refreshable {
 
 	@FXML
     private void initialize() {
-        firewall = getTestFirewall(); // TODO: only for testing
+        firewall = getFirewall(); // TODO: only for testing
 
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
@@ -121,6 +121,7 @@ public class Controller implements Refreshable {
         (new Refresher(this)).start();
 
         /* TODO: remove */
+        firewall.refreshPolicies();
         for (Policy policy : firewall.getPolicies())
         	policies.add(new PolicyRow(policy));
         

@@ -54,7 +54,7 @@ public class Main extends Application {
 
             // Controller stuff
             Controller controller = loader.getController();
-            controller.setMain(this);
+            controller.setMain(this, primaryStage);
             mainController = controller;
 
 
