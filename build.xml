@@ -10,7 +10,8 @@
   <property name="doc.dir" value="jdoc" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="src/test" />
-  
+  <property environment="env"/>
+ 
   <target name="run-gui" depends="all" description="Runs the GUI.">
     <echo message="Exec dir in ${exec.dir}" /> 
     <java classname="rockthenet.Main"
@@ -33,10 +34,13 @@
   </target>
 
   <target name="test" description="run all junit tests" depends="compile">
+
       <!-- Debug output
 	      <property name="test.class.path" refid="test.class.path"/>
 	      <echo message="${test.class.path}"/>
       -->
+      <echo message="${env.JAVA_HOME}"/>
+      <mkdir dir="${report.dir}" />
       <junit printsummary="yes" haltonfailure="${haltonfailure}">
 	  <classpath refid="rockthenet.module.classpath"/>
 	  <formatter type="xml"/>
