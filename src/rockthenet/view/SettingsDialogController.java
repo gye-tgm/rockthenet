@@ -37,6 +37,8 @@ public class SettingsDialogController {
      */
     @FXML
     private void initialize() {
+        refreshIntervall.setText("" + SessionSettings.getInstance().getRefreshInterval());
+
     }
 
     /**
