@@ -6,7 +6,6 @@ package rockthenet.view;
  */
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
@@ -22,11 +21,7 @@ public class SettingsDialogController {
     @FXML
     private TextField email;
     @FXML
-    private CheckBox emailNotificationsEnabled;
-    @FXML
     private TextField refreshIntervall;
-    @FXML
-    private CheckBox refreshIntervallEnabled;
 
     private Stage dialogStage;
     private boolean okClicked = false;
@@ -38,7 +33,6 @@ public class SettingsDialogController {
     @FXML
     private void initialize() {
         refreshIntervall.setText("" + SessionSettings.getInstance().getRefreshInterval());
-
     }
 
     /**
@@ -55,9 +49,7 @@ public class SettingsDialogController {
      */
     public void setFields() {
         email.setText("");
-        emailNotificationsEnabled.setSelected(true);
         refreshIntervall.setText("");
-        refreshIntervallEnabled.setSelected(true);
     }
 
     /**

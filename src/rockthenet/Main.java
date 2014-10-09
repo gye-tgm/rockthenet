@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 import rockthenet.view.ConnectionDialogController;
+import rockthenet.view.ConnectionDialogControllerV3;
 import rockthenet.view.Controller;
 import rockthenet.view.SettingsDialogController;
 
@@ -102,6 +103,39 @@ public class Main extends Application {
      * Opens a ConnectionDialog to set IP, Port and Community
      *
      */
+    public boolean showNewConnectionDialogV3() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("view/connectionDialogV3.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("New Connection - SNMPv3");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // controller stuff
+            ConnectionDialogControllerV3 controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setController(mainController);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Opens a ConnectionDialog to set IP, Port and Community
+     */
     public boolean showNewConnectionDialog() {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -111,7 +145,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("New Connection");
+            dialogStage.setTitle("New Connection - SNMPv2");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
