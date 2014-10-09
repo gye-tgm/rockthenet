@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <AnchorPane prefHeight="177.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rockthenet.view.ConnectionDialogController">
     <children>
         <GridPane layoutX="15.0" layoutY="12.0" prefHeight="116.0" prefWidth="358.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="12.0">
@@ -18,7 +16,7 @@
                 <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label fx:id="address" text="Address" />
+                <Label text="Address"/>
                 <TextField fx:id="address" text="10.0.100.10" GridPane.columnIndex="1" />
                 <Label text="Port" GridPane.rowIndex="1" />
                 <TextField fx:id="port" prefHeight="25.0" prefWidth="130.0" text="161" GridPane.columnIndex="1" GridPane.rowIndex="1" />
