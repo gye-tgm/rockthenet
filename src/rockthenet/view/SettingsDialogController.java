@@ -9,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.SessionSettings;
 import rockthenet.validators.EmailValidator;
 
@@ -98,16 +96,12 @@ public class SettingsDialogController {
         String errorMessage = "";
         EmailValidator emailValidator = new EmailValidator();
 
-        if (emailNotificationsEnabled.isSelected()) {
-	        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
-	            errorMessage += "Invalid e-mail address!\n";
-	        }
+        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
+            errorMessage += "Invalid e-mail address!\n";
         }
 
-        if (refreshIntervallEnabled.isSelected()) {
-	        if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0) {
-	            errorMessage += "Invalid refresh interval!\n";
-	        }
+        if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0) {
+            errorMessage += "Invalid refresh interval!\n";
         }
 
         if (errorMessage.length() == 0) {
