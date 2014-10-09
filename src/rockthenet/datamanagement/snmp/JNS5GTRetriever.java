@@ -23,6 +23,13 @@ import java.util.List;
 public class JNS5GTRetriever extends SnmpRetriever {
     private ReadConnection readConnection;
 
+    /**
+     * Constructs a new retriever for the JNS5GT firewall appliance.
+     * @param readConnection the read connection; specifies which firewall to connect to.
+     * @throws ConnectionException
+     * @throws IOException
+     * @throws MibLoaderException
+     */
     public JNS5GTRetriever(ReadConnection readConnection) throws ConnectionException, IOException, MibLoaderException {
         super("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
         this.readConnection = readConnection;
@@ -41,7 +48,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
 
     /**
      * Retrieves all policies from the firewall, to which a connection has been established.
-     * @return the policies
+     * @return the policies retrieved from the firewall (it can be empty)
      */
     public List<JNS5GTPolicy> retrievePolicies(){
         HashMap<Integer, JNS5GTPolicy> policies = new HashMap<>();
