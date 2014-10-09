@@ -13,8 +13,8 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import net.percederberg.mibble.MibLoaderException;
-import org.controlsfx.dialog.Dialogs;
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
@@ -61,6 +61,7 @@ public class Controller implements Refreshable {
 
 
     private Main main;
+    private Stage primaryStage;
 
     private PolicyLineChart policyLineChart;
 
@@ -187,23 +188,26 @@ public class Controller implements Refreshable {
         try {
             firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
         } catch (ConnectionException e) {
-            Dialogs.create()
-                    .title("Something went wrong...")
-                    .masthead("ConnectionException")
-                    .message(e.getMessage())
-                    .showError();
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("ConnectionException")
+//                    .message(e.getMessage())
+//                    .showError();
         } catch (MibLoaderException e) {
-            Dialogs.create()
-                    .title("Something went wrong...")
-                    .masthead("MibLoaderException")
-                    .message(e.getMessage())
-                    .showError();
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("MibLoaderException")
+//                    .message(e.getMessage())
+//                    .showError();
         } catch (IOException e) {
-            Dialogs.create()
-                    .title("Something went wrong...")
-                    .masthead("IOException")
-                    .message(e.getMessage())
-                    .showError();
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("IOException")
+//                    .message(e.getMessage())
+//                    .showError();
         }
 
     }
@@ -222,8 +226,9 @@ public class Controller implements Refreshable {
         main.showAboutDialog();
     }
 
-    public void setMain(Main main) {
+    public void setMain(Main main, Stage primaryStage) {
         this.main = main;
+        this.primaryStage = primaryStage;
     }
 
     @FXML
