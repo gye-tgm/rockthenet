@@ -10,7 +10,6 @@
   <property name="doc.dir" value="jdoc" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="src/test" />
-  <property environment="env"/>
  
   <target name="run-gui" depends="all" description="Runs the GUI.">
     <echo message="Exec dir in ${exec.dir}" /> 
