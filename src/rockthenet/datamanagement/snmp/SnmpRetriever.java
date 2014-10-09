@@ -11,6 +11,13 @@ import java.io.IOException;
  * @author Gary Ye
  */
 public abstract class SnmpRetriever extends SnmpManager implements IDataRetriever {
+    /**
+     * Constructs a new snmp retriever with the given filename as the
+     * mib.
+     * @param mibFile the name of the mib file.
+     * @throws IOException
+     * @throws MibLoaderException
+     */
     public SnmpRetriever(String mibFile) throws IOException, MibLoaderException {
         super(new VariableToOidDictionary(mibFile));
     }

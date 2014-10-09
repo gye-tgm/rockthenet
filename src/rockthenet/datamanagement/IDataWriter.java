@@ -5,5 +5,11 @@ package rockthenet.datamanagement;
  * @author Gary Ye
  */
 public interface IDataWriter {
+    /**
+     * Sets the variable with the given variable name with the
+     * new value.
+     * @param variableName the name of the variable to modify
+     * @param newValue the new value of the given variable
+     */
     public void set(String variableName, Object newValue);
 }
