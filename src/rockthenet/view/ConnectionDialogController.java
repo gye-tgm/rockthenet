@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
-import rockthenet.validators.IPValidator;
 
 /**
  * Dialog to edit the settings
@@ -19,7 +18,7 @@ import rockthenet.validators.IPValidator;
 public class ConnectionDialogController {
 
     @FXML
-    private TextField ip;
+    private TextField address;
     @FXML
     private TextField port;
     @FXML
@@ -50,7 +49,7 @@ public class ConnectionDialogController {
      * Sets the person to be edited in the dialog.
      */
     public void setIP() {
-        ip.setText("");
+        address.setText("");
     }
 
     /**
@@ -68,7 +67,7 @@ public class ConnectionDialogController {
         if (isInputValid()) {
             okClicked = true;
             dialogStage.close();
-            controller.establishConnection(ip.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText());
+            controller.establishConnection(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText());
         }
     }
 
@@ -87,10 +86,9 @@ public class ConnectionDialogController {
      */
     private boolean isInputValid() {
         String errorMessage = "";
-        IPValidator ipValidator = new IPValidator();
 
 
-        if (ip.getText() == null || ip.getText().length() == 0 || !ipValidator.validate(ip.getText()))
+        if (address.getText() == null || address.getText().length() == 0)
             errorMessage += "Invalid IP specified!\n";
 
         try {

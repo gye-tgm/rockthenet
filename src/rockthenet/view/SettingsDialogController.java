@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 import rockthenet.SessionSettings;
-import rockthenet.validators.EmailValidator;
 
 /**
  * Dialog to edit the settings
@@ -94,14 +93,17 @@ public class SettingsDialogController {
      */
     private boolean isInputValid() {
         String errorMessage = "";
-        EmailValidator emailValidator = new EmailValidator();
-
-        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
-            errorMessage += "Invalid e-mail address!\n";
-        }
-
-        if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0) {
-            errorMessage += "Invalid refresh interval!\n";
+//        EmailValidator emailValidator = new EmailValidator();
+//
+//        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
+//            errorMessage += "Invalid e-mail address!\n";
+//        }
+        try {
+            if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0 || !(Integer.parseInt(refreshIntervall.getText()) > 0 && Integer.parseInt(refreshIntervall.getText()) < 2001)) {
+                errorMessage += "Valid refresh rate value:1-2000!\n";
+            }
+        } catch (NumberFormatException nfe) {
+            errorMessage += "Valid refresh rate value:1-2000";
         }
 
         if (errorMessage.length() == 0) {
