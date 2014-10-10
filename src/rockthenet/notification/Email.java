@@ -1,4 +1,4 @@
-package rockthenet.view;
+package rockthenet.notification;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

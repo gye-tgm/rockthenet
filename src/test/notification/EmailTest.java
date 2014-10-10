@@ -6,7 +6,7 @@ package test.notification;
 
 import org.junit.Before;
 import org.junit.Test;
-import rockthenet.view.Email;
+import rockthenet.notification.Email;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

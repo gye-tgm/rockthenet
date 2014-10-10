@@ -179,6 +179,18 @@ public class Main extends Application {
                 .showInformation();
     }
 
+    /**
+     * Information about the application
+     */
+    public void showNotificationDialog(String text) {
+        Dialogs.create()
+                .owner(primaryStage)
+                .title("Notification")
+                .masthead("Policies have changed on the device")
+                .message(text)
+                .showInformation();
+    }
+
 
     public static void main(String[] args) {
         launch(args);
