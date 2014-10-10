@@ -351,6 +351,22 @@ The important methods of the MulticastSocket class are:
 \item[leaveGroup] leave the specified group
 \end{description}
 
+\subsection{Juniper Netscreen 5GT}
+
+Juniper Netscreen 5GT has proprietary configuration commands for its own operating system. When establishing an SSH or Telnet connection with the firewall, the user will automatically obtain access for configuring the firewall. Some of those commands will be described in this section. 
+
+\begin{lstlisting}
+set policy id <id> name <policy-name> from <src-zone> to <dst-zone> <src-addr> <dst-addr> <service> [permit | deny]
+\end{lstlisting}
+
+For overwriting policies we only have to execute the command above like we are adding the new rule. The only thing we need to care about is the id of the corresponding policy that should be changed. 
+
+For removing firewall rules we need to do the contrary of setting - \textit{unsetting}.
+
+\begin{lstlisting}
+unset policy id <id> 
+\end{lstlisting}
+
 \section{Test report}
 \section{Occurred problems}
 
