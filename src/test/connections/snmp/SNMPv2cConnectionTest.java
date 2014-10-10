@@ -14,7 +14,7 @@ import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.snmp.SnmpConnectionFactory;
+import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ReadConnection;
 import rockthenet.connections.snmp.SNMPv2cConnection;
 
@@ -51,7 +51,7 @@ public class SNMPv2cConnectionTest {
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_1), new MOAccessImpl(1), new OctetString(OID_1_TEXT)));
 		snmpAgent.registerManagedObject(new MOScalar(new OID(OID_2), new MOAccessImpl(1), new OctetString(OID_2_TEXT)));	
 
-		connection = SnmpConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY_NAME, SECURITY_NAME);
+		connection = SNMPConnectionFactory.createSNMPv2cConnection(ADDRESS, PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	@After
 	public void tearDown() {
@@ -121,12 +121,12 @@ public class SNMPv2cConnectionTest {
 	@Test (expected = ConnectionException.class)
 	public void invalidAddressTest() throws ConnectionException {
 		connection.close();
-		connection = SnmpConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY_NAME, SECURITY_NAME);
+		connection = SNMPConnectionFactory.createSNMPv2cConnection("aaa", PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	@Test (expected = ConnectionException.class)
 	public void notExistingAddressTest() throws ConnectionException {
 		connection.close();
-		connection = SnmpConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY_NAME, SECURITY_NAME);
+		connection = SNMPConnectionFactory.createSNMPv2cConnection("10.10.10.10", PORT, COMMUNITY_NAME, SECURITY_NAME);
 	}
 	
 	@Test (expected = ConnectionException.class)

@@ -12,7 +12,7 @@ import rockthenet.connections.snmp.SNMPv3Connection;
  * @author Elias Frantar
  * @version 2014-10-05
  */
-public class SnmpConnectionFactory {
+public class SNMPConnectionFactory {
 	
 	/**
 	 * Creates a new established {@link rockthenet.connections.snmp.SNMPv2cConnection}
