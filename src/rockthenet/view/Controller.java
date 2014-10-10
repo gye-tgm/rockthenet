@@ -19,7 +19,6 @@ import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.ReadConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
@@ -47,6 +46,8 @@ public class Controller implements Refreshable {
     @FXML
     private MenuItem newConnection;
     @FXML
+    private MenuItem newConnectionV3;
+    @FXML
     private MenuItem about;
     
     @SuppressWarnings("rawtypes")
@@ -68,10 +69,6 @@ public class Controller implements Refreshable {
     private ThruPutMonitorModel monitorModel;
 
     private Firewall firewall;
-    private ReadConnection readConnection;
-    private JNS5GTRetriever retriever;
-    private JNS5GTWriter writer;
-
 
 	@FXML
     private void initialize() {
@@ -113,10 +110,12 @@ public class Controller implements Refreshable {
         service.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("service"));
         action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
         activeStatus.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatus"));
-        
-        settings.setOnAction((event) -> settingsDialog());
+
         newConnection.setOnAction((event) -> newConnectionDialog());
+        newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
+        settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
+
 
         (new Refresher(this)).start();
 
@@ -185,6 +184,13 @@ public class Controller implements Refreshable {
         main.showNewConnectionDialog();
     }
 
+    /**
+     * Enables the New Connection Dialog Scene(Window)
+     */
+    private void newConnectionDialogV3() {
+        main.showNewConnectionDialogV3();
+    }
+
     protected void establishConnection(String address, int port, String commmunityName, String securityName) {
         try {
             firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
@@ -210,6 +216,34 @@ public class Controller implements Refreshable {
 //                    .message(e.getMessage())
 //                    .showError();
         }
+
+    }
+
+    protected void establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
+//        try {
+//            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
+//        } catch (ConnectionException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("ConnectionException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        } catch (MibLoaderException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("MibLoaderException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        } catch (IOException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("IOException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        }
 
     }
 

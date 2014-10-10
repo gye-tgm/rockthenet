@@ -36,6 +36,7 @@ public class ConnectionDialogController {
      */
     @FXML
     private void initialize() {
+
     }
 
     /**
