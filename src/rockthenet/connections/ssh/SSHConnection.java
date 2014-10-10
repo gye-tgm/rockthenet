@@ -1,11 +1,10 @@
 package rockthenet.connections.ssh;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.WriteConnection;
@@ -41,12 +40,14 @@ public class SSHConnection implements WriteConnection {
 	@Override
 	public void execute(String command) throws ConnectionException {
 		try {
-			ChannelExec channel = (ChannelExec) session.openChannel("exec");
-			channel.setCommand(command);
-			
-			channel.connect(); // execute command
-			while(channel.getInputStream().read() != 0xffffffff); // wait until command is complete
-			
+			Channel channel = (ChannelShell) session.openChannel("shell");
+            OutputStream inputstream_for_the_channel = channel.getOutputStream();
+            PrintStream commander = new PrintStream(inputstream_for_the_channel, true);
+            channel.setOutputStream(System.out, true);
+            channel.connect();
+            commander.println(command);
+            commander.flush();
+            commander.close();
 			channel.disconnect(); // close command
 		} catch (IOException | JSchException e) {
 			throw new ConnectionException("failed to execute command");
