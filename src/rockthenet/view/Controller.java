@@ -177,7 +177,7 @@ public class Controller implements Refreshable {
 
     @FXML
     private void refreshButtonPressed() {
-        refreshLineChart();
+        refresh();
     }
     
     @Override
