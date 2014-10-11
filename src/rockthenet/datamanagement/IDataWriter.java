@@ -12,4 +12,11 @@ public interface IDataWriter {
      * @param newValue the new value of the given variable
      */
     public void set(String variableName, Object newValue);
+
+    /**
+     *
+     * @param variableName
+     * @param value
+     */
+    public void unset(String variableName, Object value);
 }

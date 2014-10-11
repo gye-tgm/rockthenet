@@ -19,6 +19,7 @@ import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.connections.ConnectionException;
+import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
@@ -72,7 +73,7 @@ public class Controller implements Refreshable {
 
 	@FXML
     private void initialize() {
-        firewall = getFirewall(); // TODO: only for testing
+        firewall = getTestFirewall(); // TODO: only for testing
 
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
@@ -166,7 +167,8 @@ public class Controller implements Refreshable {
 
     private Firewall getFirewall(){
         try {
-            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"), new JNS5GTWriter());
+            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"),
+                    new JNS5GTWriter(new SSHConnection("10.0.100.10", "5ahit", "Waeng7ohch8o")));
             return firewall;
         } catch (IOException e) {
             e.printStackTrace();
@@ -193,7 +195,8 @@ public class Controller implements Refreshable {
 
     protected void establishConnection(String address, int port, String commmunityName, String securityName) {
         try {
-            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
+            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName),
+                    new JNS5GTWriter(new SSHConnection(address, "5ahit", "Waeng7ohch8o")));
         } catch (ConnectionException e) {
 //            Dialogs.create()
 //                    .owner(primaryStage)
