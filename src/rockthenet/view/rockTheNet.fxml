@@ -11,9 +11,9 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="Connect">
+                <Menu mnemonicParsing="false" text="Connection">
                     <items>
-                        <Menu mnemonicParsing="false" text="New Connection...">
+                        <Menu mnemonicParsing="false" text="New">
                             <items>
                                 <MenuItem fx:id="newConnection" mnemonicParsing="false" text="SNMPv2"/>
                                 <MenuItem fx:id="newConnectionV3" mnemonicParsing="false" text="SNMPv3"/>
