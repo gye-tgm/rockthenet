@@ -26,6 +26,6 @@ public class SSHConnectionTest {
 	
 	@Test
 	public void testExec() throws ConnectionException {
-		sshConnection.execute("unset policy id 4\n");
+		sshConnection.execute("set policy id 5 name \"Sacrebleu\" from \"Untrust\" to \"Trust\" \"Any\" \"Any\" \"IMAP\" permit \n");
 	}
 }

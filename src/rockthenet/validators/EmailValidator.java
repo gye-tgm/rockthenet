@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
  * Created by Samuel on 29.09.2014.
  */
 public class EmailValidator {
-
     private Pattern pattern;
     private Matcher matcher;
 
@@ -20,13 +19,13 @@ public class EmailValidator {
     }
 
     /**
-     * Validate hex with regular expression
+     * Validate an email-address with regular expression
      *
-     * @param hex hex for validation
-     * @return true valid hex, false invalid hex
+     * @param email email-address to validation
+     * @return true if valid email; false otherwise
      */
-    public boolean validate(final String hex) {
-        matcher = pattern.matcher(hex);
+    public boolean validate(String email) {
+        matcher = pattern.matcher(email);
         return matcher.matches();
     }
 }

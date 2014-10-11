@@ -3,11 +3,12 @@ package rockthenet.connections.ssh;
 import com.jcraft.jsch.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.WriteConnection;
+
+/* TODO: maybe open `commander` only once */
 
 public class SSHConnection implements WriteConnection {
 	Session session;
@@ -41,14 +42,19 @@ public class SSHConnection implements WriteConnection {
 	public void execute(String command) throws ConnectionException {
 		try {
 			Channel channel = (ChannelShell) session.openChannel("shell");
-            OutputStream inputstream_for_the_channel = channel.getOutputStream();
-            PrintStream commander = new PrintStream(inputstream_for_the_channel, true);
+            PrintStream commander = new PrintStream(channel.getOutputStream(), true);
+            
+            /* connect */
             channel.setOutputStream(System.out, true);
             channel.connect();
+            
+            /* execute command */
             commander.println(command);
             commander.flush();
+            
+            /* close channel */
             commander.close();
-			channel.disconnect(); // close command
+			channel.disconnect();
 		} catch (IOException | JSchException e) {
 			throw new ConnectionException("failed to execute command");
 		}

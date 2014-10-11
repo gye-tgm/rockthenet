@@ -72,7 +72,7 @@ public class Controller implements Refreshable {
 
 	@FXML
     private void initialize() {
-        firewall = getFirewall(); // TODO: only for testing
+        firewall = getTestFirewall(); // TODO: only for testing
 
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
