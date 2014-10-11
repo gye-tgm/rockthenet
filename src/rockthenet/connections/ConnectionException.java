@@ -23,4 +23,6 @@ public class ConnectionException extends Exception {
 	public String toString() {
 		return "ConnectionException: " + message;
 	}
+	
+	public String getMessage() { return message; }
 }

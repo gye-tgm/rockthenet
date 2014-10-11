@@ -1,20 +1,19 @@
 package rockthenet.view;
 
-/**
- * Controller for the Settings Dialog
- * @author Samuel Schmidt
- */
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import org.controlsfx.dialog.Dialogs;
+
 import rockthenet.SessionSettings;
+import rockthenet.validators.EmailValidator;
 
 /**
- * Dialog to edit the settings
+ * The controller of the dialog to edit the application settings
  *
- * @author Samuel Schmidt
+ * @author Samuel Schmidt, Elias Frantar
+ * @version 2014-10-11
  */
 public class SettingsDialogController {
 
@@ -25,14 +24,18 @@ public class SettingsDialogController {
 
     private Stage dialogStage;
     private boolean okClicked = false;
+    
+    private SessionSettings session; // instance to SessionSettings
 
     /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
+     * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
     private void initialize() {
-        refreshIntervall.setText("" + SessionSettings.getInstance().getRefreshInterval());
+    	session = SessionSettings.getInstance();
+    	
+    	email.setText(session.getEmail());
+        refreshIntervall.setText("" + session.getRefreshInterval());
     }
 
     /**
@@ -45,17 +48,7 @@ public class SettingsDialogController {
     }
 
     /**
-     * Sets the person to be edited in the dialog.
-     */
-    public void setFields() {
-        email.setText("");
-        refreshIntervall.setText("");
-    }
-
-    /**
-     * Returns true if the user clicked OK, false otherwise.
-     *
-     * @return
+     * @return  true if the user clicked OK, false otherwise
      */
     public boolean isOkClicked() {
         return okClicked;
@@ -66,10 +59,33 @@ public class SettingsDialogController {
      */
     @FXML
     private void handleOk() {
-        if (isInputValid()) {
-            SessionSettings.getInstance().setRefreshInterval(Integer.parseInt(refreshIntervall.getText()));
-            dialogStage.close();
-        }
+        String errorMessage = "";
+        
+    	String emailText = email.getText();
+    	if (emailText.equals("") || new EmailValidator().validate(emailText))
+    		session.setEmail(emailText);
+    	else
+    		errorMessage += "Invalid email-address \n";
+    	
+    	int refreshIntervalValue = -1;
+    	try {
+    		refreshIntervalValue = Integer.parseInt(refreshIntervall.getText());
+    	} catch (Exception e) {}
+    	if (refreshIntervalValue >= 1 && refreshIntervalValue <= 1000)
+    		session.setRefreshInterval(refreshIntervalValue);
+    	else
+    		errorMessage += "Invalid refresh interval (1 - 1000) \n";
+    		
+    	if (errorMessage.length() > 0)
+            Dialogs.create() // show error message
+                    .title("Invalid Fields")
+                    .masthead("Please correct invalid fields.")
+                    .message(errorMessage)
+                    .showError();
+    	else {
+    		okClicked = true;
+    		dialogStage.close();
+    	}
     }
 
     /**
@@ -78,39 +94,6 @@ public class SettingsDialogController {
     @FXML
     private void handleCancel() {
         dialogStage.close();
-    }
-
-    /**
-     * Validates the user input in the text fields.
-     *
-     * @return true if the input is valid
-     */
-    private boolean isInputValid() {
-        String errorMessage = "";
-//        EmailValidator emailValidator = new EmailValidator();
-//
-//        if (email.getText() == null || email.getText().length() == 0 || !emailValidator.validate(email.getText())) {
-//            errorMessage += "Invalid e-mail address!\n";
-//        }
-        try {
-            if (refreshIntervall.getText() == null || refreshIntervall.getText().length() == 0 || !(Integer.parseInt(refreshIntervall.getText()) > 0 && Integer.parseInt(refreshIntervall.getText()) < 2001)) {
-                errorMessage += "Valid refresh rate value:1-2000!\n";
-            }
-        } catch (NumberFormatException nfe) {
-            errorMessage += "Valid refresh rate value:1-2000";
-        }
-
-        if (errorMessage.length() == 0) {
-            return true;
-        } else {
-            // Show the error message.
-            Dialogs.create()
-                    .title("Invalid Fields")
-                    .masthead("Please correct invalid fields")
-                    .message(errorMessage)
-                    .showError();
-            return false;
-        }
     }
 }
 

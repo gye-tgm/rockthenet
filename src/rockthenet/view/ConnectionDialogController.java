@@ -1,19 +1,14 @@
 package rockthenet.view;
 
-/**
- * Controller for the New Connection Dialog
- * @author Samuel Schmidt
- */
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
 /**
- * Dialog to edit the settings
+ * The controller of the dialog to establish a connection via SNMPv2
  *
- * @author Samuel Schmidt
+ * @author Samuel Schmidt, Elias Frantar
  */
 public class ConnectionDialogController {
 
@@ -47,13 +42,6 @@ public class ConnectionDialogController {
     }
 
     /**
-     * Sets the person to be edited in the dialog.
-     */
-    public void setIP() {
-        address.setText("");
-    }
-
-    /**
      * Returns true if the user clicked OK, false otherwise.
      */
     public boolean isOkClicked() {
@@ -66,9 +54,10 @@ public class ConnectionDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            okClicked = true;
-            dialogStage.close();
-            controller.establishConnection(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText());
+        	if (controller.establishConnection(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText())) { // try connecting
+            	okClicked = true;
+            	dialogStage.close();
+        	}
         }
     }
 
@@ -89,35 +78,32 @@ public class ConnectionDialogController {
         String errorMessage = "";
 
 
-        if (address.getText() == null || address.getText().length() == 0)
-            errorMessage += "Invalid IP specified!\n";
+        if (address.getText().length() == 0)
+            errorMessage += "Invalid address \n";
 
+        int portValue = -1;
         try {
-            if (port.getText() == null || port.getText().length() == 0
-                    || Integer.parseInt(port.getText()) < 1 &&
-                    Integer.parseInt(port.getText()) > 65535)
-                errorMessage += "Valid Port range is 1-65535\n";
-        } catch (NumberFormatException nfe) {
-            errorMessage += "Valid Port range is 1-65535\n";
-        }
+        	portValue = Integer.parseInt(port.getText());
+        } catch (NumberFormatException e) { }
+        if (portValue < 1 || portValue > 65535)
+        	errorMessage += "Invalid port (1 - 65535) \n";
 
-        if (community.getText() == null || community.getText().length() == 0)
+        if (community.getText().length() == 0)
             errorMessage += "No Community specified!\n";
 
-        if (security.getText() == null || security.getText().length() == 0)
+        if (security.getText().length() == 0)
             errorMessage += "No Security specified!\n";
 
-        if (errorMessage.length() == 0) {
-            return true;
-        } else {
-            // Show the error message.
-            Dialogs.create()
+        if (errorMessage.length() != 0) {
+            Dialogs.create() // show error Dialog
                     .title("Invalid Fields")
                     .masthead("Please correct invalid fields")
                     .message(errorMessage)
                     .showError();
             return false;
         }
+        
+        return true;
     }
 
     public void setController(Controller controller) {
