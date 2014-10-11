@@ -13,11 +13,11 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import net.percederberg.mibble.MibLoaderException;
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
+import rockthenet.SessionSettings;
 import rockthenet.connections.ConnectionException;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
@@ -36,7 +36,8 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * Created by Samuel on 29.09.2014.
+ * @author Samuel Schmidt, Elias Frantar
+ * @version 2014-10-11
  */
 @SuppressWarnings("unchecked")
 public class Controller implements Refreshable {
@@ -60,23 +61,20 @@ public class Controller implements Refreshable {
     private TableView<PolicyRow> tableView;
     private ObservableList<PolicyRow> policies;
 
-
-    private Main main;
-    private Stage primaryStage;
-
     private PolicyLineChart policyLineChart;
-
     private ThruPutMonitorModel monitorModel;
 
-    private Firewall firewall;
+    private Main main;
+    private SessionSettings session;
 
 	@FXML
     private void initialize() {
-        firewall = getTestFirewall(); // TODO: only for testing
-
+		session = SessionSettings.getInstance(); // start a new session
+		
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
         
+        /* initialize the table */
         policies = FXCollections.observableArrayList();
 
         tableView.setItems(policies);
@@ -115,19 +113,126 @@ public class Controller implements Refreshable {
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
-
-
-        (new Refresher(this)).start();
-
-        /* TODO: remove */
-        firewall.refreshPolicies();
-        for (Policy policy : firewall.getPolicies())
-        	policies.add(new PolicyRow(policy));
         
         policyLineChart = new PolicyLineChart(lineChart);
-        monitorModel = new ThruPutMonitorModel(firewall);
     }
 
+    protected boolean establishConnection(String address, int port, String commmunityName, String securityName) {
+    	policies.clear();
+    	
+    	/* TODO: only for testing */
+    	session.setFirewall(getTestFirewall());
+    	
+        monitorModel = new ThruPutMonitorModel(session.getFirewall());
+        (new Refresher(this)).start();
+
+    	return true;
+        
+    	/* TODO: uncomment */
+    	/*
+        try {
+            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
+            return true;
+        } catch (Exception e) {
+        	Dialogs.create()
+            		.owner(primaryStage)
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+        	
+        	return false;
+        }
+        */
+    }
+
+    protected void establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
+//        try {
+//            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
+//        } catch (ConnectionException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("ConnectionException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        } catch (MibLoaderException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("MibLoaderException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        } catch (IOException e) {
+//            Dialogs.create()
+//                    .owner(primaryStage)
+//                    .title("Something went wrong...")
+//                    .masthead("IOException")
+//                    .message(e.getMessage())
+//                    .showError();
+//        }
+
+    }
+
+    @FXML
+    private void refreshButtonPressed() {
+        refreshLineChart();
+    }
+    
+    @Override
+    public void refresh() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	if (session.isConnected()) {
+	                refreshLineChart();
+	                
+	                /* TODO: fix CheckBox issue */
+	                policies.clear();
+	                session.getFirewall().refreshPolicies();
+	                for (Policy policy : session.getFirewall().getPolicies())
+	                	policies.add(new PolicyRow(policy));
+            	}
+            }
+        });
+    }
+
+    protected void refreshLineChart() {
+    	List<Integer> selected = new ArrayList<>();
+    	for (PolicyRow row : policies) 
+    		if (row.getLineChartEnabled()) {
+    			selected.add(row.getId());
+    		}
+
+        policyLineChart.clean();
+        monitorModel.refresh();
+        policyLineChart.addPolicies(monitorModel, convertIntegers(selected), session.getFirewall());
+    }
+    
+    
+    /**
+     * http://stackoverflow.com/questions/718554/how-to-convert-an-arraylist-containing-integers-to-primitive-int-array
+     */
+    public static int[] convertIntegers(List<Integer> integers)
+    {
+        int[] ret = new int[integers.size()];
+        for (int i=0; i < ret.length; i++)
+        {
+            ret[i] = integers.get(i).intValue();
+        }
+        return ret;
+    }
+    
+    
+    public void setMain(Main main) { this.main = main; }
+    
+    /* methods for showing the dialogs */
+    private void settingsDialog() { main.showSettingsDialog(); }
+    private void aboutDialog() { main.showAboutDialog(); }
+    private void newConnectionDialog() { main.showNewConnectionDialog(); }
+    private void newConnectionDialogV3() { main.showNewConnectionDialogV3(); }
+    
+    
     private Firewall getTestFirewall(){
         Firewall firewall = mock(Firewall.class);
         ArrayList<Policy> testPolicies = new ArrayList<>();
@@ -175,139 +280,7 @@ public class Controller implements Refreshable {
         } catch (ConnectionException e) {
             e.printStackTrace();
         }
-        return  firewall;
-    }
-    /**
-     * Enables the New Connection Dialog Scene(Window)
-     */
-    private void newConnectionDialog() {
-        main.showNewConnectionDialog();
-    }
-
-    /**
-     * Enables the New Connection Dialog Scene(Window)
-     */
-    private void newConnectionDialogV3() {
-        main.showNewConnectionDialogV3();
-    }
-
-    protected void establishConnection(String address, int port, String commmunityName, String securityName) {
-        try {
-            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
-        } catch (ConnectionException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("ConnectionException")
-//                    .message(e.getMessage())
-//                    .showError();
-        } catch (MibLoaderException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("MibLoaderException")
-//                    .message(e.getMessage())
-//                    .showError();
-        } catch (IOException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("IOException")
-//                    .message(e.getMessage())
-//                    .showError();
-        }
-
-    }
-
-    protected void establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
-//        try {
-//            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
-//        } catch (ConnectionException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("ConnectionException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        } catch (MibLoaderException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("MibLoaderException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        } catch (IOException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("IOException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        }
-
-    }
-
-    /**
-     * Enables the Settings Dialog Scene(Window)
-     */
-    private void settingsDialog() {
-        main.showSettingsDialog();
-    }
-
-    /**
-     * Enables the About Dialog Scene(Window)
-     */
-    private void aboutDialog() {
-        main.showAboutDialog();
-    }
-
-    public void setMain(Main main, Stage primaryStage) {
-        this.main = main;
-        this.primaryStage = primaryStage;
-    }
-
-    @FXML
-    private void refreshButtonPressed() {
-        refreshLineChart();
-    }
-
-    protected void refreshLineChart() {
-    	List<Integer> selected = new ArrayList<>();
-    	for (PolicyRow row : policies) 
-    		if (row.getLineChartEnabled()) {
-    			selected.add(row.getId());
-    		}
-
-        policyLineChart.clean();
-        monitorModel.refresh();
-        policyLineChart.addPolicies(monitorModel, convertIntegers(selected), firewall);
-    }
-
-    @Override
-    public void refresh() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                refreshLineChart();
-                
-                /* TODO: implement properly
-                for (Policy policy : firewall.getPolicies())
-                	policies.add(new PolicyRow(policy));
-                */
-            }
-        });
-    }
-    
-    /**
-     * http://stackoverflow.com/questions/718554/how-to-convert-an-arraylist-containing-integers-to-primitive-int-array
-     */
-    public static int[] convertIntegers(List<Integer> integers)
-    {
-        int[] ret = new int[integers.size()];
-        for (int i=0; i < ret.length; i++)
-        {
-            ret[i] = integers.get(i).intValue();
-        }
-        return ret;
+        
+        return null;
     }
 }

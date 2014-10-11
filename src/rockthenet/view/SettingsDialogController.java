@@ -62,7 +62,7 @@ public class SettingsDialogController {
         String errorMessage = "";
         
     	String emailText = email.getText();
-    	if (new EmailValidator().validate(emailText))
+    	if (emailText.equals("") || new EmailValidator().validate(emailText))
     		session.setEmail(emailText);
     	else
     		errorMessage += "Invalid email-address \n";
