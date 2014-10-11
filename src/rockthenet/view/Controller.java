@@ -19,6 +19,7 @@ import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.SessionSettings;
 import rockthenet.connections.ConnectionException;
+import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
@@ -271,7 +272,7 @@ public class Controller implements Refreshable {
 
     private Firewall getFirewall(){
         try {
-            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"), new JNS5GTWriter());
+            Firewall firewall = new JNS5GTFirewall(new JNS5GTRetriever("10.0.100.10", 161, "5xHIT"), new JNS5GTWriter(new SSHConnection("10.0.100.10", "5ahit", "Waeng7ohch8o")));
             return firewall;
         } catch (IOException e) {
             e.printStackTrace();
