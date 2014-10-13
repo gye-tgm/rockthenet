@@ -1,25 +1,25 @@
 package rockthenet.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
+import rockthenet.connections.ConnectionException;
 
 /**
  * The controller of the dialog to establish a connection via SNMPv2
  *
  * @author Samuel Schmidt, Elias Frantar
  */
-public class ConnectionDialogController {
+public class SSHDialogController {
 
     @FXML
     private TextField address;
     @FXML
-    private TextField port;
+    private TextField username;
     @FXML
-    private TextField community;
-    @FXML
-    private TextField security;
+    private PasswordField password;
 
     private Controller controller;
     private Stage dialogStage;
@@ -52,12 +52,12 @@ public class ConnectionDialogController {
      * Called when the user clicks ok.
      */
     @FXML
-    private void handleOk() {
+    private void handleOk() throws ConnectionException {
         if (isInputValid()) {
-            if (controller.establishReadConnection(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText())) { // try connecting
+            if (controller.sshConnection(address.getText(), username.getText(), password.getText())) {
                 okClicked = true;
-            	dialogStage.close();
-        	}
+                dialogStage.close();
+            }
         }
     }
 
@@ -70,29 +70,21 @@ public class ConnectionDialogController {
     }
 
     /**
-     * Validates the user input in the text fields.
+     * Validates the user input in the Text/PasswordFields.
      *
      * @return true if the input is valid
      */
     private boolean isInputValid() {
         String errorMessage = "";
 
-
         if (address.getText().length() == 0)
             errorMessage += "Invalid address \n";
 
-        int portValue = -1;
-        try {
-        	portValue = Integer.parseInt(port.getText());
-        } catch (NumberFormatException e) { }
-        if (portValue < 1 || portValue > 65535)
-        	errorMessage += "Invalid port (1 - 65535) \n";
+        if (username.getText().length() == 0)
+            errorMessage += "No Username specified!\n";
 
-        if (community.getText().length() == 0)
-            errorMessage += "No Community specified!\n";
-
-        if (security.getText().length() == 0)
-            errorMessage += "No Security specified!\n";
+        if (password.getText().length() == 0)
+            errorMessage += "No Password specified!\n";
 
         if (errorMessage.length() != 0) {
             Dialogs.create() // show error Dialog
@@ -102,7 +94,7 @@ public class ConnectionDialogController {
                     .showError();
             return false;
         }
-        
+
         return true;
     }
 

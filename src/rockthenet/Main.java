@@ -9,10 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
-import rockthenet.view.ConnectionDialogController;
-import rockthenet.view.ConnectionDialogControllerV3;
-import rockthenet.view.Controller;
-import rockthenet.view.SettingsDialogController;
+import rockthenet.view.*;
 
 import java.io.IOException;
 
@@ -28,8 +25,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Rock the Firewall");
-        this.primaryStage.setOnCloseRequest((event) -> Platform.exit());
+        this.getPrimaryStage().setTitle("Rock the Firewall");
+        this.getPrimaryStage().setOnCloseRequest((event) -> Platform.exit());
         initRootLayout();
     }
 
@@ -50,8 +47,8 @@ public class Main extends Application {
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            getPrimaryStage().setScene(scene);
+            getPrimaryStage().show();
 
             // Controller stuff
             Controller controller = loader.getController();
@@ -81,7 +78,7 @@ public class Main extends Application {
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Settings");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
+            dialogStage.initOwner(getPrimaryStage());
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
@@ -114,7 +111,7 @@ public class Main extends Application {
             Stage dialogStage = new Stage();
             dialogStage.setTitle("New Connection - SNMPv3");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
+            dialogStage.initOwner(getPrimaryStage());
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
@@ -147,7 +144,7 @@ public class Main extends Application {
             Stage dialogStage = new Stage();
             dialogStage.setTitle("New Connection - SNMPv2");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
+            dialogStage.initOwner(getPrimaryStage());
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
@@ -171,7 +168,7 @@ public class Main extends Application {
      */
     public void showAboutDialog() {
         Dialogs.create()
-                .owner(primaryStage)
+                .owner(getPrimaryStage())
                 .title("About")
                 .masthead("Rock the net")
                 .message("is a simple-to-use application to monitor and configure a hardware firewall appliance." +
@@ -180,20 +177,87 @@ public class Main extends Application {
     }
 
     /**
-     * Information about the application
+     * Notification shown when Policies have changed on the device
      */
     public void showNotificationDialog(String text) {
         Dialogs.create()
-                .owner(primaryStage)
+                .owner(getPrimaryStage())
                 .title("Notification")
                 .masthead("Policies have changed on the device")
                 .message(text)
                 .showInformation();
     }
 
+    public boolean showNewRuleDialog() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("view/newRuleDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("New Firewall-rule");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(getPrimaryStage());
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // controller stuff
+            NewRuleController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setController(mainController);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean showSSHConnectionDialog() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("view/sshDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("SSH-Connection (needed for New/Edit)");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(getPrimaryStage());
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // controller stuff
+            SSHDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setController(mainController);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void showEditRuleDialog() {
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }
 
