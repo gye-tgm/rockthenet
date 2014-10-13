@@ -29,8 +29,7 @@ import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -67,6 +66,7 @@ public class Controller implements Refreshable {
 
     private Main main;
     private SessionSettings session;
+    private HashMap checkedPolicy;
 
 	@FXML
     private void initialize() {
@@ -114,7 +114,8 @@ public class Controller implements Refreshable {
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
-        
+
+        checkedPolicy = new HashMap();
         policyLineChart = new PolicyLineChart(lineChart);
     }
 
@@ -185,14 +186,16 @@ public class Controller implements Refreshable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-            	if (session.isConnected()) {
+                if (session.isConnected()) {
 	                refreshLineChart();
-	                
-	                /* TODO: fix CheckBox issue */
-	                policies.clear();
+                    policies.clear();
 	                session.getFirewall().refreshPolicies();
-	                for (Policy policy : session.getFirewall().getPolicies())
-	                	policies.add(new PolicyRow(policy));
+                    for (Policy policy : session.getFirewall().getPolicies()) {
+                        PolicyRow pr = new PolicyRow(policy);
+                        if(checkedPolicy.containsKey(pr.getId()))
+                            pr.setLineChartEnabled(true);
+                        policies.add(pr);
+                    }
             	}
             }
         });
@@ -200,11 +203,14 @@ public class Controller implements Refreshable {
 
     protected void refreshLineChart() {
     	List<Integer> selected = new ArrayList<>();
-    	for (PolicyRow row : policies) 
-    		if (row.getLineChartEnabled()) {
-    			selected.add(row.getId());
-    		}
+        checkedPolicy.clear();
 
+        for (PolicyRow row : policies) {
+            if (row.getLineChartEnabled()){
+                selected.add(row.getId());
+                checkedPolicy.put(row.getId(),row);
+            }
+        }
         policyLineChart.clean();
         monitorModel.refresh();
         policyLineChart.addPolicies(monitorModel, convertIntegers(selected), session.getFirewall());

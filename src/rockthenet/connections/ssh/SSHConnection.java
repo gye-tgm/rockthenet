@@ -1,7 +1,6 @@
 package rockthenet.connections.ssh;
 
 import com.jcraft.jsch.*;
-
 import java.io.IOException;
 import java.io.PrintStream;
 
