@@ -1,6 +1,7 @@
 package test.datamanagement.snmp;
 
 import net.percederberg.mibble.MibLoaderException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
@@ -73,6 +74,7 @@ public class JNS5GTRetrieverTest {
         }
     }
 
+    @Ignore
     @Test
     public void testRetrievePoliciesWithConnection() throws ConnectionException, IOException, MibLoaderException {
         // TODO: this needs to be fixed

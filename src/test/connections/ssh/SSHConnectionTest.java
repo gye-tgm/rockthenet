@@ -2,6 +2,7 @@ package test.connections.ssh;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rockthenet.connections.ConnectionException;
@@ -24,7 +25,8 @@ public class SSHConnectionTest {
 		sshConnection.close();
 	}
 	
-	@Test
+	@Ignore
+    @Test
 	public void testExec() throws ConnectionException {
 		sshConnection.execute("set policy id 5 name \"Sacrebleu\" from \"Untrust\" to \"Trust\" \"Any\" \"Any\" \"IMAP\" permit \n");
 	}
