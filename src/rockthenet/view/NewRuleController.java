@@ -65,7 +65,7 @@ public class NewRuleController {
     private void handleOk() throws ConnectionException {
         if (isInputValid()) {
             controller.newRule(name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(),
-                    destinationAddress.getText(), service.getText(), action.getText(), enabled.getText());
+                    destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
             okClicked = true;
             dialogStage.close();
         }
@@ -101,10 +101,14 @@ public class NewRuleController {
 
         if (destinationAddress.getText() == null || destinationAddress.getText().length() == 0)
             errorMessage += "No Destination Address specified!\n";
-
-        if (service.getText() == null || service.getText().length() == 0)
-            errorMessage += "No Service specified!\n";
-
+        try {
+            if (service.getText() == null || service.getText().length() == 0) {
+                Integer.parseInt(service.getText());
+                errorMessage += "No Service specified!\n";
+            }
+        } catch (NumberFormatException nfe) {
+            errorMessage += "Valid Action Input is 0/1!\n";
+        }
         try {
             if (action.getText() == null || action.getText().length() == 0 || (Integer.parseInt(action.getText()) != 0 && Integer.parseInt(action.getText()) != 1))
                 errorMessage += "Valid Action Input is 0/1!\n";

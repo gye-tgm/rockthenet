@@ -28,7 +28,9 @@ import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -72,7 +74,6 @@ public class Controller implements Refreshable {
 	@FXML
     private void initialize() {
 		session = SessionSettings.getInstance(); // start a new session
-        session.setFirewall(getTestFirewall());
 
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
@@ -119,19 +120,16 @@ public class Controller implements Refreshable {
 
         checkedPolicy = new HashMap();
         newRule.setOnAction((event) -> newRuleDialog());
+        newRule.setVisible(false);
         
-
         policyLineChart = new PolicyLineChart(lineChart);
-
-        monitorModel = new ThruPutMonitorModel(session.getFirewall());
-        (new Refresher(this)).start();
 
         tableView.setRowFactory(
                 tableView -> {
                     final TableRow<PolicyRow> row = new TableRow<>();
                     final ContextMenu rowMenu = new ContextMenu();
                     MenuItem editItem = new MenuItem("Edit Rule...");
-                    editItem.setOnAction(event -> editRule());
+                    editItem.setOnAction(event -> editRuleDialog());
                     MenuItem removeItem = new MenuItem("Delete Rule");
                     removeItem.setOnAction(event -> removeRule(row.getItem()));
                     rowMenu.getItems().addAll(editItem, removeItem);
@@ -145,72 +143,129 @@ public class Controller implements Refreshable {
                 });
     }
 
+    public boolean sshConnection(String address, String username, String password) {
+        try {
+            SessionSettings.getInstance().setWriteConnection(new SSHConnection(address, username, password));
+            return true;
+        } catch (Exception e) {
+            Dialogs.create()
+                    .owner(main.getPrimaryStage())
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+            return true;
+        }
+    }
+
+    protected boolean establishReadConnection(String address, int port, String commmunityName, String securityName) {
+        policies.clear();
+        try {
+            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), null));
+            monitorModel = new ThruPutMonitorModel(session.getFirewall());
+            (new Refresher(this)).start();
+            newRule.setVisible(true);
+            return true;
+        } catch (Exception e) {
+            Dialogs.create()
+                    .owner(main.getPrimaryStage())
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+            session.setFirewall(getTestFirewall());
+            monitorModel = new ThruPutMonitorModel(session.getFirewall());
+            (new Refresher(this)).start();
+
+            /* TODO: Remove, for testing purposes only */
+            newRule.setVisible(true);
+
+            return true;
+        }
+    }
+
     protected void newRuleDialog() {
-        while (SessionSettings.getInstance().getWriteConnection() == null)
+        if (SessionSettings.getInstance().getWriteConnection() == null)
             newSSHConnectionDialog();
         main.showNewRuleDialog();
     }
 
-    protected void newRule(String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, String service, String action, String enabled) {
+    private void removeRule(PolicyRow tableRow) {
+        if (SessionSettings.getInstance().getWriteConnection() == null)
+            newSSHConnectionDialog();
+        // TODO: remove Rule on Firewall and GUI
+        int veryBoolean;
+        if (tableRow.getLineChartEnabled())
+            veryBoolean = 1;
+        else
+            veryBoolean = 0;
+        JNS5GTPolicy deletePolicy = new JNS5GTPolicy(tableRow.getId(), tableRow.getSrcZone(), tableRow.getDstZone(), tableRow.getSrcAddress(), tableRow.getDstAddress(), tableRow.getService(), tableRow.getAction(), veryBoolean, tableRow.getName());
+
+        // TODO: remove, for testing Purposes only
+        // GUI
+        List<Policy> currentPolicies = session.getFirewall().getPolicies();
+        currentPolicies.remove(deletePolicy);
+
+
+        try {
+            //Backend
+            session.getWriteConnection().execute(
+                    new JNS5GTWriter((SSHConnection) session.getWriteConnection()).getUnsetCommand(deletePolicy));
+            // GUI
+            currentPolicies.remove(deletePolicy);
+        } catch (Exception e) {
+            Dialogs.create()
+                    .owner(main.getPrimaryStage())
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+        }
+
 
     }
 
-    private void editRule() {
+    protected void newRule(String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
+        List<Policy> currentPolicies = session.getFirewall().getPolicies();
+
+        Integer id;
+        if (currentPolicies.size() != 0)
+            id = currentPolicies.get(currentPolicies.size() - 1).getId() + 1;
+        else
+            id = 1;
+
+        JNS5GTPolicy policy = new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name);
+
+        /* TODO: Remove, for testing purposes only */
+        // GUI
+        currentPolicies.add(policy);
+
+        try {
+            // Backend
+            session.getWriteConnection().execute(
+                    new JNS5GTWriter((SSHConnection) session.getWriteConnection()).getSetCommand(policy));
+            // GUI
+            currentPolicies.add(policy);
+        } catch (Exception e) {
+            Dialogs.create()
+                    .owner(main.getPrimaryStage())
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+        }
+    }
+
+    private void editRuleDialog() {
         while (SessionSettings.getInstance().getWriteConnection() == null)
             newSSHConnectionDialog();
         main.showEditRuleDialog();
     }
 
-    private void removeRule(PolicyRow tableRow) {
-        while (SessionSettings.getInstance().getWriteConnection() == null)
-            newSSHConnectionDialog();
-        // TODO: remove Rule on Firewall and GUI
-        tableView.getItems().remove(tableRow);
-        policies.remove(tableRow.getId());
 
-    }
 
     protected void newSSHConnectionDialog() {
         main.showSSHConnectionDialog();
-    }
-
-    protected boolean establishReadConnection(String address, int port, String commmunityName, String securityName) {
-        policies.clear();
-    	
-    	/* TODO: only for testing */
-//    	session.setFirewall(getTestFirewall());
-
-    	/* TODO: uncomment */
-        try {
-            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), null));
-            monitorModel = new ThruPutMonitorModel(session.getFirewall());
-            (new Refresher(this)).start();
-            return true;
-        } catch (ConnectionException ce) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong with the Connection")
-                    .message(ce.getMessage())
-                    .showError();
-            return true;
-        } catch (MibLoaderException me) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong with the MibLoader")
-                    .message(me.getMessage())
-                    .showError();
-            return true;
-        } catch (IOException ioe) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong with IO")
-                    .message(ioe.getMessage())
-                    .showError();
-            return false;
-        }
     }
 
     protected void establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
@@ -355,19 +410,5 @@ public class Controller implements Refreshable {
         }
         
         return null;
-    }
-
-    public boolean sshConnection(String address, String username, String password) {
-        try {
-            SessionSettings.getInstance().setWriteConnection(new SSHConnection(address, username, password));
-        } catch (ConnectionException ce) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong with the Connection")
-                    .message(ce.getMessage())
-                    .showError();
-        }
-        return false;
     }
 }
