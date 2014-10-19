@@ -30,9 +30,7 @@ public class ConnectionDialogController {
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
-
-    }
+    private void initialize() { }
 
     /**
      * Sets the stage of this dialog.
@@ -76,7 +74,6 @@ public class ConnectionDialogController {
      */
     private boolean isInputValid() {
         String errorMessage = "";
-
 
         if (address.getText().length() == 0)
             errorMessage += "Invalid address \n";

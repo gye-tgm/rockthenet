@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import org.controlsfx.dialog.Dialogs;
 
 /**
@@ -30,21 +31,13 @@ public class ConnectionDialogControllerV3 {
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
-    }
+    private void initialize() { }
 
     /**
      * Sets the stage of this dialog.
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
-    }
-
-    /**
-     * Sets the person to be edited in the dialog.
-     */
-    public void setAddressV3() {
-        addressV3.setText("");
     }
 
     /**
@@ -60,9 +53,10 @@ public class ConnectionDialogControllerV3 {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            okClicked = true;
-            dialogStage.close();
-            controller.establishConnectionV3(addressV3.getText(), Integer.parseInt(portV3.getText()), username.getText(), authentificationPassword.getText(), securityPassword.getText());
+        	if (controller.establishConnectionV3(addressV3.getText(), Integer.parseInt(portV3.getText()), username.getText(), authentificationPassword.getText(), securityPassword.getText())) {
+                okClicked = true;
+                dialogStage.close();
+        	}
         }
     }
 
@@ -80,41 +74,37 @@ public class ConnectionDialogControllerV3 {
      * @return true if the input is valid
      */
     private boolean isInputValid() {
-        String errorMessage = "";
+    	String errorMessage = "";
 
+        if (addressV3.getText().length() == 0)
+            errorMessage += "Invalid address \n";
 
-        if (addressV3.getText() == null || addressV3.getText().length() == 0)
-            errorMessage += "Invalid IP specified!\n";
-
+        int portValue = -1;
         try {
-            if (portV3.getText() == null || portV3.getText().length() == 0
-                    || Integer.parseInt(portV3.getText()) < 1 &&
-                    Integer.parseInt(portV3.getText()) > 65535)
-                errorMessage += "Valid Port range is 1-65535\n";
-        } catch (NumberFormatException nfe) {
-            errorMessage += "Valid Port range is 1-65535\n";
-        }
+        	portValue = Integer.parseInt(portV3.getText());
+        } catch (NumberFormatException e) { }
+        if (portValue < 1 || portValue > 65535)
+        	errorMessage += "Invalid port (1 - 65535) \n";
 
-        if (username.getText() == null || username.getText().length() == 0)
+        if (username.getText().length() == 0)
             errorMessage += "No Username specified!\n";
 
-        if (authentificationPassword.getText() == null || authentificationPassword.getText().length() == 0)
+        if (authentificationPassword.getText().length() == 0)
             errorMessage += "No Authentification Password specified!\n";
-
-        if (securityPassword.getText() == null || securityPassword.getText().length() == 0)
+        
+        if (securityPassword.getText().length() == 0)
             errorMessage += "No Security Password specified!\n";
 
-        if (errorMessage.length() == 0) {
-            return true;
-        } else {
-            // Show the error message.
-            Dialogs.create()
+        if (errorMessage.length() != 0) {
+            Dialogs.create() // show error Dialog
                     .title("Invalid Fields")
                     .masthead("Please correct invalid fields")
                     .message(errorMessage)
                     .showError();
             return false;
         }
+        
+        return true;
     }
 
     public void setController(Controller controller) {

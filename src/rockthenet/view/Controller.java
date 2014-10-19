@@ -12,12 +12,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.percederberg.mibble.MibLoaderException;
+
 import org.controlsfx.dialog.Dialogs;
+
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.SessionSettings;
 import rockthenet.connections.ConnectionException;
+import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
@@ -120,7 +123,7 @@ public class Controller implements Refreshable {
 
         checkedPolicy = new HashMap();
         newRule.setOnAction((event) -> newRuleDialog());
-        newRule.setVisible(false);
+        newRule.setDisable(true);
         
         policyLineChart = new PolicyLineChart(lineChart);
 
@@ -158,13 +161,22 @@ public class Controller implements Refreshable {
         }
     }
 
-    protected boolean establishReadConnection(String address, int port, String commmunityName, String securityName) {
+    protected boolean establishReadConnection(String address, int port, String communityName, String securityName) {
         policies.clear();
+        
+        /* TODO: Remove, for testing purposes only */
+        session.setFirewall(getTestFirewall());
+        monitorModel = new ThruPutMonitorModel(session.getFirewall());
+        (new Refresher(this)).start();
+        newRule.setDisable(false);
+        return true;
+        
+        /* TODO: uncomment, for real application
         try {
-            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), null));
+            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
             monitorModel = new ThruPutMonitorModel(session.getFirewall());
             (new Refresher(this)).start();
-            newRule.setVisible(true);
+            newRule.setDisable(false);
             return true;
         } catch (Exception e) {
             Dialogs.create()
@@ -173,15 +185,38 @@ public class Controller implements Refreshable {
                     .masthead("Something went wrong")
                     .message(e.getMessage())
                     .showError();
-            session.setFirewall(getTestFirewall());
+            return false;
+        }
+        */
+    }
+    
+    protected boolean establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
+    	policies.clear();
+        
+        /* TODO: Remove, for testing purposes only */
+        session.setFirewall(getTestFirewall());
+        monitorModel = new ThruPutMonitorModel(session.getFirewall());
+        (new Refresher(this)).start();
+        newRule.setDisable(false);
+        return true;
+        
+        /* TODO: uncomment, for real application
+        try {
+            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv3Connection(address, port, username, authentificationPassword, securityPassword)), null));
             monitorModel = new ThruPutMonitorModel(session.getFirewall());
             (new Refresher(this)).start();
-
-            /* TODO: Remove, for testing purposes only */
-            newRule.setVisible(true);
-
+            newRule.setDisable(false);
             return true;
+        } catch (Exception e) {
+            Dialogs.create()
+                    .owner(main.getPrimaryStage())
+                    .title("Connection Failed ...")
+                    .masthead("Something went wrong")
+                    .message(e.getMessage())
+                    .showError();
+            return false;
         }
+        */
     }
 
     protected void newRuleDialog() {
@@ -266,34 +301,6 @@ public class Controller implements Refreshable {
 
     protected void newSSHConnectionDialog() {
         main.showSSHConnectionDialog();
-    }
-
-    protected void establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
-//        try {
-//            firewall = new JNS5GTFirewall(new JNS5GTRetriever(address, port, commmunityName), new JNS5GTWriter());
-//        } catch (ConnectionException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("ConnectionException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        } catch (MibLoaderException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("MibLoaderException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        } catch (IOException e) {
-//            Dialogs.create()
-//                    .owner(primaryStage)
-//                    .title("Something went wrong...")
-//                    .masthead("IOException")
-//                    .message(e.getMessage())
-//                    .showError();
-//        }
-
     }
 
     @FXML
