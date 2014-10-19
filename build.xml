@@ -27,11 +27,6 @@
 
   <target name="rebuild" depends="clean, compile" description="Clean and build products." />
   
-  <target name="create-doc">
-    <mkdir dir="${doc.dir}" />
-    <javadoc sourcepath="src" destdir="${doc.dir}" />
-  </target>
-
   <target name="test" description="run all junit tests" depends="compile">
 
       <!-- Debug output
@@ -55,6 +50,12 @@
 	  </fileset>
 	  <report todir="${junit.out}" format="frames"/>
       </junitreport>
+  </target>
+  <target name="create-doc">
+    <mkdir dir="${doc.dir}" />
+    <javadoc sourcepath="src" destdir="${doc.dir}">
+	<classpath refid="rockthenet.module.classpath"/>
+    </javadoc>
   </target>
   <target name="clean-doc">
     <delete dir="${doc.dir}" />
