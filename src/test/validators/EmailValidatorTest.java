@@ -3,7 +3,7 @@ package test.validators;
 import org.junit.Before;
 import org.junit.Test;
 
-import rockthenet.validation.EmailValidator;
+import rockthenet.view.validation.EmailValidator;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
