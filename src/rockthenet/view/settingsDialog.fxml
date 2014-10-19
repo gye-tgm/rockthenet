@@ -17,9 +17,9 @@
             </rowConstraints>
             <children>
                 <Label text="E-mail" />
-                <TextField fx:id="email" promptText="rockthenet@gmail.com" GridPane.columnIndex="1" />
+                <TextField fx:id="email" GridPane.columnIndex="1" />
                 <Label text="Refresh Intervall (s)" GridPane.rowIndex="1" />
-                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0" promptText="1-2000" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="refreshIntervall" prefHeight="25.0" prefWidth="130.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             </children>
         </GridPane>
         <HBox layoutX="197.1875" layoutY="241.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">

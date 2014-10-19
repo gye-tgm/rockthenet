@@ -28,7 +28,7 @@ public class SNMPv2cConnection extends SNMPConnection {
 	 * @param communityName the name of the community to connect to
 	 * @param securityName the security name of the community to connect to
 	 * 
-	 * @throws rockthenet.connections.ConnectionException thrown if invalid address-parameters where passed
+	 * @throws ConnectionException thrown if invalid address-parameters where passed
 	 */
 	protected SNMPv2cConnection(String address, int port, String communityName, String securityName) throws ConnectionException {
 		Address targetAddress = parseAddress(address, port);

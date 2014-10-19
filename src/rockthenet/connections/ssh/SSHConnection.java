@@ -9,9 +9,26 @@ import rockthenet.connections.WriteConnection;
 
 /* TODO: maybe open `commander` only once */
 
+/**
+ * This class implements a connection via the <i>SSH</i> protocol.
+ * 
+ * @author Elias Frantar
+ * @version 2014-10-19
+ */
 public class SSHConnection implements WriteConnection {
 	Session session;
 	
+	/**
+	 * Creates a new {@link rockthenet.connections.snmp.SSHConnection}
+	 * 
+	 * <p><i>Note:</i> {@link #establish()} must be called before usage!
+	 * 
+	 * @param host the host address of the SSH-server (IP or URL)
+	 * @param username the username to use for connecting
+	 * @param password the corresponding password
+	 * 
+	 * @throws ConnectionException thrown if connecting failed (see Exception-message for more information)
+	 */
 	public SSHConnection(String host, String username, String password) throws ConnectionException {
 		try {
 			JSch.setConfig("StrictHostKeyChecking", "no"); // ignore unknown host key prompts
@@ -55,7 +72,7 @@ public class SSHConnection implements WriteConnection {
             commander.close();
 			channel.disconnect();
 		} catch (IOException | JSchException e) {
-			throw new ConnectionException("failed to execute command");
+			throw new ConnectionException("Failed to execute command");
 		}
 	}
 }
