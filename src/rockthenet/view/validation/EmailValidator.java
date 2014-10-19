@@ -1,4 +1,4 @@
-package rockthenet.validators;
+package rockthenet.view.validation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

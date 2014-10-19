@@ -2,8 +2,8 @@ package test.validators;
 
 import org.junit.Before;
 import org.junit.Test;
-import rockthenet.validators.EmailValidator;
 
+import rockthenet.validation.EmailValidator;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

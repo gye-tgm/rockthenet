@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
 import rockthenet.SessionSettings;
-import rockthenet.validators.EmailValidator;
+import rockthenet.view.validation.EmailValidator;
 
 /**
  * The controller of the dialog to edit the application settings
