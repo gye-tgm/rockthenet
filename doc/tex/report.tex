@@ -111,19 +111,19 @@ Final Documentation  &	8	& 2	& 5.00 \\ \hline
 Basic Total	& 63 &	31.00 &	56.00 \\ \hline
 \end{tabular}
 \subsection{Advanced Tasks}
-\begin{tabular} {| l | c | c | c |}\hline
-Task &	Original Estimate & Remaining Estimate & Time spent \\ \hline
-Alarm the user &	7	& 5	& 0 \\ \hline
-Firewall rules CRUD &	6 &	8 & 	0 \\ \hline
-Transactions by Multicast &	8 &	15 &	0 \\ \hline
-Exchangeable & 5 & 0	 & 2 \\ \hline
-Advanced Total & 26 &	28 &	2 \\ \hline
+\begin{tabular} {| l | c | c |}\hline
+Task &	Original Estimate & Time spent \\ \hline
+Alarm the user &	7	& 0 \\ \hline
+Firewall rules CRUD &	6 & 	0 \\ \hline
+Transactions by Multicast &	8  &	0 \\ \hline
+Exchangeable & 5 & 2 \\ \hline
+Advanced Total & 26 &	2 \\ \hline
 \end{tabular}
 
 \subsection{Total}
-\begin{tabular} {| l | c | c | c |}\hline
-	Task &	Original Estimate & Remaining Estimate & Time spent \\ \hline
-	Total & 89 & 31 & 58 \\ \hline
+\begin{tabular} {| l | c | c |}\hline
+	Task &	Original Estimate & Time spent \\ \hline
+	Total & 89 & 142 \\ \hline
 \end{tabular}
 
 \section{Design}
@@ -365,6 +365,81 @@ unset policy id <id>
 
 \subsection{Continuous Integration Server}
 
+For this project Jenkins was installed on a Ubuntu Server. The instructions from the official Jenkins documentation \cite{jenkins:ubuntu} were followed and documented. 
+
+Installing Jenkins can be easily installed by entering the following commands: 
+
+\begin{lstlisting}
+wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins 
+\end{lstlisting}
+
+Then we should use Jenkins on Port 80 by installing apache and doing the following:
+
+\begin{lstlisting}
+sudo apt-get install apache2
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2dissite default
+sudo a2dissite default
+\end{lstlisting}
+
+Create /etc/apache2/sites-available/jenkins and fill with:
+\begin{lstlisting}
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	ServerName ci.company.com
+	ServerAlias ci
+	ProxyRequests Off
+	<Proxy *>
+		Order deny,allow
+		Allow from all
+	</Proxy>
+	ProxyPreserveHost on
+	ProxyPass / http://localhost:8080/ nocanon
+	AllowEncodedSlashes NoDecode
+</VirtualHost> 
+\end{lstlisting}
+
+
+Now enter the following commands. 
+
+\begin{lstlisting}
+sudo a2ensite jenkins
+sudo apache2ctl restart
+\end{lstlisting}
+
+
+Under "Manage Jenkins" and "Configure System" we can find the basic settings.
+For having tools like code coverage or github integration, we need to install some plugins like the following ones:
+
+\begin{itemize}
+\item Embeddable Build Status Plugin
+\item JaCoCo Plugin - Code Coverage
+\item Github Plugin
+\end{itemize}
+
+\subsection{JaCoCo Configuration}
+
+Download the newest zip file and extract it from \cite{jacoco:download}. Then add the following code line to the ant file.
+
+\begin{lstlisting}
+<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+	<classpath path="path_to_jacoco/lib/jacocoant.jar"/>
+</taskdef>	   
+\end{lstlisting}
+
+
+And for coverage wrap the junit task with a \textit{$<$jacoco:coverage$>$} tag. It is important that the junit task must also be forked. 
+\begin{lstlisting}
+<jacoco:coverage>
+	<junit fork="true" printsummary="yes" haltonfailure="${haltonfailure}">
+		...
+	</junit>
+</jacoco:coverage>
+\end{lstlisting}
 
 \section{Test report}
 \section{Occurred problems}
