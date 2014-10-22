@@ -75,6 +75,7 @@ public class SNMPv3Agent extends BaseAgent {
     public void stop() {
     	try {
     		super.stop();
+            Thread.sleep(100);
     	} catch (Exception e) {} // prevent Exception on double-close; required for a test-case
     }
 

@@ -11,7 +11,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import net.percederberg.mibble.MibLoaderException;
 
 import org.controlsfx.dialog.Dialogs;
 
@@ -19,7 +18,6 @@ import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.SessionSettings;
-import rockthenet.connections.ConnectionException;
 import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
@@ -239,27 +237,14 @@ public class Controller implements Refreshable {
     protected void newRule(String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
     	if (!session.getLoggedIn())
             newSSHConnectionDialog();
-
-    	/* 
+ 
+    	/* TODO: not yet implemented */
+    	
+    	/*
         JNS5GTPolicy policy = new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name);
 
-        // GUI
-        currentPolicies.add(policy);
-
-        try {
-            // Backend
-            session.getWriteConnection().execute(
-                    new JNS5GTWriter((SSHConnection) session.getWriteConnection()).getSetCommand(policy));
-            // GUI
-            currentPolicies.add(policy);
-        } catch (Exception e) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong")
-                    .message(e.getMessage())
-                    .showError();
-        }
+        session.getFirewall().getDataWriter().set(JNS5GTWriter.POLICY, policy);
+        refresh();
         */
     }
 

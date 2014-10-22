@@ -39,12 +39,13 @@ public class SNMPv2cConnectionTest {
 	private static final String OID_2_TEXT = "This is the second test!";
 	
 	private ReadConnection connection;
-	private SNMPv2Agent snmpAgent;
+	private SNMPv2Agent snmpAgent = null;
 
 	/* execute before and after every test-case */
 	@Before
 	public void setup() throws ConnectionException, IOException {
-		snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY_NAME);
+        if(snmpAgent == null)
+		    snmpAgent = new SNMPv2Agent(ADDRESS, PORT, COMMUNITY_NAME);
 		snmpAgent.start();
 		
 		snmpAgent.unregisterManagedObject(snmpAgent.getSnmpv2MIB());
@@ -57,7 +58,7 @@ public class SNMPv2cConnectionTest {
 	public void tearDown() {
 		connection.close();
 		snmpAgent.stop();
-	}
+    }
 	
 	/* test-cases for successful operations */
 	

@@ -1,8 +1,10 @@
 package rockthenet.datamanagement.snmp;
 
+import org.snmp4j.log.Log4jLogFactory;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.IDataWriter;
+import rockthenet.dictionaries.JNS5GTValuesToEnglishDictionary;
 import rockthenet.firewall.Policy;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
@@ -59,9 +61,10 @@ public class JNS5GTWriter implements IDataWriter {
      */
     public String getSetCommand(JNS5GTPolicy policy){
         // policy get action using dictionary!
-        return String.format("set policy id %d name %s from %s to %s %s %s %s %s",
+        JNS5GTValuesToEnglishDictionary a = new JNS5GTValuesToEnglishDictionary();
+        return String.format("set policy id %d name \"%s\" from %s to %s %s %s %s %s",
                 policy.getId(), policy.getName(), policy.getSrcZone(), policy.getDstZone(),
-                policy.getSrcAddress(), policy.getDstAddress(), policy.getService(), policy.getAction() == 0 ? "deny" : "permit"
+                policy.getSrcAddress(), policy.getDstAddress(), a.getB2ADefinition(policy.getService()), policy.getAction() == 0 ? "deny" : "permit"
         );
     }
 

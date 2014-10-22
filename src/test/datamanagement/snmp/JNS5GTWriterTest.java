@@ -25,8 +25,8 @@ public class JNS5GTWriterTest {
     public void testSet() throws ConnectionException {
         JNS5GTWriter jns5GTWriter = new JNS5GTWriter(new SSHConnection("10.0.100.10", "5ahit", "Waeng7ohch8o"));
         JNS5GTPolicy policy = new JNS5GTPolicy();
-        policy.setName("Why");
-        policy.setId(1234);
+        policy.setName("Policy Space");
+        policy.setId(1236);
         policy.setSrcZone("Trust");
         policy.setDstZone("Untrust");
         policy.setAction(1);
