@@ -244,7 +244,7 @@ public class Controller implements Refreshable {
         // List<Policy> currentPolicies = session.getFirewall().getPolicies();
 
         // Backend
-        session.getFirewall().getDataWriter().unset(JNS5GTWriter.POLICY, deletePolicy);
+        session.getFirewall().deletePolicy(deletePolicy);
         refresh();
         /*
         try {
@@ -276,7 +276,7 @@ public class Controller implements Refreshable {
             id = 1;
 
         JNS5GTPolicy policy = new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name);
-        session.getFirewall().getDataWriter().set(JNS5GTWriter.POLICY, policy);
+        session.getFirewall().addPolicy(policy);
         refresh();
         /*
         // GUI
