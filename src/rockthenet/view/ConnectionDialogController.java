@@ -52,7 +52,7 @@ public class ConnectionDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            if (controller.establishReadConnection(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText())) { // try connecting
+            if (controller.establishConnectionV2(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText())) { // try connecting
                 okClicked = true;
             	dialogStage.close();
         	}

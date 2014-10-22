@@ -13,9 +13,6 @@ import rockthenet.connections.ConnectionException;
  * @author Samuel Schmidt, Elias Frantar
  */
 public class SSHDialogController {
-
-    @FXML
-    private TextField address;
     @FXML
     private TextField username;
     @FXML
@@ -30,9 +27,7 @@ public class SSHDialogController {
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
-
-    }
+    private void initialize() { }
 
     /**
      * Sets the stage of this dialog.
@@ -54,7 +49,7 @@ public class SSHDialogController {
     @FXML
     private void handleOk() throws ConnectionException {
         if (isInputValid()) {
-            if (controller.sshConnection(address.getText(), username.getText(), password.getText())) {
+            if (controller.establishSSHConnection(username.getText(), password.getText())) {
                 okClicked = true;
                 dialogStage.close();
             }
@@ -76,9 +71,6 @@ public class SSHDialogController {
      */
     private boolean isInputValid() {
         String errorMessage = "";
-
-        if (address.getText().length() == 0)
-            errorMessage += "Invalid address \n";
 
         if (username.getText().length() == 0)
             errorMessage += "No Username specified!\n";
