@@ -113,6 +113,7 @@
     <pathelement location="${basedir}/lib/snmp6_0.jar"/>
     <pathelement location="${basedir}/lib/javax.mail.jar"/>
     <pathelement location="${basedir}/lib/jsch-0.1.51.jar"/>
+    <pathelement location="${basedir}/lib/jacocoant.jar"/>
   </path>
   
   <!-- Modules -->
