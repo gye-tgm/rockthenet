@@ -12,13 +12,14 @@ import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 public class JNS5GTWriter implements IDataWriter {
     private SSHConnection sshConnection;
 
-    private final static String POLICY = "policy";
+    public final static String POLICY = "policy";
 
     /**
      *
      */
-    public JNS5GTWriter(SSHConnection sshConnection) {
+    public JNS5GTWriter(SSHConnection sshConnection) throws ConnectionException {
         this.sshConnection = sshConnection;
+        this.sshConnection.establish();
     }
 
     @Override

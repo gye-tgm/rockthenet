@@ -76,4 +76,20 @@ public abstract class Firewall implements Refreshable {
                 return policy;
         return null;
     }
+
+    public IDataRetriever getDataRetriever() {
+        return dataRetriever;
+    }
+
+    public IDataWriter getDataWriter() {
+        return dataWriter;
+    }
+
+    public void setDataRetriever(IDataRetriever dataRetriever) {
+        this.dataRetriever = dataRetriever;
+    }
+
+    public void setDataWriter(IDataWriter dataWriter) {
+        this.dataWriter = dataWriter;
+    }
 }

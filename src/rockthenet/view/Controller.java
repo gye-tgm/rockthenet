@@ -149,6 +149,7 @@ public class Controller implements Refreshable {
     public boolean sshConnection(String address, String username, String password) {
         try {
             SessionSettings.getInstance().setWriteConnection(new SSHConnection(address, username, password));
+            SessionSettings.getInstance().getFirewall().setDataWriter(new JNS5GTWriter(new SSHConnection(address, username, password)));
             return true;
         } catch (Exception e) {
             Dialogs.create()
@@ -163,31 +164,33 @@ public class Controller implements Refreshable {
 
     protected boolean establishReadConnection(String address, int port, String communityName, String securityName) {
         policies.clear();
-        
+
+        boolean test = false;
         /* TODO: Remove, for testing purposes only */
-        session.setFirewall(getTestFirewall());
-        monitorModel = new ThruPutMonitorModel(session.getFirewall());
-        (new Refresher(this)).start();
-        newRule.setDisable(false);
-        return true;
-        
-        /* TODO: uncomment, for real application
-        try {
-            session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
+        if (test) {
+            session.setFirewall(getTestFirewall());
             monitorModel = new ThruPutMonitorModel(session.getFirewall());
             (new Refresher(this)).start();
             newRule.setDisable(false);
             return true;
-        } catch (Exception e) {
-            Dialogs.create()
-                    .owner(main.getPrimaryStage())
-                    .title("Connection Failed ...")
-                    .masthead("Something went wrong")
-                    .message(e.getMessage())
-                    .showError();
-            return false;
+        } else {
+            // TODO: uncomment, for real application
+            try {
+                session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
+                monitorModel = new ThruPutMonitorModel(session.getFirewall());
+                (new Refresher(this)).start();
+                newRule.setDisable(false);
+                return true;
+            } catch (Exception e) {
+                Dialogs.create()
+                        .owner(main.getPrimaryStage())
+                        .title("Connection Failed ...")
+                        .masthead("Something went wrong")
+                        .message(e.getMessage())
+                        .showError();
+                return false;
+            }
         }
-        */
     }
     
     protected boolean establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
@@ -238,16 +241,19 @@ public class Controller implements Refreshable {
 
         // TODO: remove, for testing Purposes only
         // GUI
-        List<Policy> currentPolicies = session.getFirewall().getPolicies();
-        currentPolicies.remove(deletePolicy);
+        // List<Policy> currentPolicies = session.getFirewall().getPolicies();
 
-
+        // Backend
+        session.getFirewall().getDataWriter().unset(JNS5GTWriter.POLICY, deletePolicy);
+        refresh();
+        /*
         try {
             //Backend
-            session.getWriteConnection().execute(
-                    new JNS5GTWriter((SSHConnection) session.getWriteConnection()).getUnsetCommand(deletePolicy));
+
+            // session.getWriteConnection().execute(
+               //      new JNS5GTWriter((SSHConnection) session.getWriteConnection()).getUnsetCommand(deletePolicy));
             // GUI
-            currentPolicies.remove(deletePolicy);
+            // currentPolicies.remove(deletePolicy);
         } catch (Exception e) {
             Dialogs.create()
                     .owner(main.getPrimaryStage())
@@ -255,7 +261,7 @@ public class Controller implements Refreshable {
                     .masthead("Something went wrong")
                     .message(e.getMessage())
                     .showError();
-        }
+        } */
 
 
     }
