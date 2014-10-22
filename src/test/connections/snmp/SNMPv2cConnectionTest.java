@@ -57,6 +57,8 @@ public class SNMPv2cConnectionTest {
 	public void tearDown() {
 		connection.close();
 		snmpAgent.stop();
+        connection = null;
+        snmpAgent = null;
 	}
 	
 	/* test-cases for successful operations */
