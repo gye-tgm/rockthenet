@@ -276,8 +276,9 @@ public class Controller implements Refreshable {
             id = 1;
 
         JNS5GTPolicy policy = new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name);
-
-        /* TODO: Remove, for testing purposes only */
+        session.getFirewall().getDataWriter().set(JNS5GTWriter.POLICY, policy);
+        refresh();
+        /*
         // GUI
         currentPolicies.add(policy);
 
@@ -294,7 +295,7 @@ public class Controller implements Refreshable {
                     .masthead("Something went wrong")
                     .message(e.getMessage())
                     .showError();
-        }
+        } */
     }
 
     private void editRuleDialog() {

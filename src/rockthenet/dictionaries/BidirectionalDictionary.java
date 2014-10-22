@@ -10,10 +10,10 @@ import java.util.Map;
 public abstract class BidirectionalDictionary<A, B> {
     protected Map<A, B> a2b;
     protected Map<B, A> b2a;
-    protected B getA2BDefinition(A name){
+    public B getA2BDefinition(A name){
         return a2b.get(name);
     }
-    protected A getB2ADefinition(B name){
+    public A getB2ADefinition(B name){
         return b2a.get(name);
     }
     protected BidirectionalDictionary() {

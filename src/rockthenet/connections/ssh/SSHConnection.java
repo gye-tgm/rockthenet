@@ -6,6 +6,8 @@ import java.io.PrintStream;
 
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.WriteConnection;
+import org.apache.log4j.Logger;
+
 
 /* TODO: maybe open `commander` only once */
 
@@ -16,10 +18,12 @@ import rockthenet.connections.WriteConnection;
  * @version 2014-10-19
  */
 public class SSHConnection implements WriteConnection {
-	Session session;
+    private static org.apache.log4j.Logger log = Logger.getLogger(SSHConnection.class);
+
+    Session session;
 	
 	/**
-	 * Creates a new {@link rockthenet.connections.snmp.SSHConnection}
+	 * Creates a new {@link rockthenet.connections.ssh.SSHConnection}
 	 * 
 	 * <p><i>Note:</i> {@link #establish()} must be called before usage!
 	 * 
@@ -57,6 +61,8 @@ public class SSHConnection implements WriteConnection {
 	@Override
 	public void execute(String command) throws ConnectionException {
 		try {
+            log.info(command);
+
 			Channel channel = (ChannelShell) session.openChannel("shell");
             PrintStream commander = new PrintStream(channel.getOutputStream(), true);
             
