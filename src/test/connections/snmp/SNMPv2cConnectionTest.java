@@ -58,11 +58,6 @@ public class SNMPv2cConnectionTest {
 	public void tearDown() {
 		connection.close();
 		snmpAgent.stop();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 	
 	/* test-cases for successful operations */
