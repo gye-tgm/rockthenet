@@ -230,7 +230,7 @@ public class Controller implements Refreshable {
         
         JNS5GTPolicy deletePolicy = new JNS5GTPolicy(tableRow.getId(), tableRow.getSrcZone(), tableRow.getDstZone(), tableRow.getSrcAddress(), tableRow.getDstAddress(), tableRow.getService(), tableRow.getAction(), tableRow.getActiveStatus(), tableRow.getName());
 
-        session.getFirewall().getDataWriter().unset(JNS5GTWriter.POLICY, deletePolicy);
+        session.getFirewall().deletePolicy(deletePolicy);
         refresh(); // refresh the GUI to remove the rule
     }
 
@@ -238,14 +238,9 @@ public class Controller implements Refreshable {
     	if (!session.getLoggedIn())
             newSSHConnectionDialog();
  
-    	/* TODO: not yet implemented */
-    	
-    	/*
-        JNS5GTPolicy policy = new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name);
-
-        session.getFirewall().getDataWriter().set(JNS5GTWriter.POLICY, policy);
+    	/* TODO: id not implemented*/
+    	session.getFirewall().addPolicy(new JNS5GTPolicy(42, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
         refresh();
-        */
     }
 
     @FXML

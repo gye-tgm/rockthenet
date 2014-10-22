@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * This is an abstract class for managing the various types of firewalls. The firewall can be either
  * virtual or an appliance and using this class one should be able to communicate the firewall.
+ *
  * @author Gary Ye
  */
 public abstract class Firewall implements Refreshable {
@@ -20,9 +21,9 @@ public abstract class Firewall implements Refreshable {
     /**
      * Constructs a new Firewall object with the given name, retriever and writer.
      *
-     * @param name the name of the firewall
+     * @param name          the name of the firewall
      * @param dataRetriever the retriever of the firewall
-     * @param dataWriter the writer of the firewall
+     * @param dataWriter    the writer of the firewall
      */
     protected Firewall(String name, IDataRetriever dataRetriever, IDataWriter dataWriter) {
         this.name = name;
@@ -31,7 +32,7 @@ public abstract class Firewall implements Refreshable {
     }
 
     @Override
-    public void refresh(){
+    public void refresh() {
         refreshPolicies();
     }
 
@@ -42,6 +43,7 @@ public abstract class Firewall implements Refreshable {
 
     /**
      * Return the name of the firewall.
+     *
      * @return the name of the firewall
      */
     public String getName() {
@@ -51,6 +53,7 @@ public abstract class Firewall implements Refreshable {
     /**
      * Return all policies it currently has. For getting the latest data, the
      * refreshPolicies method should be called before this method is called.
+     *
      * @return the local policies as a list
      */
     public List<Policy> getPolicies() {
@@ -59,6 +62,7 @@ public abstract class Firewall implements Refreshable {
 
     /**
      * Sets all policies with the given list.
+     *
      * @param policies the list of policies
      */
     public void setPolicies(List<Policy> policies) {
@@ -67,29 +71,54 @@ public abstract class Firewall implements Refreshable {
 
     /**
      * Returns the policy with the given id
+     *
      * @param id the id of the wanted policy
      * @return the policy with the given id
      */
-    public Policy getPolicy(Integer id){
-        for(Policy policy: policies)
-            if(policy.getId().equals(id))
+    public Policy getPolicy(Integer id) {
+        for (Policy policy : policies)
+            if (policy.getId().equals(id))
                 return policy;
         return null;
     }
 
-    public IDataRetriever getDataRetriever() {
-        return dataRetriever;
-    }
-
-    public IDataWriter getDataWriter() {
-        return dataWriter;
-    }
-
+    /**
+     * Sets the data retriever of the firewall.
+     *
+     * @param dataRetriever the data retriever
+     */
     public void setDataRetriever(IDataRetriever dataRetriever) {
         this.dataRetriever = dataRetriever;
     }
 
+    /**
+     * Sets the data writer of the firewall.
+     *
+     * @param dataWriter the data writer
+     */
     public void setDataWriter(IDataWriter dataWriter) {
         this.dataWriter = dataWriter;
     }
+
+    /**
+     * Deletes the given policy from the firewall.
+     *
+     * @param policy the policy to delete
+     */
+    public abstract void deletePolicy(Policy policy);
+
+    /**
+     * Adds the given policy to the firewall.
+     *
+     * @param policy the policy to add
+     */
+    public abstract void addPolicy(Policy policy);
+
+    /**
+     * Updates the old policy with the new one.
+     *
+     * @param oldPolicy the policy to update
+     * @param newPolicy the new value of the policy
+     */
+    public abstract void updatePolicy(Policy oldPolicy, Policy newPolicy);
 }
