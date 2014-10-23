@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -87,7 +88,9 @@ public class Controller implements Refreshable{
         
         /* create columns */
         TableColumn<PolicyRow, Boolean> lineChartEnabled = new TableColumn<>("LineChart");
+        //lineChartEnabled.setStyle("-fx-alignment: CENTER-LEFT;");
         TableColumn<PolicyRow, Integer> id = new TableColumn<>("Id");
+        //id.setStyle("-fx-alignment: CENTER;");
         TableColumn<PolicyRow, String>  name = new TableColumn<>("Name");
         TableColumn<PolicyRow, String>  srcZone = new TableColumn<>("Source-Zone");
         TableColumn<PolicyRow, String>  dstZone = new TableColumn<>("Destination-Zone");
@@ -99,7 +102,7 @@ public class Controller implements Refreshable{
         TableColumn<PolicyRow, Integer> activeStatus = new TableColumn<>("Enabled");
         
         tableView.getColumns().setAll(lineChartEnabled, id, name, srcZone, dstZone, srcAddress, dstAddress, service, action, activeStatus);
-        
+
         lineChartEnabled.setCellValueFactory(new PropertyValueFactory<PolicyRow, Boolean>("lineChartEnabled"));
         lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
         lineChartEnabled.setEditable(true);
@@ -113,6 +116,8 @@ public class Controller implements Refreshable{
         service.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("service"));
         action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
         activeStatus.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatus"));
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         newConnection.setOnAction((event) -> newConnectionDialog());
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
@@ -261,7 +266,7 @@ public class Controller implements Refreshable{
                     session.getFirewall().refreshPolicies();
                     for (Policy policy : session.getFirewall().getPolicies()) {
                         PolicyRow pr = new PolicyRow(policy);
-                        if(checkedPolicy.contains(pr.getId()))
+                        if (checkedPolicy.contains(pr.getId()))
                             pr.setLineChartEnabled(true);
                         policies.add(pr);
                     }
