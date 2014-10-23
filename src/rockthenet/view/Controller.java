@@ -2,6 +2,8 @@ package rockthenet.view;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,10 +31,7 @@ import rockthenet.firewall.ThruPutMonitorModel;
 import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -271,20 +270,40 @@ public class Controller implements Refreshable{
     
     @Override
     public void refresh() {
+        session.getFirewall().refreshPolicies();
+        LinkedList<PolicyRow> addPr = new LinkedList<PolicyRow>();
+        LinkedList<PolicyRow> removePr = new LinkedList<PolicyRow>();
+        LinkedList<Integer> oldId = new LinkedList<Integer>();
+        LinkedList<Integer> newId = new LinkedList<Integer>();
+        for (int i = 0; i < policies.size(); i++) {
+            oldId.add(policies.get(i).getId());
+        }
+        for (Policy policy : session.getFirewall().getPolicies()) {
+            IntegerProperty id = new SimpleIntegerProperty(policy.getId());
+            newId.add(id.getValue());
+            if (!oldId.contains(id.getValue()))
+                addPr.add(new PolicyRow(policy));
+        }
+        for (int i = 0; i < policies.size(); i++) {
+           if(!newId.contains(policies.get(i).getId()))
+               removePr.add(policies.get(i));
+        }
+        System.out.println("removePR");
+        System.out.println(removePr);
+        System.out.println(addPr);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                System.out.println("in the thread now");
                 if (session.isConnected()) {
-                    refreshLineChart();
-                    policies.clear();
-                    session.getFirewall().refreshPolicies();
-                    for (Policy policy : session.getFirewall().getPolicies()) {
-                        PolicyRow pr = new PolicyRow(policy);
-                        if (checkedPolicy.contains(pr.getId()))
-                            pr.setLineChartEnabled(true);
-                        policies.add(pr);
-                    }
+                    System.out.println("removing to table");
+                    policies.removeAll(removePr);
+                    System.out.println("adding to table");
+                    policies.addAll(addPr);
+                    System.out.println("refreshing the line chart");
+                    //refreshLineChart();
                 }
+
             }
         });
     }
