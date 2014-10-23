@@ -1,5 +1,6 @@
 package rockthenet.view;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
@@ -21,6 +22,7 @@ import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.SessionSettings;
+import rockthenet.connections.ConnectionException;
 import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
@@ -71,6 +73,7 @@ public class Controller implements Refreshable{
     private Main main;
     private SessionSettings session;
     private Set<Integer> checkedPolicy;
+    private List<Integer> selected = new ArrayList<>();
 
 	@FXML
     private void initialize() {
@@ -288,39 +291,39 @@ public class Controller implements Refreshable{
            if(!newId.contains(policies.get(i).getId()))
                removePr.add(i);
         }
-        System.out.println("removePR");
+        refreshLineChartPre();
         System.out.println(removePr);
         System.out.println(addPr);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("in the thread now");
                 if (session.isConnected()) {
                     for (int i : removePr) {
                         policies.remove(i);
                     }
                     policies.addAll(addPr);
-                    System.out.println("refreshing the line chart");
-                    //refreshLineChart();
+                    /* TODO: refreshing Line Chart somewhere else */
+                    refreshLineChart();
                 }
-
             }
         });
     }
 
-    protected void refreshLineChart() {
-    	List<Integer> selected = new ArrayList<>();
+    protected void refreshLineChartPre(){
         checkedPolicy.clear();
-
         for (PolicyRow row : policies) {
             if (row.getLineChartEnabled()){
                 selected.add(row.getId());
                 checkedPolicy.add(row.getId());
             }
         }
-        policyLineChart.clean();
         monitorModel.refresh();
+    }
+
+    protected void refreshLineChart() {
+        policyLineChart.clean();
         policyLineChart.addPolicies(monitorModel, convertIntegers(selected), session.getFirewall());
+        selected.clear();
     }
     
     
