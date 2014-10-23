@@ -8,7 +8,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import org.controlsfx.control.Notifications;
 import org.controlsfx.dialog.Dialogs;
+
 import rockthenet.view.*;
 
 import java.io.IOException;
@@ -176,18 +179,6 @@ public class Main extends Application {
                 .showInformation();
     }
 
-    /**
-     * Notification shown when Policies have changed on the device
-     */
-    public void showNotificationDialog(String text) {
-        Dialogs.create()
-                .owner(getPrimaryStage())
-                .title("Notification")
-                .masthead("Policies have changed on the device")
-                .message(text)
-                .showInformation();
-    }
-
     public boolean showNewRuleDialog() {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -253,8 +244,48 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void showEditRuleDialog() {
+    public boolean showEditRuleDialog(PolicyRow policy) {
+    	 try {
+             // Load the fxml file and create a new stage for the popup dialog.
+             FXMLLoader loader = new FXMLLoader();
+             loader.setLocation(getClass().getResource("view/newRuleDialog.fxml"));
+             AnchorPane page = (AnchorPane) loader.load();
+
+             // Create the dialog Stage.
+             Stage dialogStage = new Stage();
+             dialogStage.setTitle("Edit Firewall-rule");
+             dialogStage.initModality(Modality.WINDOW_MODAL);
+             dialogStage.initOwner(getPrimaryStage());
+             Scene scene = new Scene(page);
+             dialogStage.setScene(scene);
+
+             // controller stuff
+             NewRuleController controller = loader.getController();
+             controller.setDialogStage(dialogStage);
+             controller.setController(mainController);
+             controller.configureAsEditDialog(policy);
+
+             // Show the dialog and wait until the user closes it
+             dialogStage.showAndWait();
+
+             return controller.isOkClicked();
+         } catch (IOException e) {
+             e.printStackTrace();
+             return false;
+         }
     }
+    
+
+    /**
+     * Notification shown when Policies have changed on the device
+     */
+    public void showNotification(String title, String text) {
+    	Notifications.create()
+    		.title(title)
+    		.text(text)
+    		.showInformation();
+    }
+    
 
     public Stage getPrimaryStage() {
         return primaryStage;
