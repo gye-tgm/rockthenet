@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  * @version 2014-10-19
  */
 public class SSHConnection implements WriteConnection {
-    private static org.apache.log4j.Logger log = Logger.getLogger(SSHConnection.class);
+    final static org.apache.log4j.Logger log = Logger.getLogger(SSHConnection.class);
 
     Session session;
     Channel channel;

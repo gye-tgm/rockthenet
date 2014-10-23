@@ -1,5 +1,8 @@
 package rockthenet.connections;
 
+import org.apache.log4j.Logger;
+import rockthenet.Listener;
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -10,10 +13,13 @@ import java.net.MulticastSocket;
  *
  * @author Gary Ye
  */
-public class MulticastConnection implements Connection {
+public class MulticastConnection extends Thread implements Connection {
+    private static org.apache.log4j.Logger log = Logger.getLogger(MulticastConnection.class);
+
     private InetAddress group;
     private MulticastSocket multicastSocket;
     private int port;
+    private Listener listener;
 
     public MulticastConnection() {
     }
@@ -24,10 +30,24 @@ public class MulticastConnection implements Connection {
     }
 
     @Override
+    public void run(){
+        try {
+            establish();
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+        while(true){
+            listener.notify(receive());
+        }
+    }
+
+    @Override
     public void establish() throws ConnectionException {
         try {
             multicastSocket = new MulticastSocket(port);
             multicastSocket.joinGroup(group);
+
+            log.info(multicastSocket.getInterface().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +100,7 @@ public class MulticastConnection implements Connection {
     public void send(Object object) throws IOException {
         byte[] bytes = serialize(object);
 
-        DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
+        DatagramPacket packet = new DatagramPacket(bytes, bytes.length, group, 446);
         multicastSocket.send(packet);
     }
 
@@ -100,4 +120,11 @@ public class MulticastConnection implements Connection {
         return datagramPacket;
     }
 
+    public InetAddress getInetAddress() {
+        return multicastSocket.getInetAddress();
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 }
