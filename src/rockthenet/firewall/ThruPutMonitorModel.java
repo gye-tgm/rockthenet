@@ -31,7 +31,8 @@ public class ThruPutMonitorModel {
      * Refreshing means, adding the thru puts of all firewall polices to the history.
      */
     public void refresh() {
-        firewall.refreshPolicies();
+        /* TODO: The firewall refresh takes too long */
+        //firewall.refreshPolicies();
         for (Policy policy : firewall.getPolicies()) {
             if(!history.containsKey(policy.getId()))
                 history.put(policy.getId(), new ArrayList<>());

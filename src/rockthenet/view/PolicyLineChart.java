@@ -61,7 +61,8 @@ public class PolicyLineChart {
     public void addPolicies(ThruPutMonitorModel monitorModel, int[] selected, Firewall firewall) {
         for(int i = 0; i < selected.length; i++){
             if(monitorModel.getPolicyHistory(selected[i]) != null)
-                addPolicy(monitorModel.getPolicyHistory(selected[i]), firewall.getPolicy(selected[i]).getName());
+                addPolicy(monitorModel.getPolicyHistory(selected[i]), ""+firewall.getPolicy(selected[i]).getId());
+
         }
     }
 }

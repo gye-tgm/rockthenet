@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -22,7 +21,6 @@ import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
 import rockthenet.SessionSettings;
-import rockthenet.connections.ConnectionException;
 import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.snmp.JNS5GTRetriever;
@@ -125,7 +123,7 @@ public class Controller implements Refreshable{
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
-        refreshButton.setOnAction((event) -> refresh());
+        refreshButton.setOnAction((event) -> buttonEvent());
         newRule.setOnAction((event) -> newRuleButtonPressed());
 
         checkedPolicy = new HashSet<>();
@@ -231,6 +229,13 @@ public class Controller implements Refreshable{
         */
     }
 
+    private void buttonEvent(){
+        /* TODO: nicht drückbar wenn keine Firewall ausgewaehlt ist */
+        if(policies.size() > 0){
+            refreshLineChartPre();
+            refreshLineChart();
+        }
+    }
     
     private void removeRule(PolicyRow tableRow) {
         if (!session.getLoggedIn())
@@ -270,7 +275,7 @@ public class Controller implements Refreshable{
  
     	editRuleDialog(policy);
     }
-    
+
     @Override
     public void refresh() {
         session.getFirewall().refreshPolicies();
@@ -292,8 +297,6 @@ public class Controller implements Refreshable{
                removePr.add(i);
         }
         refreshLineChartPre();
-        System.out.println(removePr);
-        System.out.println(addPr);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -302,7 +305,6 @@ public class Controller implements Refreshable{
                         policies.remove(i);
                     }
                     policies.addAll(addPr);
-                    /* TODO: refreshing Line Chart somewhere else */
                     refreshLineChart();
                 }
             }
@@ -325,8 +327,7 @@ public class Controller implements Refreshable{
         policyLineChart.addPolicies(monitorModel, convertIntegers(selected), session.getFirewall());
         selected.clear();
     }
-    
-    
+
     /**
      * http://stackoverflow.com/questions/718554/how-to-convert-an-arraylist-containing-integers-to-primitive-int-array
      */
