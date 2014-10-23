@@ -64,3 +64,6 @@ report/
 out/
 
 *.exec
+
+.classpath
+.project
