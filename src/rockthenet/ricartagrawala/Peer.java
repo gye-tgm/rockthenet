@@ -1,5 +1,6 @@
 package rockthenet.ricartagrawala;
 
+import com.oracle.tools.packager.Log;
 import rockthenet.Listener;
 import rockthenet.connections.MulticastConnection;
 
@@ -30,6 +31,11 @@ public class Peer implements Listener {
     public void connect(){
         multicastConnection.setListener(this);
         multicastConnection.start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void lock() {
@@ -83,15 +89,19 @@ public class Peer implements Listener {
 
         if (otherRequest.getDstAddress() != null && otherRequest.getDstAddress() != multicastConnection.getInetAddress())
             return;
+
         try {
             switch (otherRequest.getType()) {
                 case REQUEST:
+                    Log.debug("Received Request message from " + otherRequest.getSrcAddress());
                     handleRequest(otherRequest);
                     break;
                 case OK:
+                    Log.debug("Received OK message from " + otherRequest.getSrcAddress());
                     handleOK(otherRequest);
                     break;
                 case DENY:
+                    Log.debug("Received DENY message from " + otherRequest.getSrcAddress());
                     handleDeny(otherRequest);
                     break;
             }

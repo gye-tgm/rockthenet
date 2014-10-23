@@ -1,5 +1,6 @@
 package rockthenet.connections;
 
+import com.oracle.tools.packager.Log;
 import org.apache.log4j.Logger;
 import rockthenet.Listener;
 
@@ -114,6 +115,7 @@ public class MulticastConnection extends Thread implements Connection {
         DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length);
         try {
             multicastSocket.receive(datagramPacket);
+            Log.info("Wow received something");
         } catch (IOException e) {
             e.printStackTrace();
         }
