@@ -12,7 +12,9 @@ import rockthenet.connections.ConnectionException;
  * @author Samuel Schmidt, Elias Frantar
  */
 public class NewRuleController {
-
+	
+	@FXML
+	private TextField id;
     @FXML
     private TextField name;
     @FXML
@@ -30,7 +32,6 @@ public class NewRuleController {
     @FXML
     private TextField enabled;
 
-
     private Controller controller;
     private Stage dialogStage;
     private boolean okClicked = false;
@@ -40,9 +41,7 @@ public class NewRuleController {
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
-
-    }
+    private void initialize() { }
 
     /**
      * Sets the stage of this dialog.
@@ -64,9 +63,8 @@ public class NewRuleController {
     @FXML
     private void handleOk() throws ConnectionException {
         if (isInputValid()) {
-            controller.newRule(name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(),
-                    destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
             okClicked = true;
+            controller.newRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
             dialogStage.close();
         }
     }
@@ -87,40 +85,43 @@ public class NewRuleController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (name.getText() == null || name.getText().length() == 0)
+        try {
+            Integer.parseInt(id.getText());
+        } catch (NumberFormatException nfe) {
+        	errorMessage += "Invalid Id specified!\n";
+        }
+        
+        if (name.getText().length() == 0)
             errorMessage += "No text specified!\n";
 
-        if (sourceZone.getText() == null || sourceZone.getText().length() == 0)
+        if (sourceZone.getText().length() == 0)
             errorMessage += "No Source Zone specified!\n";
 
-        if (destinationZone.getText() == null || destinationZone.getText().length() == 0)
+        if (destinationZone.getText().length() == 0)
             errorMessage += "No Destination Zone specified!\n";
 
-        if (sourceAddress.getText() == null || sourceAddress.getText().length() == 0)
+        if (sourceAddress.getText().length() == 0)
             errorMessage += "No Source Address specified!\n";
 
-        if (destinationAddress.getText() == null || destinationAddress.getText().length() == 0)
+        if (destinationAddress.getText().length() == 0)
             errorMessage += "No Destination Address specified!\n";
+        
         try {
-            if (service.getText() == null || service.getText().length() == 0) {
                 Integer.parseInt(service.getText());
-                errorMessage += "No Service specified!\n";
-            }
         } catch (NumberFormatException nfe) {
-            errorMessage += "Valid Action Input is 0/1!\n";
+            errorMessage += "Invalid Service specified (0-1)!\n";
         }
+        
         try {
-            if (action.getText() == null || action.getText().length() == 0 || (Integer.parseInt(action.getText()) != 0 && Integer.parseInt(action.getText()) != 1))
-                errorMessage += "Valid Action Input is 0/1!\n";
+            Integer.parseInt(action.getText());
         } catch (NumberFormatException nfe) {
-            errorMessage += "Valid Action Input is 0/1!\n";
+        	errorMessage += "Invalid Action specified (0-1)!\n";
         }
-
+        
         try {
-            if (enabled.getText() == null || enabled.getText().length() == 0 || (Integer.parseInt(enabled.getText()) != 0 && Integer.parseInt(enabled.getText()) != 1))
-                errorMessage += "Valid Enabled Input is 0/1!\n";
+            Integer.parseInt(enabled.getText());
         } catch (NumberFormatException nfe) {
-            errorMessage += "Valid Enabled Input is 0/1!\n";
+        	errorMessage += "Invalid Enabled specified (0-1)!\n";
         }
 
         if (errorMessage.length() != 0) {

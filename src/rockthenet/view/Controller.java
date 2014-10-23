@@ -118,9 +118,10 @@ public class Controller implements Refreshable{
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
+        refreshButton.setOnAction((event) -> refresh());
+        newRule.setOnAction((event) -> newRuleButtonPressed());
 
         checkedPolicy = new HashSet<>();
-        newRule.setOnAction((event) -> newRuleDialog());
         newRule.setDisable(true);
         
         policyLineChart = new PolicyLineChart(lineChart);
@@ -234,18 +235,19 @@ public class Controller implements Refreshable{
         refresh(); // refresh the GUI to remove the rule
     }
 
-    protected void newRule(String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
+    protected void newRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
+    	session.getFirewall().addPolicy(new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
+        refresh();
+    }
+    
+
+    /* more complex button handlers */
+    
+    private void newRuleButtonPressed() {
     	if (!session.getLoggedIn())
             newSSHConnectionDialog();
  
-    	/* TODO: id not implemented*/
-    	session.getFirewall().addPolicy(new JNS5GTPolicy(42, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
-        refresh();
-    }
-
-    @FXML
-    private void refreshButtonPressed() {
-        refresh();
+    	newRuleDialog();
     }
     
     @Override
