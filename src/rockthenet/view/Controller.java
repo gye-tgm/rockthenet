@@ -301,9 +301,7 @@ public class Controller implements Refreshable{
             @Override
             public void run() {
                 if (session.isConnected()) {
-                    for (int i : removePr) {
-                        policies.remove(i);
-                    }
+                    removePr.forEach(policies::remove);
                     policies.addAll(addPr);
                     refreshLineChart();
                 }
