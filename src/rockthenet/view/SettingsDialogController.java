@@ -15,7 +15,7 @@ import rockthenet.view.validation.EmailValidator;
  * @author Samuel Schmidt, Elias Frantar
  * @version 2014-10-11
  */
-public class SettingsDialogController {
+public class SettingsDialogController{
 
     @FXML
     private TextField email;
