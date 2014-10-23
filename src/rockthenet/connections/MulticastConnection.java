@@ -123,4 +123,8 @@ public class MulticastConnection extends Thread implements Connection {
     public InetAddress getInetAddress() {
         return multicastSocket.getInetAddress();
     }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 }

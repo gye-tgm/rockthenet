@@ -19,9 +19,17 @@ public class Peer implements Listener {
     private int groupSize;
 
     public Peer() {
-        myRequest = null;
-        otherRequests = new LinkedList<>();
-        multicastConnection = new MulticastConnection();
+        this(new MulticastConnection());
+    }
+    public Peer(MulticastConnection multicastConnection){
+        this.myRequest = null;
+        this.otherRequests = new LinkedList<>();
+        this.multicastConnection = multicastConnection;
+    }
+
+    public void connect(){
+        multicastConnection.setListener(this);
+        multicastConnection.start();
     }
 
     public synchronized void lock() {
@@ -41,12 +49,16 @@ public class Peer implements Listener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } while (numberAccept == groupSize);
+        } while (numberAccept < groupSize);
     }
 
-    public synchronized void unlock() throws IOException {
+    public synchronized void unlock() {
         while (!otherRequests.isEmpty()) {
-            replyOK(otherRequests.poll());
+            try {
+                replyOK(otherRequests.poll());
+            }  catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         myRequest = null;
     }
