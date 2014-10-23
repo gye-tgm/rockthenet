@@ -260,11 +260,7 @@ public class Controller implements Refreshable{
                     session.getFirewall().refreshPolicies();
                     for (Policy policy : session.getFirewall().getPolicies()) {
                         PolicyRow pr = new PolicyRow(policy);
-<<<<<<< Updated upstream
                         if(checkedPolicy.contains(pr.getId()))
-=======
-                        if (checkedPolicy.containsKey(pr.getId()))
->>>>>>> Stashed changes
                             pr.setLineChartEnabled(true);
                         policies.add(pr);
                     }
