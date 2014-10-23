@@ -1,6 +1,5 @@
 package rockthenet.ricartagrawala;
 
-import com.oracle.tools.packager.Log;
 import rockthenet.Listener;
 import rockthenet.connections.MulticastConnection;
 
@@ -9,10 +8,14 @@ import java.net.DatagramPacket;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Gary Ye
  */
 public class Peer implements Listener {
+    private static org.apache.log4j.Logger log = Logger.getLogger(Peer.class);
+    
     private Message myRequest;
     private Queue<Message> otherRequests;
     private MulticastConnection multicastConnection;
@@ -93,15 +96,15 @@ public class Peer implements Listener {
         try {
             switch (otherRequest.getType()) {
                 case REQUEST:
-                    Log.debug("Received Request message from " + otherRequest.getSrcAddress());
+                    log.debug("Received Request message from " + otherRequest.getSrcAddress());
                     handleRequest(otherRequest);
                     break;
                 case OK:
-                    Log.debug("Received OK message from " + otherRequest.getSrcAddress());
+                    log.debug("Received OK message from " + otherRequest.getSrcAddress());
                     handleOK(otherRequest);
                     break;
                 case DENY:
-                    Log.debug("Received DENY message from " + otherRequest.getSrcAddress());
+                    log.debug("Received DENY message from " + otherRequest.getSrcAddress());
                     handleDeny(otherRequest);
                     break;
             }
