@@ -8,9 +8,6 @@ import rockthenet.connections.ConnectionException;
 import rockthenet.connections.WriteConnection;
 import org.apache.log4j.Logger;
 
-
-/* TODO: maybe open `commander` only once */
-
 /**
  * This class implements a connection via the <i>SSH</i> protocol.
  * 
