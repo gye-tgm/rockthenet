@@ -25,6 +25,7 @@ public class PeerTest {
         for(int i = 0; i < 200; i++)
             for(int j = 0; j < 1000; j++)
                 System.out.println(i + " " +  j);
+        System.out.println("Done");
         peer1.unlock();
     }
 }
