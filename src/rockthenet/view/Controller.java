@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.when;
  * @version 2014-10-11
  */
 @SuppressWarnings("unchecked")
-public class Controller implements Refreshable {
+public class Controller implements Refreshable{
 
     @FXML
     private MenuItem settings;
@@ -254,17 +255,20 @@ public class Controller implements Refreshable {
             @Override
             public void run() {
                 if (session.isConnected()) {
-	                refreshLineChart();
+                    refreshLineChart();
                     policies.clear();
-                    policies.clear();
-	                session.getFirewall().refreshPolicies();
+                    session.getFirewall().refreshPolicies();
                     for (Policy policy : session.getFirewall().getPolicies()) {
                         PolicyRow pr = new PolicyRow(policy);
+<<<<<<< Updated upstream
                         if(checkedPolicy.contains(pr.getId()))
+=======
+                        if (checkedPolicy.containsKey(pr.getId()))
+>>>>>>> Stashed changes
                             pr.setLineChartEnabled(true);
                         policies.add(pr);
                     }
-            	}
+                }
             }
         });
     }
