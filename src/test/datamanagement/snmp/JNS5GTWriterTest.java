@@ -83,4 +83,25 @@ public class JNS5GTWriterTest {
         String expected = "set policy id 1236 name \"Policy Space\" from Trust to Untrust Any Any any permit";
         assertEquals(expected, returned);
     }
+
+    @Ignore
+    @Test
+    public void test1000Command() throws ConnectionException {
+        JNS5GTWriter jns5GTWriter = new JNS5GTWriter(new SSHConnection("10.0.100.10", "5ahit", "Waeng7ohch8o"));
+
+        for(int i = 5; i < 100; i++) {
+            JNS5GTPolicy policy = new JNS5GTPolicy();
+            policy.setName("P" + i + "P");
+            policy.setId(i);
+            policy.setSrcZone("Trust");
+            policy.setDstZone("Untrust");
+            policy.setAction(1);
+            policy.setActiveStatus(0);
+            policy.setSrcAddress("Any");
+            policy.setDstAddress("Any");
+            policy.setService(0);
+            jns5GTWriter.unsetPolicy(policy);
+
+        }
+    }
 }

@@ -3,7 +3,9 @@ package rockthenet.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import org.controlsfx.dialog.Dialogs;
+
 import rockthenet.connections.ConnectionException;
 
 /**
@@ -35,6 +37,8 @@ public class NewRuleController {
     private Controller controller;
     private Stage dialogStage;
     private boolean okClicked = false;
+    
+    private boolean editMode = false; // default is create-mode
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -56,7 +60,7 @@ public class NewRuleController {
     public boolean isOkClicked() {
         return okClicked;
     }
-
+    
     /**
      * Called when the user clicks ok.
      */
@@ -64,7 +68,12 @@ public class NewRuleController {
     private void handleOk() throws ConnectionException {
         if (isInputValid()) {
             okClicked = true;
-            controller.newRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
+            
+            if (editMode)
+            	controller.updateRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
+            else
+            	controller.newRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
+            
             dialogStage.close();
         }
     }
@@ -138,5 +147,20 @@ public class NewRuleController {
 
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+    
+    public void configureAsEditDialog(PolicyRow policy) {
+    	this.id.setText("" + policy.getId());
+    	this.name.setText(policy.getName());
+    	this.sourceZone.setText(policy.getSrcZone());
+    	this.destinationAddress.setText(policy.getDstZone());
+    	this.sourceAddress.setText(policy.getSrcAddress());
+    	this.destinationAddress.setText(policy.getDstAddress());
+    	this.service.setText("" + policy.getService());
+    	this.action.setText("" + policy.getAction());
+    	this.enabled.setText("" + policy.getActiveStatus());
+    	
+    	this.id.setDisable(true);
+    	editMode = true;
     }
 }

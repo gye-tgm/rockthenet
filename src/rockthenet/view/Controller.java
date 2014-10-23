@@ -136,7 +136,7 @@ public class Controller implements Refreshable{
                     final TableRow<PolicyRow> row = new TableRow<>();
                     final ContextMenu rowMenu = new ContextMenu();
                     MenuItem editItem = new MenuItem("Edit Rule...");
-                    editItem.setOnAction(event -> editRuleDialog());
+                    editItem.setOnAction(event -> editButtonPressed(row.getItem()));
                     MenuItem removeItem = new MenuItem("Delete Rule");
                     removeItem.setOnAction(event -> removeRule(row.getItem()));
                     rowMenu.getItems().addAll(editItem, removeItem);
@@ -245,7 +245,14 @@ public class Controller implements Refreshable{
         refresh();
     }
     
-
+    protected void updateRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
+    	Policy old = new JNS5GTPolicy();
+    	old.setId(id);
+    	
+    	session.getFirewall().updatePolicy(old, new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
+    	refresh();
+    }
+    
     /* more complex button handlers */
     
     private void newRuleButtonPressed() {
@@ -253,6 +260,13 @@ public class Controller implements Refreshable{
             newSSHConnectionDialog();
  
     	newRuleDialog();
+    }
+    
+    private void editButtonPressed(PolicyRow policy) {
+    	if (!session.getLoggedIn())
+            newSSHConnectionDialog();
+ 
+    	editRuleDialog(policy);
     }
     
     @Override
@@ -313,7 +327,7 @@ public class Controller implements Refreshable{
     private void newConnectionDialog() { main.showNewConnectionDialog(); }
     private void newConnectionDialogV3() { main.showNewConnectionDialogV3(); }
     private void newRuleDialog() { main.showNewRuleDialog(); }
-    private void editRuleDialog() { main.showEditRuleDialog(); }
+    private void editRuleDialog(PolicyRow policy) { main.showEditRuleDialog(policy); }
     private void newSSHConnectionDialog() { main.showSSHConnectionDialog(); }
     
     
