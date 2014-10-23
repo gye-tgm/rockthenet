@@ -301,7 +301,7 @@ public class Controller implements Refreshable{
                     System.out.println("adding to table");
                     policies.addAll(addPr);
                     System.out.println("refreshing the line chart");
-                    //refreshLineChart();
+                    refreshLineChart();
                 }
 
             }
