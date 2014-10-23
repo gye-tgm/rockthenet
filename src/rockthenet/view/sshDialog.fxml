@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="177.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="rockthenet.view.SSHDialogController">
+
+<AnchorPane prefHeight="157.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rockthenet.view.SSHDialogController">
     <children>
-        <GridPane layoutX="15.0" layoutY="12.0" prefHeight="116.0" prefWidth="358.0" AnchorPane.leftAnchor="15.0"
-                  AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="12.0">
+        <GridPane layoutX="15.0" layoutY="12.0" prefHeight="91.0" prefWidth="360.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="160.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="216.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="160.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="216.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Address"/>
-                <TextField fx:id="address" text="10.0.100.10" GridPane.columnIndex="1"/>
-                <TextField fx:id="username" layoutX="162.0" layoutY="48.0" prefHeight="25.0" prefWidth="130.0"
-                           text="5ahit" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label layoutX="10.0" layoutY="52.0" text="Username" GridPane.rowIndex="1"/>
-                <Label text="Password" GridPane.rowIndex="2"/>
-                <PasswordField fx:id="password" text="Waeng7ohch8o" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <TextField fx:id="username" layoutX="162.0" layoutY="48.0" prefHeight="25.0" prefWidth="130.0" text="5ahit" GridPane.columnIndex="1" />
+                <Label layoutX="10.0" layoutY="52.0" text="Username" />
+                <Label text="Password" GridPane.rowIndex="1" />
+                <PasswordField fx:id="password" text="Waeng7ohch8o" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             </children>
         </GridPane>
-        <HBox layoutX="197.1875" layoutY="241.0" spacing="5.0" AnchorPane.bottomAnchor="10.0"
-              AnchorPane.rightAnchor="10.0">
+        <HBox layoutX="197.1875" layoutY="241.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
             <children>
-                <Button layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleOk" prefWidth="90.0"
-                        text="OK"/>
-                <Button layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCancel"
-                        prefWidth="90.0" text="Cancel"/>
+                <Button layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleOk" prefWidth="90.0" text="OK" />
+                <Button layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="90.0" text="Cancel" />
             </children>
         </HBox>
     </children>
