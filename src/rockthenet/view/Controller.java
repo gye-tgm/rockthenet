@@ -272,7 +272,7 @@ public class Controller implements Refreshable{
     public void refresh() {
         session.getFirewall().refreshPolicies();
         LinkedList<PolicyRow> addPr = new LinkedList<PolicyRow>();
-        LinkedList<PolicyRow> removePr = new LinkedList<PolicyRow>();
+        LinkedList<Integer> removePr = new LinkedList<Integer>();
         LinkedList<Integer> oldId = new LinkedList<Integer>();
         LinkedList<Integer> newId = new LinkedList<Integer>();
         for (int i = 0; i < policies.size(); i++) {
@@ -286,7 +286,7 @@ public class Controller implements Refreshable{
         }
         for (int i = 0; i < policies.size(); i++) {
            if(!newId.contains(policies.get(i).getId()))
-               removePr.add(policies.get(i));
+               removePr.add(i);
         }
         System.out.println("removePR");
         System.out.println(removePr);
@@ -296,12 +296,12 @@ public class Controller implements Refreshable{
             public void run() {
                 System.out.println("in the thread now");
                 if (session.isConnected()) {
-                    System.out.println("removing to table");
-                    policies.removeAll(removePr);
-                    System.out.println("adding to table");
+                    for (int i : removePr) {
+                        policies.remove(i);
+                    }
                     policies.addAll(addPr);
                     System.out.println("refreshing the line chart");
-                    refreshLineChart();
+                    //refreshLineChart();
                 }
 
             }
