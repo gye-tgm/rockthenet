@@ -235,7 +235,8 @@ public class Controller implements Refreshable{
     
     private void removeRule(PolicyRow tableRow) {
         if (!session.getLoggedIn())
-            newSSHConnectionDialog();
+            if (!main.showSSHConnectionDialog())
+            	return;
         
         JNS5GTPolicy deletePolicy = new JNS5GTPolicy(tableRow.getId(), tableRow.getSrcZone(), tableRow.getDstZone(), tableRow.getSrcAddress(), tableRow.getDstAddress(), tableRow.getService(), tableRow.getAction(), tableRow.getActiveStatus(), tableRow.getName());
 
@@ -243,7 +244,7 @@ public class Controller implements Refreshable{
         refresh(); // refresh the GUI to remove the rule
     }
 
-    protected void newRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
+    protected void newRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {	
     	session.getFirewall().addPolicy(new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
         refresh();
     }
@@ -267,15 +268,17 @@ public class Controller implements Refreshable{
     }
     
     private void newRuleButtonPressed() {
-    	if (!session.getLoggedIn())
-            newSSHConnectionDialog();
+        if (!session.getLoggedIn())
+            if (!main.showSSHConnectionDialog())
+            	return;
  
     	newRuleDialog();
     }
     
     private void editButtonPressed(PolicyRow policy) {
-    	if (!session.getLoggedIn())
-            newSSHConnectionDialog();
+        if (!session.getLoggedIn())
+            if (!main.showSSHConnectionDialog())
+            	return;
  
     	editRuleDialog(policy);
     }
