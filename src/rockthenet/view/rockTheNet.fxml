@@ -69,6 +69,14 @@
                         <Button fx:id="newRule" mnemonicParsing="false" text="New Rule..."
                                 BorderPane.alignment="CENTER"/>
                     </left>
+                    <center>
+                        <ProgressIndicator fx:id="progressIndicator" maxHeight="28.0" maxWidth="37.0" visible="false"
+                                           BorderPane.alignment="CENTER">
+                            <BorderPane.margin>
+                                <Insets right="45.0"/>
+                            </BorderPane.margin>
+                        </ProgressIndicator>
+                    </center>
                 </BorderPane>
             </bottom>
         </BorderPane>

@@ -1,6 +1,5 @@
 package rockthenet.view;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
@@ -14,9 +13,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.Main;
 import rockthenet.Refreshable;
 import rockthenet.Refresher;
@@ -59,6 +56,8 @@ public class Controller implements Refreshable{
     
     @FXML
     private Button refreshButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
     @FXML
     private Button newRule;
     @FXML
