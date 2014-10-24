@@ -40,7 +40,6 @@ import static org.mockito.Mockito.when;
  */
 @SuppressWarnings("unchecked")
 public class Controller implements Refreshable{
-
     @FXML
     private MenuItem settings;
     @FXML
@@ -122,7 +121,7 @@ public class Controller implements Refreshable{
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
         about.setOnAction((event) -> aboutDialog());
-        refreshButton.setOnAction((event) -> buttonEvent());
+        refreshButton.setOnAction((event) -> refreshButtonPressed());
         newRule.setOnAction((event) -> newRuleButtonPressed());
 
         checkedPolicy = new HashSet<>();
@@ -156,6 +155,7 @@ public class Controller implements Refreshable{
         try {
         	session.getFirewall().setDataWriter(new JNS5GTWriter(new SSHConnection(session.getHost(), username, password)));
             session.setLoggedIn(true);
+            
         	return true;
         } catch (Exception e) {
             Dialogs.create()
@@ -171,50 +171,53 @@ public class Controller implements Refreshable{
     protected boolean establishConnectionV2(String address, int port, String communityName, String securityName) {
         policies.clear();
 
-        boolean test = false;
-        if (test) {
-            session.setFirewall(getTestFirewall());
+        /* 
+        // uncomment for testing
+        session.setFirewall(getTestFirewall());
+        monitorModel = new ThruPutMonitorModel(session.getFirewall());
+        (new Refresher(this)).start();
+        newRule.setDisable(false);
+        return true;
+        */
+        
+        try {
+        	session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
             monitorModel = new ThruPutMonitorModel(session.getFirewall());
             (new Refresher(this)).start();
             newRule.setDisable(false);
+            session.setHost(address);
+            
             return true;
-        } else {
-            try {
-                session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
-                monitorModel = new ThruPutMonitorModel(session.getFirewall());
-                (new Refresher(this)).start();
-                newRule.setDisable(false);
-                session.setHost(address);
-                return true;
-            } catch (Exception e) {
-                Dialogs.create()
-                        .owner(main.getPrimaryStage())
-                        .title("Connection Failed ...")
-                        .masthead("Something went wrong")
-                        .message(e.getMessage())
-                        .showError();
-                return false;
-            }
+        } catch (Exception e) {
+            Dialogs.create()
+            		.owner(main.getPrimaryStage())
+            		.title("Connection Failed ...")
+            		.masthead("Something went wrong")
+            		.message(e.getMessage())
+            		.showError();
+            return false;
         }
     }
     
     protected boolean establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
     	policies.clear();
         
-        /* TODO: Remove, for testing purposes only */
+        /*
+        // ucomment for testing
         session.setFirewall(getTestFirewall());
         monitorModel = new ThruPutMonitorModel(session.getFirewall());
         (new Refresher(this)).start();
         newRule.setDisable(false);
         return true;
+        */
         
-        /* TODO: uncomment, for real application
         try {
             session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv3Connection(address, port, username, authentificationPassword, securityPassword)), null));
             monitorModel = new ThruPutMonitorModel(session.getFirewall());
             (new Refresher(this)).start();
             newRule.setDisable(false);
             session.setHost(address);
+            
             return true;
         } catch (Exception e) {
             Dialogs.create()
@@ -225,16 +228,10 @@ public class Controller implements Refreshable{
                     .showError();
             return false;
         }
-        */
     }
-
-    private void buttonEvent(){
-        /* TODO: nicht drückbar wenn keine Firewall ausgewaehlt ist */
-        if(policies.size() > 0){
-            refreshLineChartPre();
-            refreshLineChart();
-        }
-    }
+    
+    
+    /* methods for adding, removing and updating rules */
     
     private void removeRule(PolicyRow tableRow) {
         if (!session.getLoggedIn())
@@ -259,7 +256,15 @@ public class Controller implements Refreshable{
     	refresh();
     }
     
-    /* more complex button handlers */
+    
+    /* button handlers */
+    
+    private void refreshButtonPressed(){
+        if (policies.size() > 0) { // doens't do anything when there are no policies
+            refreshLineChartPre();
+            refreshLineChart();
+        }
+    }
     
     private void newRuleButtonPressed() {
     	if (!session.getLoggedIn())
@@ -275,9 +280,14 @@ public class Controller implements Refreshable{
     	editRuleDialog(policy);
     }
 
+    
+    
+    
     @Override
     public void refresh() {
+    	Platform.runLater(new Runnable() { public void run() { progressIndicator.setVisible(true); }});
         session.getFirewall().refreshPolicies();
+    	
         LinkedList<PolicyRow> addPr = new LinkedList<PolicyRow>();
         LinkedList<Integer> removePr = new LinkedList<Integer>();
         LinkedList<Integer> oldId = new LinkedList<Integer>();
@@ -300,9 +310,13 @@ public class Controller implements Refreshable{
             @Override
             public void run() {
                 if (session.isConnected()) {
-                    removePr.forEach(policies::remove);
+                    // removePr.forEach(policies::remove);
+                	for (int i : removePr)
+                		policies.remove(i);
                     policies.addAll(addPr);
                     refreshLineChart();
+                    
+                    progressIndicator.setVisible(false);
                 }
             }
         });
@@ -349,6 +363,12 @@ public class Controller implements Refreshable{
     private void newRuleDialog() { main.showNewRuleDialog(); }
     private void editRuleDialog(PolicyRow policy) { main.showEditRuleDialog(policy); }
     private void newSSHConnectionDialog() { main.showSSHConnectionDialog(); }
+    
+    
+    
+    
+    
+    
     
     
     private Firewall getTestFirewall(){
