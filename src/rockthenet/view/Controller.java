@@ -6,6 +6,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
@@ -28,6 +29,7 @@ import rockthenet.firewall.ThruPutMonitorModel;
 import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
+import java.awt.event.ActionEvent;
 import java.util.*;
 
 import static org.mockito.Mockito.mock;
@@ -63,13 +65,14 @@ public class Controller implements Refreshable{
     private TableView<PolicyRow> tableView;
     private ObservableList<PolicyRow> policies;
 
+    private HashMap<Integer,PolicyRow> policy;
+
     private PolicyLineChart policyLineChart;
     private ThruPutMonitorModel monitorModel;
 
     private Main main;
     private SessionSettings session;
-    private Set<Integer> checkedPolicy;
-    private List<Integer> selected = new ArrayList<>();
+    private List<Integer> selected;
 
 	@FXML
     private void initialize() {
@@ -77,10 +80,12 @@ public class Controller implements Refreshable{
 
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
+
+        selected = new ArrayList<>();
         
         /* initialize the table */
         policies = FXCollections.observableArrayList();
-
+        policy = new HashMap<Integer,PolicyRow>();
         tableView.setItems(policies);
         tableView.setEditable(true);
         
@@ -123,8 +128,6 @@ public class Controller implements Refreshable{
         about.setOnAction((event) -> aboutDialog());
         refreshButton.setOnAction((event) -> refreshButtonPressed());
         newRule.setOnAction((event) -> newRuleButtonPressed());
-
-        checkedPolicy = new HashSet<>();
         newRule.setDisable(true);
         
         policyLineChart = new PolicyLineChart(lineChart);
@@ -262,11 +265,23 @@ public class Controller implements Refreshable{
     
     private void refreshButtonPressed(){
         if (policies.size() > 0) { // doens't do anything when there are no policies
-            refreshLineChartPre();
-            refreshLineChart();
+            buttonThread();
         }
     }
-    
+
+    private void buttonThread(){
+        Thread a = new Thread(new Runnable() {
+            public void run() {
+                refresh();
+            }
+
+        });
+        a.setDaemon(true);
+        a.start();
+
+    }
+
+
     private void newRuleButtonPressed() {
         if (!session.getLoggedIn())
             if (!main.showSSHConnectionDialog())
@@ -283,42 +298,55 @@ public class Controller implements Refreshable{
     	editRuleDialog(policy);
     }
 
-    
-    
-    
     @Override
     public void refresh() {
     	Platform.runLater(new Runnable() { public void run() { progressIndicator.setVisible(true); }});
         session.getFirewall().refreshPolicies();
-    	
-        LinkedList<PolicyRow> addPr = new LinkedList<PolicyRow>();
-        LinkedList<Integer> removePr = new LinkedList<Integer>();
+
+        HashMap<Integer,PolicyRow> addPr = new HashMap<Integer,PolicyRow>();
+        LinkedList<PolicyRow> objectRemove = new LinkedList<PolicyRow>();
         LinkedList<Integer> oldId = new LinkedList<Integer>();
         LinkedList<Integer> newId = new LinkedList<Integer>();
-        for (int i = 0; i < policies.size(); i++) {
-            oldId.add(policies.get(i).getId());
+        //Getting the old ids from the table
+        for (int i : policy.keySet()) {
+            oldId.add(i);
         }
-        for (Policy policy : session.getFirewall().getPolicies()) {
-            IntegerProperty id = new SimpleIntegerProperty(policy.getId());
+        //Getting the refreshed ids from the firewall
+        for (Policy newPolicy : session.getFirewall().getPolicies()) {
+            IntegerProperty id = new SimpleIntegerProperty(newPolicy.getId());
             newId.add(id.getValue());
+            //If the new id wasn't in the old ids it is added
             if (!oldId.contains(id.getValue()))
-                addPr.add(new PolicyRow(policy));
+                addPr.put(newPolicy.getId(), new PolicyRow(newPolicy));
         }
-        for (int i = 0; i < policies.size(); i++) {
-           if(!newId.contains(policies.get(i).getId()))
-               removePr.add(i);
+        policy.putAll(addPr);
+
+        //Getting the ids that were removed
+        for (int i : oldId) {
+           if(!newId.contains(i)){
+               objectRemove.add(policy.get(i));
+               policy.remove(i);
+           }
         }
         refreshLineChartPre();
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 if (session.isConnected()) {
-                    // removePr.forEach(policies::remove);
-                	for (int i : removePr)
-                		policies.remove(i);
-                    policies.addAll(addPr);
+                    Iterator<PolicyRow> it = policies.iterator();
+                    while (it.hasNext()) {
+                        PolicyRow user = it.next();
+                        for(PolicyRow row: objectRemove) {
+                            if (user.getId().equals(row.getId())) {
+                                it.remove();
+                            }
+                        }
+                    }
+
+                    policies.addAll(addPr.values());
                     refreshLineChart();
-                    
+
                     progressIndicator.setVisible(false);
                 }
             }
@@ -326,11 +354,9 @@ public class Controller implements Refreshable{
     }
 
     protected void refreshLineChartPre(){
-        checkedPolicy.clear();
-        for (PolicyRow row : policies) {
+        for (PolicyRow row : policy.values()) {
             if (row.getLineChartEnabled()){
-                selected.add(row.getId());
-                checkedPolicy.add(row.getId());
+                    selected.add(row.getId());
             }
         }
         monitorModel.refresh();
@@ -367,13 +393,7 @@ public class Controller implements Refreshable{
     private void editRuleDialog(PolicyRow policy) { main.showEditRuleDialog(policy); }
     private void newSSHConnectionDialog() { main.showSSHConnectionDialog(); }
     
-    
-    
-    
-    
-    
-    
-    
+
     private Firewall getTestFirewall(){
         Firewall firewall = mock(Firewall.class);
         ArrayList<Policy> testPolicies = new ArrayList<>();

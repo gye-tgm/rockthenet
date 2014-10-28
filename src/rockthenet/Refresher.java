@@ -16,6 +16,7 @@ public class Refresher extends Thread {
     public Refresher(Refreshable refreshObject){
         this.refreshObject = refreshObject;
         this.setDaemon(true);
+        //TODO: Manchmal läuft der Thread weiter nach dem Schließen vom Programm
     }
 
     public void run(){
