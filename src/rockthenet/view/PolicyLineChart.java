@@ -26,7 +26,7 @@ public class PolicyLineChart {
         this.lineChart.getXAxis().setLabel("Time Unit");
         this.lineChart.getYAxis().setLabel("Bytes Per Sec");
 
-        this.lineChart.setTitle("Policy Thru Put");
+        //this.lineChart.setTitle("Policy Thru Put");
         this.lineChart.setCreateSymbols(false);
         this.lineChart.setAnimated(false);
     }
