@@ -15,6 +15,9 @@ import java.util.List;
  * <p>
  * It contains abstract data managers which can communicate with the actual firewall in various ways (ethernet,
  * filesystems, XML, JDBC, ...).
+ * <p>
+ * The class caches the policies of the firewall locally and the they get updated by calling the {@code
+ * refreshPolicies()} method.
  *
  * @author Gary Ye
  * @version 2014-10-29
@@ -50,16 +53,16 @@ public abstract class Firewall implements Refreshable {
     public abstract void refreshPolicies();
 
     /**
-     * Returns the name of the firewall, {@code name}
+     * Returns the name of the firewall.
      *
-     * @return the name of the firewall, {@code name}
+     * @return the name of the firewall.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Returns all policies it currently has. For getting the latest data, the {@code refreshPolicies()} method should
+     * Returns the cached policies. For getting the latest data, the {@code refreshPolicies()} method should
      * be called beforehand.
      *
      * @return the local policies as a list
@@ -69,7 +72,7 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Sets the local policies with the given list. Note that the old data will be overridden.
+     * Overrides the current cache of policies.
      *
      * @param policies the list of policies
      */
@@ -78,10 +81,10 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Returns the policy, which is stored locally, with the given id.
+     * Returns the cached policy of the given id.
      *
      * @param id the id of the wanted policy
-     * @return the policy with the given id or null if there is none.
+     * @return the policy with the given id or null if there is none in the cache.
      */
     public Policy getPolicy(Integer id) {
         for (Policy policy : policies)

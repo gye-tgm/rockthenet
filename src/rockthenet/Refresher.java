@@ -1,32 +1,41 @@
 package rockthenet;
 
-
-import rockthenet.Refreshable;
-
 /**
- * Created by Niko on 05/10/14.
+ * This class refreshes a refreshable object by calling their {@code refresh()} method.
+ * @author Nikolaus Schrack
+ * @author Gary Ye
+ * @version 2014-10-29
  */
 public class Refresher extends Thread {
     private Refreshable refreshObject;
+    private int refreshInterval;
 
     /**
-     *
+     * Constructs a new refresher.
      * @param refreshObject the object to refresh
+     * @param refreshInterval the interval to refresh in seconds
      */
-    public Refresher(Refreshable refreshObject){
+    public Refresher(Refreshable refreshObject, int refreshInterval){
         this.refreshObject = refreshObject;
-        this.setDaemon(true);
-        //TODO: Manchmal läuft der Thread weiter nach dem Schließen vom Programm
+        this.refreshInterval = refreshInterval;
     }
 
     public void run(){
         try{
             while(true){
                 refreshObject.refresh();
-                sleep(SessionSettings.getInstance().getRefreshInterval() * 1000);
+                sleep(refreshInterval);
             }
         }catch(InterruptedException e) {
             System.out.println("interrupted.");
         }
+    }
+
+    public void setRefreshInterval(int refreshInterval) {
+        this.refreshInterval = refreshInterval;
+    }
+
+    public int getRefreshInterval() {
+        return refreshInterval;
     }
 }
