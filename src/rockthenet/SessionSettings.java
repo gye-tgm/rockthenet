@@ -7,9 +7,10 @@ import rockthenet.firewall.Firewall;
  * (such as the firewall connected to, the configured refresh interval, ...)
  * 
  * @author Elias Frantar
- * @version 2014-10-22
+ * @version 2014-10-29
  */
 public class SessionSettings {
+	
 	/* this class is a Singleton */
 	private static SessionSettings sessionSettings = new SessionSettings();
 	private SessionSettings() {} // no instance should be created from outside
@@ -46,4 +47,5 @@ public class SessionSettings {
 	public Firewall getFirewall() { return firewall; }
 	public boolean getLoggedIn() { return loggedIn; }
 	public String getHost() { return host; }
+	
 }

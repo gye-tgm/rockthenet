@@ -12,16 +12,19 @@ import rockthenet.view.validation.EmailValidator;
 /**
  * The controller of the dialog to edit the application settings
  *
- * @author Samuel Schmidt, Elias Frantar
- * @version 2014-10-11
+ * @author Samuel Schmidt
+ * @author Elias Frantar
+ * @version 2014-10-29
  */
 public class SettingsDialogController{
 
+	/* fields mapped to FXML */
     @FXML
     private TextField email;
     @FXML
     private TextField refreshIntervall;
 
+    /* other state attributes */
     private Stage dialogStage;
     private boolean okClicked = false;
     
@@ -40,22 +43,23 @@ public class SettingsDialogController{
 
     /**
      * Sets the stage of this dialog.
-     *
-     * @param dialogStage
+     * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
 
     /**
-     * @return  true if the user clicked OK, false otherwise
+     * Returns if OK has been clicked.
+     * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
         return okClicked;
     }
 
     /**
-     * Called when the user clicks ok.
+     * Handles the OK-button click. <br>
+     * Called when the OK-button is pressed.
      */
     @FXML
     private void handleOk() {
@@ -89,11 +93,13 @@ public class SettingsDialogController{
     }
 
     /**
-     * Called when the user clicks cancel.
+     * Handles the Cancel-button click. <br>
+     * Called when the OK-button is pressed.
      */
     @FXML
     private void handleCancel() {
         dialogStage.close();
     }
+    
 }
 
