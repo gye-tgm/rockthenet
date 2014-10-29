@@ -2,7 +2,9 @@ package rockthenet.firewall;
 
 /**
  * The class represents a policy which is being used for configuring the firewalls.
+ * <p>
  * This policy class contains the basic properties a firewall should have.
+ *
  * @author Gary
  */
 public class Policy {
@@ -16,27 +18,28 @@ public class Policy {
     private Integer activeStatus;
     private String name;
 
-
     /**
-     * Default constructor of the policy
+     * Default constructor of the policy. Initializes the properties with the default values.
      */
-    public Policy(){
+    public Policy() {
         this(0, "N/A", "N/A", "N/A", "N/A", -1, -1, -1, "");
     }
 
     /**
-     * Constructs a policy with the given properties.
-     * @param id the id of the firewall policy, which every policy should have
-     * @param srcZone the source zone
-     * @param dstZone the destination zone
-     * @param srcAddress the source address
-     * @param dstAddress the destination address
-     * @param service the service of the policy as an integer
-     * @param action the action of the policy
+     * Constructs a policy with all properties of the firewall.
+     *
+     * @param id           the id of the firewall policy
+     * @param srcZone      the source zone
+     * @param dstZone      the destination zone
+     * @param srcAddress   the source address
+     * @param dstAddress   the destination address
+     * @param service      the service of the policy as an integer
+     * @param action       the action of the policy
      * @param activeStatus the active status
-     * @param name the name of the policy
+     * @param name         the name of the policy
      */
-    public Policy(Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service, Integer action, Integer activeStatus, String name) {
+    public Policy(Integer id, String srcZone, String dstZone, String srcAddress, String dstAddress, Integer service,
+                  Integer action, Integer activeStatus, String name) {
         this.id = id;
         this.srcZone = srcZone;
         this.dstZone = dstZone;
@@ -47,22 +50,22 @@ public class Policy {
         this.activeStatus = activeStatus;
         this.name = name;
     }
-    
+
     @Override
     public String toString() {
-    	StringBuilder s = new StringBuilder();
-    	
-    	s.append("id: \t\t" + id);
-    	s.append("\nname: \t\t" + name);
-    	s.append("\nsrcZone: \t" + srcZone);
-    	s.append("\ndstZone: \t" + dstZone);
-    	s.append("\nsrcAddress: \t" + srcAddress);
-    	s.append("\ndstAddress: \t" + dstAddress);
-    	s.append("\nservice: \t" + service);
-    	s.append("\naction: \t" + action);
-    	s.append("\nactiveStatus: \t" + activeStatus);
-    	
-    	return s.toString();
+        StringBuilder s = new StringBuilder();
+
+        s.append("id: \t\t").append(id).append('\n');
+        s.append("name: \t\t").append(name).append('\n');
+        s.append("srcZone: \t").append(srcZone).append('\n');
+        s.append("dstZone: \t").append(dstZone).append('\n');
+        s.append("srcAddress: \t").append(srcAddress).append('\n');
+        s.append("dstAddress: \t").append(dstAddress).append('\n');
+        s.append("service: \t").append(service).append('\n');
+        s.append("action: \t").append(action).append('\n');
+        s.append("activeStatus: \t").append(activeStatus).append('\n');
+
+        return s.toString();
     }
 
     public Integer getId() {

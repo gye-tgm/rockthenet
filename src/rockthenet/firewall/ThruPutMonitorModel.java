@@ -1,51 +1,63 @@
 package rockthenet.firewall;
 
+import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The Thru Put Monitor model is a class, which manages the thru put of all the polices. It retrieves
- * the thru put of every policy in the firewall and saves them in a history.
+ * The ThruPut Monitor model is a special class that manages the thruput of a JNS5GT firewall.
+ * It retrieves the thruput of every policy in the firewall and stores them in a history list.
+ *
+ * This class does not optimize any memory consumption and consequently the memory usage can be high after a long usage.
+ *
  * @author Gary Ye
+ * @version 2014-10-29
  */
 public class ThruPutMonitorModel {
-    // The data source
-    private Firewall firewall;
-    // Number of updates currently
+    private JNS5GTFirewall firewall;
     private int updateCount;
-    // The history of the policies thru puts
     private HashMap<Integer, ArrayList<ThruPutData>> history;
 
     /**
-     * Constructs a new object with the given firewall.
+     * Constructs a new model with the given firewall.
+     *
      * @param firewall the firewall from which the thru put and polices are retrieved
      */
-    public ThruPutMonitorModel(Firewall firewall) {
+    public ThruPutMonitorModel(JNS5GTFirewall firewall) {
         this.firewall = firewall;
         this.history = new HashMap<>();
     }
 
     /**
-     * Refreshing means, adding the thru puts of all firewall polices to the history.
+     * Refreshes the firewall. In this context refreshing means retrieving the thruput of the polices that
+     * are currently cached in the firewall.
      */
     public void refresh() {
-        /* TODO: The firewall refresh takes too long */
-        //firewall.refreshPolicies();
         for (Policy policy : firewall.getPolicies()) {
-            if(!history.containsKey(policy.getId()))
+            // We first check if the policy is already known, if not, we initialize a list in the hash map.
+            if (!history.containsKey(policy.getId()))
                 history.put(policy.getId(), new ArrayList<>());
-            history.get(policy.getId()).add(new ThruPutData(updateCount, ((JNS5GTPolicy)policy).getThruPut()));
+            history.get(policy.getId()).add(new ThruPutData(updateCount, ((JNS5GTPolicy) policy).getThruPut()));
         }
         updateCount++;
     }
 
+    /**
+     * Returns the update count.
+     * @return the update count.
+     */
     public int getUpdateCount() {
         return updateCount;
     }
 
-    public ArrayList<ThruPutData> getPolicyHistory(int id) {
+    /**
+     * Returns the thruput data of the policy with the given id
+     * @param id the id of the policy from which the thruput data should be retrieved
+     * @return the thruput data of policy with the given id
+     */
+    public ArrayList<ThruPutData> getPolicyHistory(Integer id) {
         return history.get(id);
     }
 }

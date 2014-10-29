@@ -104,7 +104,8 @@ public class Controller implements Refreshable{
         TableColumn<PolicyRow, Integer> action = new TableColumn<>("Action");
         TableColumn<PolicyRow, Integer> activeStatus = new TableColumn<>("Enabled");
         
-        tableView.getColumns().setAll(lineChartEnabled, id, name, srcZone, dstZone, srcAddress, dstAddress, service, action, activeStatus);
+        tableView.getColumns().setAll(lineChartEnabled, id, name, srcZone, dstZone, srcAddress, dstAddress, service,
+                action, activeStatus);
 
         lineChartEnabled.setCellValueFactory(new PropertyValueFactory<PolicyRow, Boolean>("lineChartEnabled"));
         lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
@@ -185,7 +186,7 @@ public class Controller implements Refreshable{
         
         try {
         	session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection(address, port, communityName, securityName)), null));
-            monitorModel = new ThruPutMonitorModel(session.getFirewall());
+            monitorModel = new ThruPutMonitorModel( (JNS5GTFirewall) session.getFirewall());
             (new Refresher(this)).start();
             newRule.setDisable(false);
             session.setHost(address);
@@ -216,7 +217,7 @@ public class Controller implements Refreshable{
         
         try {
             session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv3Connection(address, port, username, authentificationPassword, securityPassword)), null));
-            monitorModel = new ThruPutMonitorModel(session.getFirewall());
+            monitorModel = new ThruPutMonitorModel( (JNS5GTFirewall) session.getFirewall());
             (new Refresher(this)).start();
             newRule.setDisable(false);
             session.setHost(address);
@@ -375,9 +376,7 @@ public class Controller implements Refreshable{
     {
         int[] ret = new int[integers.size()];
         for (int i=0; i < ret.length; i++)
-        {
-            ret[i] = integers.get(i).intValue();
-        }
+            ret[i] = integers.get(i);
         return ret;
     }
     
