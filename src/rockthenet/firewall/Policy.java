@@ -6,6 +6,7 @@ package rockthenet.firewall;
  * This policy class contains the basic properties a firewall should have.
  *
  * @author Gary
+ * @version 2014-10-29
  */
 public class Policy {
     private Integer id;

@@ -5,24 +5,45 @@ import net.percederberg.mibble.value.ObjectIdentifierValue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
+ * Every variable in the MIB is associated with an OID. This OID is a dot separated sequence of integers, which is
+ * very hard to remember. Thus this class offers a way to translate them by loading the definitions from a MIB file.
+ * <p>
+ * The A language is the human readable variable name while the B language is the OID.
+ *
  * @author Gary Ye
+ * @version 2014-10-29
  */
 public class VariableToOidDictionary extends BidirectionalDictionary<String, String> {
-    public VariableToOidDictionary(){}
+    /**
+     * Constructs an empty variable to oid dictionary.
+     */
+    public VariableToOidDictionary() {
+    }
+
+    /**
+     * Constructs a dictionary which content is based on the given file.
+     *
+     * @param filename the name of the file
+     */
     public VariableToOidDictionary(String filename) throws IOException, MibLoaderException {
         load(new File(filename));
     }
+
+    /**
+     * Loads the content of the mib file in to the dictionary.
+     *
+     * @param file the mib file
+     * @throws IOException        will be thrown if loading was unsuccessful
+     * @throws MibLoaderException will be thrown if loading the mib was unsuccessful
+     */
     public void load(File file) throws IOException, MibLoaderException {
         MibLoader mibLoader = new MibLoader();
         mibLoader.addDir(file.getParentFile());
         Mib mib = mibLoader.load(file);
-        Iterator iter = mib.getAllSymbols().iterator();
-        while(iter.hasNext()){
-            MibSymbol symbol = (MibSymbol) iter.next();
+        for (Object o : mib.getAllSymbols()) {
+            MibSymbol symbol = (MibSymbol) o;
             MibValue value = extractOid(symbol);
             if (value != null) {
                 a2b.put(symbol.getName(), value.toString());
@@ -31,7 +52,13 @@ public class VariableToOidDictionary extends BidirectionalDictionary<String, Str
         transfera2b();
     }
 
-    public ObjectIdentifierValue extractOid(MibSymbol symbol) {
+    /**
+     * Extracts the
+     *
+     * @param symbol
+     * @return
+     */
+    private ObjectIdentifierValue extractOid(MibSymbol symbol) {
         MibValue value;
 
         if (symbol instanceof MibValueSymbol) {
@@ -43,10 +70,12 @@ public class VariableToOidDictionary extends BidirectionalDictionary<String, Str
         return null;
     }
 
-    public String getVariableToOid(String name){
+    // Wrapper methods
+    public String getVariableToOid(String name) {
         return getA2BDefinition(name);
     }
-    public String getOidToVariable(String name){
+
+    public String getOidToVariable(String name) {
         return getB2ADefinition(name);
     }
 }

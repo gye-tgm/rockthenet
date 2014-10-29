@@ -3,7 +3,7 @@ package rockthenet.datamanagement.snmp;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ssh.SSHConnection;
 import rockthenet.datamanagement.IDataWriter;
-import rockthenet.dictionaries.JNS5GTValuesToEnglishDictionary;
+import rockthenet.dictionaries.JNS5GTServiceToNumber;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 /**
@@ -63,7 +63,7 @@ public class JNS5GTWriter implements IDataWriter {
      */
     public static String getSetCommand(JNS5GTPolicy policy){
         // policy get action using dictionary!
-        JNS5GTValuesToEnglishDictionary a = new JNS5GTValuesToEnglishDictionary();
+        JNS5GTServiceToNumber a = new JNS5GTServiceToNumber();
         return String.format("set policy id %d name \"%s\" from %s to %s %s %s %s %s",
                 policy.getId(), policy.getName(), policy.getSrcZone(), policy.getDstZone(),
                 policy.getSrcAddress(), policy.getDstAddress(), a.getB2ADefinition(policy.getService()), policy.getAction() == 0 ? "deny" : "permit"

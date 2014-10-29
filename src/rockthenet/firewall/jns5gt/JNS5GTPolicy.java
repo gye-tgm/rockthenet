@@ -8,6 +8,7 @@ import rockthenet.firewall.Policy;
  * It contains {@code thruPut}, given in bytes per second, which other firewalls might not have.
  *
  * @author Gary Ye
+ * @version 2014-10-29
  */
 public class JNS5GTPolicy extends Policy {
     protected Integer thruPut;
