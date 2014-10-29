@@ -1,4 +1,4 @@
-package rockthenet.firewall;
+package rockthenet.firewall.jns5gt;
 
 /**
  * The class is used for saving the history of the thru put of the policies. With

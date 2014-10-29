@@ -6,7 +6,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
@@ -25,11 +24,10 @@ import rockthenet.datamanagement.snmp.JNS5GTRetriever;
 import rockthenet.datamanagement.snmp.JNS5GTWriter;
 import rockthenet.firewall.Firewall;
 import rockthenet.firewall.Policy;
-import rockthenet.firewall.ThruPutMonitorModel;
+import rockthenet.firewall.jns5gt.ThruPutMonitorModel;
 import rockthenet.firewall.jns5gt.JNS5GTFirewall;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
-import java.awt.event.ActionEvent;
 import java.util.*;
 
 import static org.mockito.Mockito.mock;
