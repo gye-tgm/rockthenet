@@ -84,7 +84,7 @@ public class JNS5GTWriterTest {
         assertEquals(expected, returned);
     }
 
-    // @Ignore
+    @Ignore
     @Test
     public void test1000Command() throws ConnectionException {
         JNS5GTWriter jns5GTWriter = new JNS5GTWriter(new SSHConnection("10.0.100.10", "5ahit", "Waeng7ohch8o"));
