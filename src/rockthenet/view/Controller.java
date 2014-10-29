@@ -34,12 +34,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- *
- * @author Samuel Schmidt, Elias Frantar
- * @version 2014-10-11
+ * This is the control class of the main GUI-frame.
+ * 
+ * @author Samuel Schmidt
+ * @author Elias Frantar
+ * @author Nikolaus  Schrack
+ * @version 2014-10-29
  */
 @SuppressWarnings("unchecked")
 public class Controller implements Refreshable{
+	
+	/* fields mapped to FXML */
     @FXML
     private MenuItem settings;
     @FXML
@@ -61,25 +66,28 @@ public class Controller implements Refreshable{
     private Button newRule;
     @FXML
     private TableView<PolicyRow> tableView;
-    private ObservableList<PolicyRow> policies;
+    
+    /* other attributes */
+    private ObservableList<PolicyRow> policies; // data model for the table
+    private HashMap<Integer,PolicyRow> policy; // maps ids to their corresponding policies
 
-    private HashMap<Integer,PolicyRow> policy;
-
+    /* line chart */
     private PolicyLineChart policyLineChart;
     private ThruPutMonitorModel monitorModel;
 
     private Main main;
     private SessionSettings session;
-    private List<Integer> selected;
+    private List<Integer> selected; // selected rules
 
 	@FXML
     private void initialize() {
 		session = SessionSettings.getInstance(); // start a new session
 
+		/* configure the image of the refresh-button */
         Image image = new Image(getClass().getResourceAsStream("../resources/refresh-icon.png"));
         refreshButton.setGraphic(new ImageView(image));
 
-        selected = new ArrayList<>();
+        selected = new ArrayList<>(); // per default there are no rules selected
         
         /* initialize the table */
         policies = FXCollections.observableArrayList();
@@ -89,9 +97,7 @@ public class Controller implements Refreshable{
         
         /* create columns */
         TableColumn<PolicyRow, Boolean> lineChartEnabled = new TableColumn<>("LineChart");
-        //lineChartEnabled.setStyle("-fx-alignment: CENTER-LEFT;");
         TableColumn<PolicyRow, Integer> id = new TableColumn<>("Id");
-        //id.setStyle("-fx-alignment: CENTER;");
         TableColumn<PolicyRow, String>  name = new TableColumn<>("Name");
         TableColumn<PolicyRow, String>  srcZone = new TableColumn<>("Source-Zone");
         TableColumn<PolicyRow, String>  dstZone = new TableColumn<>("Destination-Zone");
@@ -105,6 +111,7 @@ public class Controller implements Refreshable{
         tableView.getColumns().setAll(lineChartEnabled, id, name, srcZone, dstZone, srcAddress, dstAddress, service,
                 action, activeStatus);
 
+        /* configure as CheckBoxCells */
         lineChartEnabled.setCellValueFactory(new PropertyValueFactory<PolicyRow, Boolean>("lineChartEnabled"));
         lineChartEnabled.setCellFactory(CheckBoxTableCell.forTableColumn(lineChartEnabled));
         lineChartEnabled.setEditable(true);
@@ -119,8 +126,9 @@ public class Controller implements Refreshable{
         action.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("action"));
         activeStatus.setCellValueFactory(new PropertyValueFactory<PolicyRow, Integer>("activeStatus"));
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // dynamically resize the columns
 
+        /* apply action-handlers to all buttons */
         newConnection.setOnAction((event) -> newConnectionDialog());
         newConnectionV3.setOnAction((event) -> newConnectionDialogV3());
         settings.setOnAction((event) -> settingsDialog());
@@ -131,6 +139,7 @@ public class Controller implements Refreshable{
         
         policyLineChart = new PolicyLineChart(lineChart);
 
+        /* add a context-menu to all row in the table */
         tableView.setRowFactory(
                 tableView -> {
                     final TableRow<PolicyRow> row = new TableRow<>();
@@ -153,6 +162,14 @@ public class Controller implements Refreshable{
 	
 	/* methods for establishing connections */
 
+	/**
+	 * Tries to establish a new SSH-connection. <br>
+	 * Shows an error-dialog if failing.
+	 * 
+	 * @param username the username to use for connecting
+	 * @param password the corresponding password
+	 * @return true if a connection could be successfully established; false otherwise
+	 */
     protected boolean establishSSHConnection(String username, String password) {
         try {
         	session.getFirewall().setDataWriter(new JNS5GTWriter(new SSHConnection(session.getHost(), username, password)));
@@ -170,6 +187,16 @@ public class Controller implements Refreshable{
         }
     }
 
+    /**
+	 * Tries to establish a new SNMPv2c-connection. <br>
+	 * Shows an error-dialog if failing.
+	 * 
+	 * @param address the address to connect to
+	 * @param port the port to connect to
+	 * @param communityName the community to connect to
+	 * @param securityName the corresponding security-name
+	 * @return true if a connection could be successfully established; false otherwise
+	 */
     protected boolean establishConnectionV2(String address, int port, String communityName, String securityName) {
         policies.clear();
 
@@ -201,6 +228,17 @@ public class Controller implements Refreshable{
         }
     }
     
+    /**
+	 * Tries to establish a new SNMPv3-connection. <br>
+	 * Shows an error-dialog if failing.
+	 * 
+	 * @param address the address to connect to
+	 * @param port the port to connect to
+	 * @param username the username to use for connecting
+	 * @param authentificationPassword the corresponding authentificationPassword
+	 * @param securityPassword the corresponding securityPassword
+	 * @return true if a connection could be successfully established; false otherwise
+	 */
     protected boolean establishConnectionV3(String address, int port, String username, String authentificationPassword, String securityPassword) {
     	policies.clear();
         
@@ -235,6 +273,10 @@ public class Controller implements Refreshable{
     
     /* methods for adding, removing and updating rules */
     
+    /**
+     * Deletes the given rule on the firewall.
+     * @param tableRow the rule to delete (as row from the table)
+     */
     private void removeRule(PolicyRow tableRow) {
         if (!session.getLoggedIn())
             if (!main.showSSHConnectionDialog())
@@ -246,11 +288,37 @@ public class Controller implements Refreshable{
         refresh(); // refresh the GUI to remove the rule
     }
 
+    /**
+     * Creates a new rule on the firewall with the values specified as parameters:
+     * 
+     * @param id
+     * @param name
+     * @param sourceZone
+     * @param destinationZone
+     * @param sourceAddress
+     * @param destinationAddress
+     * @param service
+     * @param action
+     * @param enabled
+     */
     protected void newRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {	
     	session.getFirewall().addPolicy(new JNS5GTPolicy(id, sourceZone, destinationZone, sourceAddress, destinationAddress, service, action, enabled, name));
         refresh();
     }
     
+    /**
+     * Updates rule on the firewall with the values specified as parameters:
+     * 
+     * @param id the id of the rule to update
+     * @param name
+     * @param sourceZone
+     * @param destinationZone
+     * @param sourceAddress
+     * @param destinationAddress
+     * @param service
+     * @param action
+     * @param enabled
+     */
     protected void updateRule(int id, String name, String sourceZone, String destinationZone, String sourceAddress, String destinationAddress, Integer service, Integer action, Integer enabled) {
     	Policy old = new JNS5GTPolicy();
     	old.setId(id);
@@ -262,12 +330,18 @@ public class Controller implements Refreshable{
     
     /* button handlers */
     
+    /**
+     * Handles the click-event of the refresh-button
+     */
     private void refreshButtonPressed(){
         if (policies.size() > 0) { // doens't do anything when there are no policies
             buttonThread();
         }
     }
 
+    /**
+     * Starts a new refresh-Thread
+     */
     private void buttonThread(){
         Thread a = new Thread(new Runnable() {
             public void run() {
@@ -275,12 +349,13 @@ public class Controller implements Refreshable{
             }
 
         });
-        a.setDaemon(true);
+        a.setDaemon(true); // TODO: remove this to fix previously reported issue?
         a.start();
-
     }
 
-
+    /**
+     * Handles the click-event of the newRule-button
+     */
     private void newRuleButtonPressed() {
         if (!session.getLoggedIn())
             if (!main.showSSHConnectionDialog())
@@ -289,6 +364,9 @@ public class Controller implements Refreshable{
     	newRuleDialog();
     }
     
+    /**
+     * Handles the click-event of the editRule-button
+     */
     private void editButtonPressed(PolicyRow policy) {
         if (!session.getLoggedIn())
             if (!main.showSSHConnectionDialog())
@@ -352,6 +430,9 @@ public class Controller implements Refreshable{
         });
     }
 
+    /**
+     * Sets up the refreshing of the line-chart by fetching the current data from the firewall
+     */
     protected void refreshLineChartPre(){
         for (PolicyRow row : policy.values()) {
             if (row.getLineChartEnabled()){
@@ -361,6 +442,9 @@ public class Controller implements Refreshable{
         monitorModel.refresh();
     }
 
+    /**
+     * Redraws the line-chart
+     */
     protected void refreshLineChart() {
         policyLineChart.clean();
         policyLineChart.addPolicies(monitorModel, convertIntegers(selected), session.getFirewall());
@@ -378,19 +462,24 @@ public class Controller implements Refreshable{
         return ret;
     }
     
-    
+    /* simple Getters and Setters; no documentation necessary */
     public void setMain(Main main) { this.main = main; }
     
-    /* methods for showing the dialogs */
+    /* methods for showing the dialogs; no documentation necessary */
     private void settingsDialog() { main.showSettingsDialog(); }
     private void aboutDialog() { main.showAboutDialog(); }
     private void newConnectionDialog() { main.showNewConnectionDialog(); }
     private void newConnectionDialogV3() { main.showNewConnectionDialogV3(); }
     private void newRuleDialog() { main.showNewRuleDialog(); }
     private void editRuleDialog(PolicyRow policy) { main.showEditRuleDialog(policy); }
-    private void newSSHConnectionDialog() { main.showSSHConnectionDialog(); }
-    
 
+    /**
+     * Creates a mocked test-firewall.
+     * 
+     * <p><b>For testing only!</b>
+     * @return a fully initialized mocked test-firewall
+     */
+    @SuppressWarnings("unused")
     private Firewall getTestFirewall(){
         Firewall firewall = mock(Firewall.class);
         ArrayList<Policy> testPolicies = new ArrayList<>();
@@ -426,4 +515,5 @@ public class Controller implements Refreshable{
         when(firewall.getPolicy(2)).thenReturn(policy2);
         return firewall;
     }
+    
 }
