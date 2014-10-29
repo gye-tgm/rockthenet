@@ -1,16 +1,23 @@
 package rockthenet.firewall;
 
+import rockthenet.Refreshable;
 import rockthenet.datamanagement.IDataRetriever;
 import rockthenet.datamanagement.IDataWriter;
 
-import javax.security.auth.Refreshable;
 import java.util.List;
 
 /**
- * This is an abstract class for managing the various types of firewalls. The firewall can be either
- * virtual or an appliance and using this class one should be able to communicate the firewall.
+ * This is an abstract class for managing various types of firewalls. The firewall can be either virtual or tangible and
+ * by using this class one should be able to communicate with the firewall.
+ * <p>
+ * When designing a class for a firewall, this class should be extended since it offers the must have methods of every
+ * firewall.
+ * <p>
+ * It contains abstract data managers which can communicate with the actual firewall in various ways (ethernet,
+ * filesystems, XML, JDBC, ...).
  *
  * @author Gary Ye
+ * @version 2014-10-29
  */
 public abstract class Firewall implements Refreshable {
     protected List<Policy> policies;
@@ -37,22 +44,23 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Refresh all policies by loading the data from the connected firewall.
+     * Refreshes all policies by loading the data from the connected firewall. This method is supposed to store the
+     * loaded data to {@code policies}.
      */
     public abstract void refreshPolicies();
 
     /**
-     * Return the name of the firewall.
+     * Returns the name of the firewall, {@code name}
      *
-     * @return the name of the firewall
+     * @return the name of the firewall, {@code name}
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Return all policies it currently has. For getting the latest data, the
-     * refreshPolicies method should be called before this method is called.
+     * Returns all policies it currently has. For getting the latest data, the {@code refreshPolicies()} method should
+     * be called beforehand.
      *
      * @return the local policies as a list
      */
@@ -61,7 +69,7 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Sets all policies with the given list.
+     * Sets the local policies with the given list. Note that the old data will be overridden.
      *
      * @param policies the list of policies
      */
@@ -70,10 +78,10 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Returns the policy with the given id
+     * Returns the policy, which is stored locally, with the given id.
      *
      * @param id the id of the wanted policy
-     * @return the policy with the given id
+     * @return the policy with the given id or null if there is none.
      */
     public Policy getPolicy(Integer id) {
         for (Policy policy : policies)
@@ -101,21 +109,21 @@ public abstract class Firewall implements Refreshable {
     }
 
     /**
-     * Deletes the given policy from the firewall.
+     * Remotely deletes the given policy from the firewall.
      *
      * @param policy the policy to delete
      */
     public abstract void deletePolicy(Policy policy);
 
     /**
-     * Adds the given policy to the firewall.
+     * Remotely adds the given policy to the firewall.
      *
      * @param policy the policy to add
      */
     public abstract void addPolicy(Policy policy);
 
     /**
-     * Updates the old policy with the new one.
+     * Remotely updates the old policy with the new one.
      *
      * @param oldPolicy the policy to update
      * @param newPolicy the new value of the policy
