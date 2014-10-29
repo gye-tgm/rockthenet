@@ -4,8 +4,11 @@ import javafx.beans.property.*;
 import rockthenet.firewall.Policy;
 
 /**
- * Model for ObservableList for use in the TableView
- * Created by Samuel on 06.10.2014.
+ * The data-model for a row of the policy-table
+ * 
+ * @author Samuel Schmidt
+ * @author Elias Frantar
+ * @version 2014-10-29
  */
 public class PolicyRow {
     private BooleanProperty lineChartEnabled;
@@ -20,9 +23,8 @@ public class PolicyRow {
     private StringProperty name;
 
     /**
-     * Turns a Policy into a PolicyRow, usable in OberservableList
-     *
-     * @param policy
+     * Transforms a {@link Policy} into a policy-row
+     * @param policy the policy to convert to a row
      */
     public PolicyRow(Policy policy) {
         lineChartEnabled = new SimpleBooleanProperty(false);
@@ -35,14 +37,6 @@ public class PolicyRow {
         action = new SimpleIntegerProperty(policy.getAction());
         activeStatus = new SimpleIntegerProperty(policy.getActiveStatus());
         name = new SimpleStringProperty(policy.getName());
-    }
-    
-    @Override
-    public boolean equals(Object o) { // TODO: implement save equals
-    	if (!(o instanceof Policy))
-    		return false;
-    	
-    	return id.equals(((Policy) o).getId());
     }
 
     /* Getters */

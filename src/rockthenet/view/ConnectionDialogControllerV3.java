@@ -8,9 +8,15 @@ import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
 /**
- * Created by Samuel on 09.10.2014.
+ * The controller of the dialog to establish a connection via the SNMPv3 protocol
+ *
+ * @author Samuel Schmidt
+ * @author Elias Frantar
+ * @version 2014-10-29
  */
 public class ConnectionDialogControllerV3 {
+	
+	/* fields mapped to FXML */
     @FXML
     private TextField addressV3;
     @FXML
@@ -22,33 +28,36 @@ public class ConnectionDialogControllerV3 {
     @FXML
     private PasswordField securityPassword;
 
+    /* other state attributes */
     private Controller controller;
     private Stage dialogStage;
     private boolean okClicked = false;
 
     /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
+     * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
     private void initialize() { }
 
     /**
      * Sets the stage of this dialog.
+     * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
 
     /**
-     * Returns true if the user clicked OK, false otherwise.
+     * Returns if OK has been clicked.
+     * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
         return okClicked;
     }
 
     /**
-     * Called when the user clicks ok.
+     * Handles the OK-button click. <br>
+     * Called when the OK-button is pressed.
      */
     @FXML
     private void handleOk() {
@@ -61,7 +70,8 @@ public class ConnectionDialogControllerV3 {
     }
 
     /**
-     * Called when the user clicks cancel.
+     * Handles the Cancel-button click. <br>
+     * Called when the OK-button is pressed.
      */
     @FXML
     private void handleCancel() {
@@ -69,9 +79,10 @@ public class ConnectionDialogControllerV3 {
     }
 
     /**
-     * Validates the user input in the text fields.
-     *
-     * @return true if the input is valid
+     * Validates the user's input of all input fields.
+     * <p> Shows an error dialog mentioning the invalid fields in case of input errors.
+     * 
+     * @return true if the input is valid; false otherwise
      */
     private boolean isInputValid() {
     	String errorMessage = "";
@@ -107,7 +118,7 @@ public class ConnectionDialogControllerV3 {
         return true;
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
+    /* simple Getters and Setters; no documentation necessary */
+    public void setController(Controller controller) { this.controller = controller; }
+    
 }
