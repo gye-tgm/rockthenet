@@ -480,8 +480,8 @@ And for coverage wrap the junit task with a \textit{$<$jacoco:coverage$>$} tag. 
 \subsection{Multicast Connection}
 
 Multicast connection couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
-
-That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
+\\\\
+In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
 
 \begin{lstlisting}
 java.net.SocketException: Can't assign requested address
@@ -499,6 +499,8 @@ at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.ja
 at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
 at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 \end{lstlisting}
+
+That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
 
 \nocite{*}
 \bibliographystyle{plain}
