@@ -288,7 +288,7 @@ Testing was categorized in three sub categories:
 
 \begin{itemize}
 	\item Unit Tests
-	\item Exception Handling
+	%\item Exception Handling
 	\item Graphical User Interface Tests
 \end{itemize}
 
@@ -303,12 +303,13 @@ The tests of the \lstinline|view| package have zero coverage because it was test
 % \subsection{Exception Handling}
 % TODO: You are never strong enough that you don't need help.”  ― César Chávez
 \subsection{GUI Test}
-% TODO: NIKO?
+Refer to section \ref{subsec:testfx}.
 
 \section{Occurred problems}
 \label{sec:problems}
 
 \subsection{TestFX}
+\label{subsec:testfx}
 
 We tried to use the tool “TestFX” which seemed easy-to-use at first. Unfortunately we couldn’t figure out how the starting of the GUI worked. In TextFx you start the GUI and then tell the mouse/keyboard what to do.
 The test class has to extend from org.loadui.testfx.GuiTest. Then you need to override the method getRootNode which returns a javafx.scene.Parent. All the GUI elements in javafx return such Parent but we didn’t know where to start from that. The main application couldn’t be started. 
