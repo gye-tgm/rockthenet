@@ -7,5 +7,13 @@ Developed by an outstanding team:
 * Nikolaus Schrack
 * Gary Ye
 
-
 Check the documentation out in the doc/ directory. The CI server can be found under http://148.251.5.105
+
+Also read the javadoc in the javadoc/ directory. 
+
+This project uses ant is the build tool. 
+The important tasks of the ant build script are listed here:
+
+* run-gui starts the program with the graphical user interface
+* compile compiles the program
+* test starts the unit tests of the application; additionally a JaCoCo test report will be created as an .exec file. 

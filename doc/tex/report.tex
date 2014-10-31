@@ -273,6 +273,12 @@ For starting up the program one does only need to have the build tool \textit{an
 
 The important tasks of the ant build script is listed here:
 
+\begin{itemize}
+	\item \textit{run-gui} starts the program with the graphical user interface
+	\item \textit{compile} compiles the program
+	\item \textit{test} starts the unit tests of the application; additionally a JaCoCo test report will be created as an .exec file. 
+\end{itemize}
+
 \section{Test report}
 
 Testing was categorized in three sub categories:
@@ -334,12 +340,6 @@ at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 \end{lstlisting}
 
 That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
-
-
-
-
-
-
 
 \newpage
 
