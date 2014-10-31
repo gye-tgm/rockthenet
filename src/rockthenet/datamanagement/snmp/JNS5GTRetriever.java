@@ -4,10 +4,9 @@ import net.percederberg.mibble.MibLoaderException;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
-import rockthenet.MibHelper;
 import rockthenet.connections.ConnectionException;
-import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.connections.ReadConnection;
+import rockthenet.connections.snmp.SNMPConnectionFactory;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;
 
 import java.io.IOException;
@@ -18,13 +17,16 @@ import java.util.List;
 
 /**
  * This is the JNS5GT retriever which retrieves the data by using SNMP protocol.
+ *
  * @author Gary Ye
  */
 public class JNS5GTRetriever extends SnmpRetriever {
     private ReadConnection readConnection;
+    private final static String POLICY_ROOT_OID = "1.3.6.1.4.1.3224.10";
 
     /**
      * Constructs a new retriever for the JNS5GT firewall appliance.
+     *
      * @param readConnection the read connection; specifies which firewall to connect to.
      * @throws ConnectionException
      * @throws IOException
@@ -34,40 +36,45 @@ public class JNS5GTRetriever extends SnmpRetriever {
         super("res/asn1-3224-mibs/NETSCREEN-POLICY-MIB.mib");
         this.readConnection = readConnection;
     }
+
     /**
      * Constructs a new retriever for the JNS5GT appliance by building an SNMP connection with
      * the given connection data.
-     * @param address the address of the firewall appliance
-     * @param port the port number of the firewall appliance
+     *
+     * @param address       the address of the firewall appliance
+     * @param port          the port number of the firewall appliance
      * @param readCommunity the read community
      */
-    public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException, IOException, MibLoaderException {
+    public JNS5GTRetriever(String address, int port, String readCommunity) throws ConnectionException, IOException,
+            MibLoaderException {
         // TODO: Fall back to Snmp2 if Snmp3 does not work; this should be considered in the ConnectionFactory or here
-        this(SNMPConnectionFactory.createSNMPv2cConnection(address, port, readCommunity, readCommunity)); // TODO: communityName != securityName
+        this(SNMPConnectionFactory.createSNMPv2cConnection(address, port, readCommunity,
+                readCommunity)); // TODO: communityName != securityName
     }
 
     /**
      * Retrieves all policies from the firewall, to which a connection has been established.
+     *
      * @return the policies retrieved from the firewall (it can be empty)
      */
-    public List<JNS5GTPolicy> retrievePolicies(){
+    public List<JNS5GTPolicy> retrievePolicies() {
         HashMap<Integer, JNS5GTPolicy> policies = new HashMap<>();
         try {
-            VariableBinding[] variableBindings = readConnection.getTable("1.3.6.1.4.1.3224.10");
+            VariableBinding[] variableBindings = readConnection.getTable(POLICY_ROOT_OID);
             // TODO: nsPlyTable was old
-            for(int i = 0; i < variableBindings.length; i++){
+            for (int i = 0; i < variableBindings.length; i++) {
                 // We first retrieve the id of the rule
                 int[] arr = variableBindings[i].getOid().toIntArray();
                 Integer id = arr[arr.length - 2];
                 String oidString = dictionary.getOidToVariable(new OID(Arrays.copyOf(arr, arr.length - 2)).toString());
                 // Then put it into the hashmap if not already done.
-                if(!policies.containsKey(id)) {
+                if (!policies.containsKey(id)) {
                     policies.put(id, new JNS5GTPolicy());
                 }
                 // Now we have a reference to the policy that we want to change the value(s)
                 JNS5GTPolicy policy = policies.get(id);
                 Variable variable = variableBindings[i].getVariable();
-                switch(oidString){
+                switch (oidString) {
                     case "nsPlyId":
                         policy.setId(variable.toInt());
                         break;
@@ -110,7 +117,7 @@ public class JNS5GTRetriever extends SnmpRetriever {
 
     @Override
     public Object get(String variableName) {
-        switch (variableName){
+        switch (variableName) {
             case "policies":
                 return retrievePolicies();
             default:

@@ -53,10 +53,10 @@ public class VariableToOidDictionary extends BidirectionalDictionary<String, Str
     }
 
     /**
-     * Extracts the
+     * Extracts the OID from the given MIBSymbol
      *
-     * @param symbol
-     * @return
+     * @param symbol the symbol to extract
+     * @return the OID from the symbol
      */
     private ObjectIdentifierValue extractOid(MibSymbol symbol) {
         MibValue value;
