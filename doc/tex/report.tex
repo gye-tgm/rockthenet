@@ -106,6 +106,8 @@ Advanced tasks will only be considered if the basic tasks are fulfilled for the 
 
 The time spent for each task can be derived from the next section.
 
+\vspace{10pt}
+
 \begin{tabular} {| l | c | c | c |} \hline
 Task &	Original Estimate  \\ \hline
 Preparation for the Tasks &	20 \\ \hline
@@ -274,7 +276,7 @@ Crossed out ones did not fully work and therefore are not included in the final 
 
 For starting up the program one does only need to have the build tool \textit{ant}. 
 
-The important tasks of the ant build script is listed here:
+The important tasks of the ant build script are listed here:
 
 \begin{itemize}
 	\item \textit{run-gui} starts the program with the graphical user interface
@@ -284,11 +286,10 @@ The important tasks of the ant build script is listed here:
 
 \section{Test report}
 
-Testing was categorized in three sub categories:
+Testing was categorized in two sub categories:
 
 \begin{itemize}
-	\item Unit Tests
-	%\item Exception Handling
+	\item Unit Tests (reproduceable with \textit{ant test})
 	\item Graphical User Interface Tests
 \end{itemize}
 
@@ -296,17 +297,21 @@ Testing was categorized in three sub categories:
 
 Unit tests were mainly done in the model classes. The following figure is a snippet of the latest coverage report (October 31st) created in Jenkins. 
 
+\vspace{10pt}
 \includegraphics[width=\textwidth]{images/coverage}
+\vspace{10pt}
 
 The tests of the \lstinline|view| package have zero coverage because it was tested in a different way. Some of the packages also have zero coverage due to very simple get and set methods, which are unnecessary to test.  
 
 % \subsection{Exception Handling}
 % TODO: You are never strong enough that you don't need help.”  ― César Chávez
 \subsection{GUI Test}
-Refer to section \ref{subsec:testfx}.
+
+For some reasons automated GUI-testing did not work (see section~  \ref{subsec:testfx}).
 
 \section{Occurred problems}
 \label{sec:problems}
+
 
 \subsection{TestFX}
 \label{subsec:testfx}
@@ -336,7 +341,6 @@ public class LoginTest extends GuiTest
 \end{lstlisting}
 
 Although it looks very easy we weren’t able to start the GUI in the test in the first place. 
-
 \subsection{Multicast Connection}
 
 Multicast connections couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
@@ -370,7 +374,7 @@ at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.jav
 at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 \end{lstlisting}
 
-The code did not work on neither OSX- or Windows-PCs. It did work on Linux though, but only on the local machine. In fact is was not even possible to manually establish a working multicast-connection over multiple computers in the same network. After wasting quite a lot of time, we decided to shift or priorities in the remaining time to other tasks that could still be implemented.
+The code did not work on neither OSX- or Windows-PCs. It did work on Linux though, but only on the local machine. In fact is was not even possible to manually establish a working multicast-connection over multiple computers in the same network. After wasting quite a lot of time, we decided to move on to other task that could still be implemented in the remaining time.
 \\\\
 That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
 
