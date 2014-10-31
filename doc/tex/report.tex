@@ -269,9 +269,13 @@ Crossed out ones did not fully work and therefore are not included in the final 
 
 For starting up the program one does only need to have the build tool \textit{ant}. 
 
-The important tasks of the ant build script is listed here:
+The important tasks of the ant build script are listed here:
 
-
+\begin{itemize}
+	\item \textit{run-gui} starts the program with the graphical user interface
+	\item \textit{compile} compiles the program
+	\item \textit{test} starts the unit tests of the application; additionally a JaCoCo test report will be created as an .exec file. 
+\end{itemize}
 
 \section{Technologies}
 \subsection{Mock-Objects}
