@@ -8,6 +8,7 @@
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage[normalem]{ulem} 
+\usepackage{enumitem}
 
 \title{Rock the net}
 \author{Elias Frantar, Samuel Schmidt, Nikolaus Schrack, Gary Ye}
@@ -128,8 +129,42 @@ Advanced Total & 26 &	2 \\ \hline
 	Total & 89 & 142 \\ \hline
 \end{tabular}
 
+\newpage
+
 \section{Work Sharing}
 
+\subsection{Original Tasks}
+
+\textbf{Elias Frantar}
+\begin{enumerate}[noitemsep]
+	\item SNMP-Connections: design, implementation, testing
+	\item SSH-Connection: design, implementation, testing
+	\item GUI/Controller programming: implementation
+\end{enumerate}
+
+\noindent \textbf{Samuel Schmidt}
+\begin{enumerate}[noitemsep]
+	\item GUI/Controller: design, implementation
+	\item SNMP-hook: design, implementation, testing
+	\item Notifications (email, pop-ups): design, implementation, testing
+\end{enumerate}
+
+\noindent \textbf{Nikolaus Schrack}
+\begin{enumerate}[noitemsep]
+	\item Thru put graph: design, implementation, testing
+	\item Data refreshing: design, implementation, testing
+	\item Automated GUI-testing
+\end{enumerate}
+
+\noindent \textbf{Gary Ye}
+\begin{enumerate}[noitemsep]
+	\item Data mapping: design, implementation, testing
+	\item CRUD: design, implementation, testing
+	\item CI server
+	\item Multicast-Group-Transactions: design, implementation, testing
+\end{enumerate}
+
+\subsection{Time Spent}
 \begin{tabular} {| l | c | c | c | c | c |} \hline
 
 	Task 								& 	Frantar 	& 	Schmidt 	& 	Schrack 	& 	Ye 		& 	Total 	\\ \hline \hline
@@ -166,7 +201,7 @@ In summary everything except Multi-Cast-Groups and the SNMP-trap is working sati
 Crossed out ones did not fully work and therefore are not included in the final product. See section~\ref{sec:problems} for more information on the problems we had.
 
 \vspace{10pt}
-\textbf{Basic tasks:}
+\noindent \textbf{Basic tasks:}
 \begin{itemize}
 \item As a user, I want to connect to my firewall device by entering its IP-address.
 \begin{itemize}
@@ -196,7 +231,7 @@ Crossed out ones did not fully work and therefore are not included in the final 
 \end{itemize}
 \item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
 \end{itemize}
-\textbf{Advanced tasks:}
+\noindent \textbf{Advanced tasks:}
 \begin{itemize}
 \item \sout{As a user, I want to be notified if a rule has been changed without my assistance.}
 \begin{itemize}
