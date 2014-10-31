@@ -307,6 +307,35 @@ The tests of the \lstinline|view| package have zero coverage because it was test
 
 \section{Occurred problems}
 \label{sec:problems}
+
+\subsection{TestFX}
+
+We tried to use the tool “TestFX” which seemed easy-to-use at first. Unfortunately we couldn’t figure out how the starting of the GUI worked. In TextFx you start the GUI and then tell the mouse/keyboard what to do.
+The test class has to extend from org.loadui.testfx.GuiTest. Then you need to override the method getRootNode which returns a javafx.scene.Parent. All the GUI elements in javafx return such Parent but we didn’t know where to start from that. The main application couldn’t be started. 
+
+Here is an example of how it is supposed to work, taken from \cite{github:testfx}.
+
+\begin{lstlisting}
+public class LoginTest extends GuiTest
+{
+	public Parent getRootNode()
+	{
+		return new LoginForm();
+	}
+	
+	@Test
+	public void validCredentials_should_loginSuccessfully()
+	{
+		click("#user-name").type("steve");
+		click("#password").type("duke4ever");
+		click("#confirm");
+		assertNodeExists( "#welcome-message" );
+	}
+}
+\end{lstlisting}
+
+Although it looks very easy we weren’t able to start the GUI in the test in the first place. 
+
 \subsection{Multicast Connection}
 
 Multicast connections couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
