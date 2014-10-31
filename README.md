@@ -17,3 +17,6 @@ The important tasks of the ant build script are listed here:
 * run-gui starts the program with the graphical user interface
 * compile compiles the program
 * test starts the unit tests of the application; additionally a JaCoCo test report will be created as an .exec file. 
+
+
+Known problems: If the JAVA_HOME is not set properly then this program will not work. 
