@@ -286,11 +286,10 @@ The important tasks of the ant build script are listed here:
 
 \section{Test report}
 
-Testing was categorized in three sub categories:
+Testing was categorized in two sub categories:
 
 \begin{itemize}
-	\item Unit Tests
-	\item Exception Handling
+	\item Unit Tests (reproduceable with \textit{ant test})
 	\item Graphical User Interface Tests
 \end{itemize}
 
@@ -298,17 +297,21 @@ Testing was categorized in three sub categories:
 
 Unit tests were mainly done in the model classes. The following figure is a snippet of the latest coverage report (October 31st) created in Jenkins. 
 
+\vspace{10pt}
 \includegraphics[width=\textwidth]{images/coverage}
+\vspace{10pt}
 
 The tests of the \lstinline|view| package have zero coverage because it was tested in a different way. Some of the packages also have zero coverage due to very simple get and set methods, which are unnecessary to test.  
 
 % \subsection{Exception Handling}
 % TODO: You are never strong enough that you don't need help.”  ― César Chávez
 \subsection{GUI Test}
-% TODO: NIKO?
+
+For some reasons automated GUI-testing did not work (see section~ \ref{sec:problems}).
 
 \section{Occurred problems}
 \label{sec:problems}
+
 \subsection{Multicast Connection}
 
 Multicast connections couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
