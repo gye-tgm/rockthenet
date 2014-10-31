@@ -11,7 +11,9 @@ import java.util.Queue;
 import org.apache.log4j.Logger;
 
 /**
+ * Implements a Peer for the Ricart Agrawala algorithm.
  * @author Gary Ye
+ * @version 2014-10-31
  */
 public class Peer implements Listener {
     private static org.apache.log4j.Logger log = Logger.getLogger(Peer.class);
@@ -25,12 +27,20 @@ public class Peer implements Listener {
     public Peer() {
         this(new MulticastConnection());
     }
+
+    /**
+     * Constructs a Peer with a given, not started, multicast connection.
+     * @param multicastConnection the multicast connection
+     */
     public Peer(MulticastConnection multicastConnection){
         this.myRequest = null;
         this.otherRequests = new LinkedList<>();
         this.multicastConnection = multicastConnection;
     }
 
+    /**
+     * Starts the multicast connection.
+     */
     public void connect(){
         multicastConnection.setListener(this);
         multicastConnection.start();
@@ -41,6 +51,9 @@ public class Peer implements Listener {
         }
     }
 
+    /**
+     * Locks all other users in the Multicast connection from doing any further actions.
+     */
     public synchronized void lock() {
         myRequest = new Message(Message.MessageType.REQUEST, multicastConnection.getInetAddress());
         try {
@@ -61,6 +74,9 @@ public class Peer implements Listener {
         } while (numberAccept < groupSize);
     }
 
+    /**
+     * Unlocks, so that all other users can do their things.
+     */
     public synchronized void unlock() {
         while (!otherRequests.isEmpty()) {
             try {
@@ -72,10 +88,19 @@ public class Peer implements Listener {
         myRequest = null;
     }
 
+    /**
+     * Responds to the given request with an OK.
+     * @param request the request to respond to
+     * @throws IOException will be thrown if sending was not successful
+     */
     public synchronized void replyOK(Message request) throws IOException {
         multicastConnection.send(new Message(Message.MessageType.OK, multicastConnection.getInetAddress(), request.getSrcAddress()));
     }
-
+    /**
+     * Responds to the given request with a DENY.
+     * @param request the request to respond to
+     * @throws IOException will be thrown if sending was not successful
+     */
     public synchronized void replyDeny(Message request) throws IOException {
         multicastConnection.send(new Message(Message.MessageType.DENY, multicastConnection.getInetAddress(), request.getSrcAddress()));
     }
@@ -113,17 +138,30 @@ public class Peer implements Listener {
         }
     }
 
+    /**
+     * Handles a deny message. Should be called if a deny message was received
+     * @param otherRequest the deny request to handle
+     */
     private void handleDeny(Message otherRequest) {
         // TODO: Maybe check with IP
         groupSize++;
     }
 
+    /**
+     * Handles an OK message. Should be called if the
+     * @param otherRequest the OK request ot handle
+     */
     private void handleOK(Message otherRequest) {
         // TODO: Maybe check with IP
         groupSize++;
         numberAccept++;
     }
 
+    /**
+     * Handle request, wrapper method.
+     * @param otherRequest the request to handle
+     * @throws IOException will be thrown if replying was not successful
+     */
     private void handleRequest(Message otherRequest) throws IOException {
         if (myRequest == null) {
             replyOK(otherRequest);
