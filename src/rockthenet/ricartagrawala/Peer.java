@@ -1,7 +1,7 @@
 package rockthenet.ricartagrawala;
 
 import org.apache.log4j.Logger;
-import rockthenet.Listener;
+import rockthenet.utils.Listener;
 import rockthenet.connections.MulticastConnection;
 
 import java.io.IOException;

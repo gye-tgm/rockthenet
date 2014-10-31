@@ -1,4 +1,4 @@
-package rockthenet;
+package rockthenet.utils;
 
 import net.percederberg.mibble.*;
 import net.percederberg.mibble.value.ObjectIdentifierValue;

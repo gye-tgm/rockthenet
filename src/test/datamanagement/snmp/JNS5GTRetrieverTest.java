@@ -7,7 +7,7 @@ import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
-import rockthenet.MibHelper;
+import rockthenet.utils.MibHelper;
 import rockthenet.connections.ConnectionException;
 import rockthenet.connections.ReadConnection;
 import rockthenet.firewall.jns5gt.JNS5GTPolicy;

@@ -1,7 +1,7 @@
 package rockthenet.connections;
 
 import org.apache.log4j.Logger;
-import rockthenet.Listener;
+import rockthenet.utils.Listener;
 
 import java.io.*;
 import java.net.DatagramPacket;

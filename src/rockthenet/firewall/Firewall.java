@@ -1,6 +1,6 @@
 package rockthenet.firewall;
 
-import rockthenet.Refreshable;
+import rockthenet.utils.Refreshable;
 import rockthenet.datamanagement.IDataRetriever;
 import rockthenet.datamanagement.IDataWriter;
 

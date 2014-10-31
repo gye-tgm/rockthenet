@@ -1,4 +1,6 @@
-package rockthenet;
+package rockthenet.utils;
+
+import rockthenet.utils.Refreshable;
 
 /**
  * This class refreshes a refreshable object by calling their {@code refresh()} method.

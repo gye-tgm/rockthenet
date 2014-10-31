@@ -3,7 +3,7 @@ package test.dictionaries;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import rockthenet.MibHelper;
+import rockthenet.utils.MibHelper;
 
 /**
  * @author Gary Ye

@@ -1,4 +1,4 @@
-package rockthenet;
+package rockthenet.utils;
 
 /**
  * All classes that implement this interface indicate that they are operating as a listener.
