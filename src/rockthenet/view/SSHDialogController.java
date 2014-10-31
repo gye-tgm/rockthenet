@@ -4,9 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.connections.ConnectionException;
 
 /**
@@ -17,9 +15,9 @@ import rockthenet.connections.ConnectionException;
  * @version 2014-10-29
  */
 public class SSHDialogController {
-	
-	/* fields mapped to FXML */
-	@FXML
+
+    /* fields mapped to FXML */
+    @FXML
     private TextField username;
     @FXML
     private PasswordField password;
@@ -33,10 +31,12 @@ public class SSHDialogController {
      * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     /**
      * Sets the stage of this dialog.
+     *
      * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
@@ -45,6 +45,7 @@ public class SSHDialogController {
 
     /**
      * Returns if OK has been clicked.
+     *
      * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
@@ -77,7 +78,7 @@ public class SSHDialogController {
     /**
      * Validates the user's input of all input fields.
      * <p> Shows an error dialog mentioning the invalid fields in case of input errors.
-     * 
+     *
      * @return true if the input is valid; false otherwise
      */
     private boolean isInputValid() {
@@ -102,6 +103,8 @@ public class SSHDialogController {
     }
 
     /* simple Getters and Setters; no documentation necessary */
-    public void setController(Controller controller) { this.controller = controller; }
-    
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
 }

@@ -8,7 +8,7 @@ import java.util.HashMap;
 /**
  * The ThruPut Monitor model is a special class that manages the thruput of a JNS5GT firewall.
  * It retrieves the thruput of every policy in the firewall and stores them in a history list.
- *
+ * <p>
  * This class does not optimize any memory consumption and consequently the memory usage can be high after a long usage.
  *
  * @author Gary Ye
@@ -45,6 +45,7 @@ public class ThruPutMonitorModel {
 
     /**
      * Returns the update count.
+     *
      * @return the update count.
      */
     public int getUpdateCount() {
@@ -53,6 +54,7 @@ public class ThruPutMonitorModel {
 
     /**
      * Returns the thruput data of the policy with the given id
+     *
      * @param id the id of the policy from which the thruput data should be retrieved
      * @return the thruput data of policy with the given id
      */

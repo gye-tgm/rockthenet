@@ -24,7 +24,7 @@ public class MibHelper {
         try {
             oidDictionary = extractOids(loadMib(new File(filename)));
             namesDictionary = new HashMap<>();
-            for(Map.Entry<String, String> e: oidDictionary.entrySet()){
+            for (Map.Entry<String, String> e : oidDictionary.entrySet()) {
                 namesDictionary.put(e.getValue(), e.getKey());
             }
         } catch (IOException e) {
@@ -34,13 +34,14 @@ public class MibHelper {
         }
     }
 
-    public String getOID(String variableName){
+    public String getOID(String variableName) {
         return oidDictionary.get(variableName);
     }
 
-    public String getName(String oid){
+    public String getName(String oid) {
         return namesDictionary.get(oid);
     }
+
     /* Loads the Mib from the specified file and returns it.
      *
      * @param file the file of the mib
@@ -55,7 +56,7 @@ public class MibHelper {
     }
 
     public HashMap<String, String> extractOids(Mib mib) {
-        HashMap<String, String>  map = new HashMap();
+        HashMap<String, String> map = new HashMap();
         Iterator iter = mib.getAllSymbols().iterator();
         MibSymbol symbol;
         MibValue value;

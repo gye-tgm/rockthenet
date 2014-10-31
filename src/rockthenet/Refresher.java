@@ -2,6 +2,7 @@ package rockthenet;
 
 /**
  * This class refreshes a refreshable object by calling their {@code refresh()} method.
+ *
  * @author Nikolaus Schrack
  * @author Gary Ye
  * @version 2014-10-29
@@ -12,21 +13,22 @@ public class Refresher extends Thread {
 
     /**
      * Constructs a new refresher.
-     * @param refreshObject the object to refresh
+     *
+     * @param refreshObject   the object to refresh
      * @param refreshInterval the interval to refresh in seconds
      */
-    public Refresher(Refreshable refreshObject, int refreshInterval){
+    public Refresher(Refreshable refreshObject, int refreshInterval) {
         this.refreshObject = refreshObject;
         this.refreshInterval = refreshInterval;
     }
 
-    public void run(){
-        try{
-            while(true){
+    public void run() {
+        try {
+            while (true) {
                 refreshObject.refresh();
                 sleep(refreshInterval);
             }
-        }catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println("interrupted.");
         }
     }

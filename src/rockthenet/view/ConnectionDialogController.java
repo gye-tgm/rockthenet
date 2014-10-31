@@ -14,7 +14,7 @@ import org.controlsfx.dialog.Dialogs;
  */
 public class ConnectionDialogController {
 
-	/* fields mapped to FXML */
+    /* fields mapped to FXML */
     @FXML
     private TextField address;
     @FXML
@@ -33,10 +33,12 @@ public class ConnectionDialogController {
      * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     /**
      * Sets the stage of this dialog.
+     *
      * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
@@ -45,6 +47,7 @@ public class ConnectionDialogController {
 
     /**
      * Returns if OK has been clicked.
+     *
      * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
@@ -58,10 +61,11 @@ public class ConnectionDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            if (controller.establishConnectionV2(address.getText(), Integer.parseInt(port.getText()), community.getText(), security.getText())) { // try connecting
+            if (controller.establishConnectionV2(address.getText(), Integer.parseInt(port.getText()),
+                    community.getText(), security.getText())) { // try connecting
                 okClicked = true;
-            	dialogStage.close();
-        	}
+                dialogStage.close();
+            }
         }
     }
 
@@ -77,7 +81,7 @@ public class ConnectionDialogController {
     /**
      * Validates the user's input of all input fields.
      * <p> Shows an error dialog mentioning the invalid fields in case of input errors.
-     * 
+     *
      * @return true if the input is valid; false otherwise
      */
     private boolean isInputValid() {
@@ -88,10 +92,11 @@ public class ConnectionDialogController {
 
         int portValue = -1;
         try {
-        	portValue = Integer.parseInt(port.getText());
-        } catch (NumberFormatException e) { }
+            portValue = Integer.parseInt(port.getText());
+        } catch (NumberFormatException e) {
+        }
         if (portValue < 1 || portValue > 65535)
-        	errorMessage += "Invalid port (1 - 65535) \n";
+            errorMessage += "Invalid port (1 - 65535) \n";
 
         if (community.getText().length() == 0)
             errorMessage += "No Community specified!\n";
@@ -107,11 +112,13 @@ public class ConnectionDialogController {
                     .showError();
             return false;
         }
-        
+
         return true;
     }
 
     /* simple Getters and Setters; no documentation necessary */
-    public void setController(Controller controller) { this.controller = controller; }
-    
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
 }

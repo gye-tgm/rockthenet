@@ -13,7 +13,8 @@ public class ThruPutData {
 
     /**
      * Constructs a new ThruPutData with the given time this data was recorded and the bytes per second.
-     * @param timeUnit the time this data was recorded
+     *
+     * @param timeUnit    the time this data was recorded
      * @param bytesPerSec the bytes per second of the thruput
      */
     public ThruPutData(int timeUnit, int bytesPerSec) {

@@ -3,24 +3,23 @@ package rockthenet.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.connections.ConnectionException;
 
 /**
  * The controller of the dialog for creating/editing a rule
- * <p> This controller can either be in <i>create</i> or in <i>edit</i> mode. Editing-mode can be activated via {@link #configureAsEditDialog(PolicyRow)}.
+ * <p> This controller can either be in <i>create</i> or in <i>edit</i> mode. Editing-mode can be activated via
+ * {@link #configureAsEditDialog(PolicyRow)}.
  *
  * @author Samuel Schmidt
  * @author Elias Frantar
  * @version 2014-10-29
  */
 public class NewRuleController {
-	
-	/* fields mapped to FXML */
-	@FXML
-	private TextField id;
+
+    /* fields mapped to FXML */
+    @FXML
+    private TextField id;
     @FXML
     private TextField name;
     @FXML
@@ -42,17 +41,19 @@ public class NewRuleController {
     private Controller controller;
     private Stage dialogStage;
     private boolean okClicked = false;
-    
+
     private boolean editMode = false; // default is create-mode
 
     /**
      * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     /**
      * Sets the stage of this dialog.
+     *
      * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
@@ -61,12 +62,13 @@ public class NewRuleController {
 
     /**
      * Returns if OK has been clicked.
+     *
      * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
         return okClicked;
     }
-    
+
     /**
      * Handles the OK-button click. <br>
      * Called when the OK-button is pressed.
@@ -75,12 +77,18 @@ public class NewRuleController {
     private void handleOk() throws ConnectionException {
         if (isInputValid()) {
             okClicked = true;
-            
+
             if (editMode)
-            	controller.updateRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
+                controller.updateRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(),
+                        destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(),
+                        Integer.parseInt(service.getText()), Integer.parseInt(action.getText()),
+                        Integer.parseInt(enabled.getText()));
             else
-            	controller.newRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(), destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(), Integer.parseInt(service.getText()), Integer.parseInt(action.getText()), Integer.parseInt(enabled.getText()));
-            
+                controller.newRule(Integer.parseInt(id.getText()), name.getText(), sourceZone.getText(),
+                        destinationZone.getText(), sourceAddress.getText(), destinationAddress.getText(),
+                        Integer.parseInt(service.getText()), Integer.parseInt(action.getText()),
+                        Integer.parseInt(enabled.getText()));
+
             dialogStage.close();
         }
     }
@@ -97,7 +105,7 @@ public class NewRuleController {
     /**
      * Validates the user's input of all input fields.
      * <p> Shows an error dialog mentioning the invalid fields in case of input errors.
-     * 
+     *
      * @return true if the input is valid; false otherwise
      */
     private boolean isInputValid() {
@@ -106,9 +114,9 @@ public class NewRuleController {
         try {
             Integer.parseInt(id.getText());
         } catch (NumberFormatException nfe) {
-        	errorMessage += "Invalid Id specified!\n";
+            errorMessage += "Invalid Id specified!\n";
         }
-        
+
         if (name.getText().length() == 0)
             errorMessage += "No text specified!\n";
 
@@ -123,23 +131,23 @@ public class NewRuleController {
 
         if (destinationAddress.getText().length() == 0)
             errorMessage += "No Destination Address specified!\n";
-        
+
         try {
-                Integer.parseInt(service.getText());
+            Integer.parseInt(service.getText());
         } catch (NumberFormatException nfe) {
             errorMessage += "Invalid Service specified (0-1)!\n";
         }
-        
+
         try {
             Integer.parseInt(action.getText());
         } catch (NumberFormatException nfe) {
-        	errorMessage += "Invalid Action specified (0-1)!\n";
+            errorMessage += "Invalid Action specified (0-1)!\n";
         }
-        
+
         try {
             Integer.parseInt(enabled.getText());
         } catch (NumberFormatException nfe) {
-        	errorMessage += "Invalid Enabled specified (0-1)!\n";
+            errorMessage += "Invalid Enabled specified (0-1)!\n";
         }
 
         if (errorMessage.length() != 0) {
@@ -153,26 +161,29 @@ public class NewRuleController {
 
         return true;
     }
-    
+
     /**
      * Configures this controller as edit-dialog-controller for the given policy.
+     *
      * @param policy the policy to edit with this controller
      */
     public void configureAsEditDialog(PolicyRow policy) {
-    	this.id.setText("" + policy.getId());
-    	this.name.setText(policy.getName());
-    	this.sourceZone.setText(policy.getSrcZone());
-    	this.destinationAddress.setText(policy.getDstZone());
-    	this.sourceAddress.setText(policy.getSrcAddress());
-    	this.destinationAddress.setText(policy.getDstAddress());
-    	this.service.setText("" + policy.getService());
-    	this.action.setText("" + policy.getAction());
-    	this.enabled.setText("" + policy.getActiveStatus());
-    	
-    	this.id.setDisable(true);
-    	editMode = true;
+        this.id.setText("" + policy.getId());
+        this.name.setText(policy.getName());
+        this.sourceZone.setText(policy.getSrcZone());
+        this.destinationAddress.setText(policy.getDstZone());
+        this.sourceAddress.setText(policy.getSrcAddress());
+        this.destinationAddress.setText(policy.getDstAddress());
+        this.service.setText("" + policy.getService());
+        this.action.setText("" + policy.getAction());
+        this.enabled.setText("" + policy.getActiveStatus());
+
+        this.id.setDisable(true);
+        editMode = true;
     }
-    
+
     /* simple Getters and Setters; no documentation necessary */
-    public void setController(Controller controller) { this.controller = controller; }
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
 }

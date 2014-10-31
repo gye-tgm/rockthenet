@@ -1,5 +1,6 @@
 package rockthenet.ricartagrawala;
 
+import org.apache.log4j.Logger;
 import rockthenet.Listener;
 import rockthenet.connections.MulticastConnection;
 
@@ -8,16 +9,15 @@ import java.net.DatagramPacket;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.apache.log4j.Logger;
-
 /**
  * Implements a Peer for the Ricart Agrawala algorithm.
+ *
  * @author Gary Ye
  * @version 2014-10-31
  */
 public class Peer implements Listener {
     private static org.apache.log4j.Logger log = Logger.getLogger(Peer.class);
-    
+
     private Message myRequest;
     private Queue<Message> otherRequests;
     private MulticastConnection multicastConnection;
@@ -30,9 +30,10 @@ public class Peer implements Listener {
 
     /**
      * Constructs a Peer with a given, not started, multicast connection.
+     *
      * @param multicastConnection the multicast connection
      */
-    public Peer(MulticastConnection multicastConnection){
+    public Peer(MulticastConnection multicastConnection) {
         this.myRequest = null;
         this.otherRequests = new LinkedList<>();
         this.multicastConnection = multicastConnection;
@@ -41,7 +42,7 @@ public class Peer implements Listener {
     /**
      * Starts the multicast connection.
      */
-    public void connect(){
+    public void connect() {
         multicastConnection.setListener(this);
         multicastConnection.start();
         try {
@@ -81,7 +82,7 @@ public class Peer implements Listener {
         while (!otherRequests.isEmpty()) {
             try {
                 replyOK(otherRequests.poll());
-            }  catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -90,19 +91,24 @@ public class Peer implements Listener {
 
     /**
      * Responds to the given request with an OK.
+     *
      * @param request the request to respond to
      * @throws IOException will be thrown if sending was not successful
      */
     public synchronized void replyOK(Message request) throws IOException {
-        multicastConnection.send(new Message(Message.MessageType.OK, multicastConnection.getInetAddress(), request.getSrcAddress()));
+        multicastConnection.send(new Message(Message.MessageType.OK, multicastConnection.getInetAddress(),
+                request.getSrcAddress()));
     }
+
     /**
      * Responds to the given request with a DENY.
+     *
      * @param request the request to respond to
      * @throws IOException will be thrown if sending was not successful
      */
     public synchronized void replyDeny(Message request) throws IOException {
-        multicastConnection.send(new Message(Message.MessageType.DENY, multicastConnection.getInetAddress(), request.getSrcAddress()));
+        multicastConnection.send(new Message(Message.MessageType.DENY, multicastConnection.getInetAddress(),
+                request.getSrcAddress()));
     }
 
     @Override
@@ -115,7 +121,8 @@ public class Peer implements Listener {
             e.printStackTrace();
         }
 
-        if (otherRequest.getDstAddress() != null && otherRequest.getDstAddress() != multicastConnection.getInetAddress())
+        if (otherRequest.getDstAddress() != null && otherRequest.getDstAddress() != multicastConnection
+                .getInetAddress())
             return;
 
         try {
@@ -140,6 +147,7 @@ public class Peer implements Listener {
 
     /**
      * Handles a deny message. Should be called if a deny message was received
+     *
      * @param otherRequest the deny request to handle
      */
     private void handleDeny(Message otherRequest) {
@@ -149,6 +157,7 @@ public class Peer implements Listener {
 
     /**
      * Handles an OK message. Should be called if the
+     *
      * @param otherRequest the OK request ot handle
      */
     private void handleOK(Message otherRequest) {
@@ -159,6 +168,7 @@ public class Peer implements Listener {
 
     /**
      * Handle request, wrapper method.
+     *
      * @param otherRequest the request to handle
      * @throws IOException will be thrown if replying was not successful
      */

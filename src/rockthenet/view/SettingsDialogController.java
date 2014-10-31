@@ -3,11 +3,9 @@ package rockthenet.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import org.controlsfx.dialog.Dialogs;
-
 import rockthenet.SessionSettings;
-import rockthenet.view.validation.EmailValidator;
+import rockthenet.validation.EmailValidator;
 
 /**
  * The controller of the dialog to edit the application settings
@@ -16,9 +14,9 @@ import rockthenet.view.validation.EmailValidator;
  * @author Elias Frantar
  * @version 2014-10-29
  */
-public class SettingsDialogController{
+public class SettingsDialogController {
 
-	/* fields mapped to FXML */
+    /* fields mapped to FXML */
     @FXML
     private TextField email;
     @FXML
@@ -27,7 +25,7 @@ public class SettingsDialogController{
     /* other state attributes */
     private Stage dialogStage;
     private boolean okClicked = false;
-    
+
     private SessionSettings session; // instance to SessionSettings
 
     /**
@@ -35,14 +33,15 @@ public class SettingsDialogController{
      */
     @FXML
     private void initialize() {
-    	session = SessionSettings.getInstance();
-    	
-    	email.setText(session.getEmail());
+        session = SessionSettings.getInstance();
+
+        email.setText(session.getEmail());
         refreshIntervall.setText("" + session.getRefreshInterval());
     }
 
     /**
      * Sets the stage of this dialog.
+     *
      * @param dialogStage the primary dialog stage
      */
     public void setDialogStage(Stage dialogStage) {
@@ -51,6 +50,7 @@ public class SettingsDialogController{
 
     /**
      * Returns if OK has been clicked.
+     *
      * @return true if OK clicked, false otherwise
      */
     public boolean isOkClicked() {
@@ -64,32 +64,33 @@ public class SettingsDialogController{
     @FXML
     private void handleOk() {
         String errorMessage = "";
-        
-    	String emailText = email.getText();
-    	if (emailText.equals("") || new EmailValidator().validate(emailText))
-    		session.setEmail(emailText);
-    	else
-    		errorMessage += "Invalid email-address \n";
-    	
-    	int refreshIntervalValue = -1;
-    	try {
-    		refreshIntervalValue = Integer.parseInt(refreshIntervall.getText());
-    	} catch (Exception e) {}
-    	if (refreshIntervalValue >= 1 && refreshIntervalValue <= 1000)
-    		session.setRefreshInterval(refreshIntervalValue);
-    	else
-    		errorMessage += "Invalid refresh interval (1 - 1000) \n";
-    		
-    	if (errorMessage.length() > 0)
+
+        String emailText = email.getText();
+        if (emailText.equals("") || new EmailValidator().validate(emailText))
+            session.setEmail(emailText);
+        else
+            errorMessage += "Invalid email-address \n";
+
+        int refreshIntervalValue = -1;
+        try {
+            refreshIntervalValue = Integer.parseInt(refreshIntervall.getText());
+        } catch (Exception e) {
+        }
+        if (refreshIntervalValue >= 1 && refreshIntervalValue <= 1000)
+            session.setRefreshInterval(refreshIntervalValue);
+        else
+            errorMessage += "Invalid refresh interval (1 - 1000) \n";
+
+        if (errorMessage.length() > 0)
             Dialogs.create() // show error message
                     .title("Invalid Fields")
                     .masthead("Please correct invalid fields.")
                     .message(errorMessage)
                     .showError();
-    	else {
-    		okClicked = true;
-    		dialogStage.close();
-    	}
+        else {
+            okClicked = true;
+            dialogStage.close();
+        }
     }
 
     /**
@@ -100,6 +101,6 @@ public class SettingsDialogController{
     private void handleCancel() {
         dialogStage.close();
     }
-    
+
 }
 

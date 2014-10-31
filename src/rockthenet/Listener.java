@@ -9,6 +9,7 @@ package rockthenet;
 public interface Listener {
     /**
      * The object will be notified with a given message.
+     *
      * @param obj the message
      */
     public void notify(Object obj);

@@ -2,7 +2,7 @@ package rockthenet.dictionaries;
 
 /**
  * Each service in the JNS5GT policies have a corresponding number. This class translates between them.
- *
+ * <p>
  * The definitions are defined in @see <a href="http://www.circitor.fr/Mibs/Html/NETSCREEN-POLICY-MIB.php">Netscreen
  * documentation</a>
  *

@@ -30,13 +30,13 @@ public class MulticastConnection extends Thread implements Connection {
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
             establish();
         } catch (ConnectionException e) {
             e.printStackTrace();
         }
-        while(true){
+        while (true) {
             listener.notify(receive());
         }
     }
