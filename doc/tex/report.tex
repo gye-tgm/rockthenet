@@ -308,10 +308,8 @@ The tests of the \lstinline|view| package have zero coverage because it was test
 \label{sec:problems}
 \subsection{Multicast Connection}
 
-Multicast connection couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
+Multicast connections couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
 \\\\
-In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
-
 Concretely the following code throws an exception that cannot be resolved. 
 
 \begin{lstlisting}
@@ -341,6 +339,8 @@ at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.jav
 at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 \end{lstlisting}
 
+The code did not work on neither OSX- or Windows-PCs. It did work on Linux though, but only on the local machine. In fact is was not even possible to manually establish a working multicast-connection over multiple computers in the same network. After wasting quite a lot of time, we decided to shift or priorities in the remaining time to other tasks that could still be implemented.
+\\\\
 That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
 
 \newpage
