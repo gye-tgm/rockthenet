@@ -1,4 +1,4 @@
-Rock the Hell [![Build Status](http://148.251.5.105/job/Rock%20The%20Net/badge/icon)](http://gserver/job/Rock%20The%20Net/)
+Rock the Net [![Build Status](http://148.251.5.105/job/Rock%20The%20Net/badge/icon)](http://gserver/job/Rock%20The%20Net/)
 
 Developed by an outstanding team:
 * Elias Frantar
