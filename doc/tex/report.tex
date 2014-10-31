@@ -137,31 +137,31 @@ Advanced Total & 26 &	2 \\ \hline
 
 \textbf{Elias Frantar}
 \begin{enumerate}[noitemsep]
-	\item SNMP-Connections: design, implementation, testing
-	\item SSH-Connection: design, implementation, testing
-	\item GUI/Controller programming: implementation
+	\item SNMP-Connections: design, implementation, testing, documentation
+	\item SSH-Connection: design, implementation, testing, documentation
+	\item GUI/Controller programming: implementation, documentation
 \end{enumerate}
 
 \noindent \textbf{Samuel Schmidt}
 \begin{enumerate}[noitemsep]
-	\item GUI/Controller: design, implementation
-	\item SNMP-hook: design, implementation, testing
-	\item Notifications (email, pop-ups): design, implementation, testing
+	\item GUI/Controller: design, implementation, documentation
+	\item SNMP-hook: design, implementation, testing, documentation
+	\item Notifications (email, pop-ups): design, implementation, testing, documentation
 \end{enumerate}
 
 \noindent \textbf{Nikolaus Schrack}
 \begin{enumerate}[noitemsep]
-	\item Thru put graph: design, implementation, testing
-	\item Data refreshing: design, implementation, testing
+	\item Thru put graph: design, implementation, testing, documentation
+	\item Data refreshing: design, implementation, testing, documentation
 	\item Automated GUI-testing
 \end{enumerate}
 
 \noindent \textbf{Gary Ye}
 \begin{enumerate}[noitemsep]
-	\item Data mapping: design, implementation, testing
-	\item CRUD: design, implementation, testing
+	\item Data mapping: design, implementation, testing, documentation
+	\item CRUD: design, implementation, testing, documentation
 	\item CI server
-	\item Multicast-Group-Transactions: design, implementation, testing
+	\item Multicast-Group-Transactions: design, implementation, testing, documentation
 \end{enumerate}
 
 \subsection{Time Spent}
@@ -170,7 +170,7 @@ Advanced Total & 26 &	2 \\ \hline
 	Task 								& 	Frantar 	& 	Schmidt 	& 	Schrack 	& 	Ye 		& 	Total 	\\ \hline \hline
 	
 	Preparation							& 	9			&				&				&	11.5	&			\\ \hline
-	Documentation						&	5			&				&				&	9.5		&			\\ \hline
+	Documentation						&	7			&				&				&	9.5		&			\\ \hline
 	Model Design						& 	2			&				&				& 	10		&			\\ \hline
 	Continuous Integration				& 	0			& 				& 				&	9.5		&			\\ \hline \hline
 		
@@ -187,7 +187,7 @@ Advanced Total & 26 &	2 \\ \hline
 	CRUD								& 	3			& 				& 				&	15		&			\\ \hline
 	Multicast Groups					&	0			&				&				&	4		&			\\ \hline \hline
 	
-	Total								&	47			&				&				&	63.25	&			\\ \hline
+	Total								&	49			&				&				&	63.25	&			\\ \hline
 	
 \end{tabular}
 
@@ -265,13 +265,83 @@ Crossed out ones did not fully work and therefore are not included in the final 
 \subsection{UML Diagram}
 \includegraphics[width=\textwidth]{images/umlv3}
 
+\newpage
+
 \section{Installation and Preparation}
 
 For starting up the program one does only need to have the build tool \textit{ant}. 
 
 The important tasks of the ant build script is listed here:
 
+\section{Test report}
 
+Testing was categorized in three sub categories:
+
+\begin{itemize}
+	\item Unit Tests
+	\item Exception Handling
+	\item Graphical User Interface Tests
+\end{itemize}
+
+\subsection{Unit Tests}
+
+Unit tests were mainly done in the model classes. The following figure is a snippet of the latest coverage report (October 31st) created in Jenkins. 
+
+\includegraphics[width=\textwidth]{images/coverage}
+
+The tests of the \lstinline|view| package have zero coverage because it was tested in a different way. Some of the packages also have zero coverage due to very simple get and set methods, which are unnecessary to test.  
+
+\subsection{Exception Handling}
+% TODO: You are never strong enough that you don't need help.”  ― César Chávez
+\subsection{GUI Test}
+% TODO: NIKO?
+
+\section{Occurred problems}
+\label{sec:problems}
+\subsection{Multicast Connection}
+
+Multicast connection couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
+\\\\
+In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
+
+Concretely the following code throws an exception that cannot be resolved. 
+
+\begin{lstlisting}
+InetAddress group = InetAddress.getByName("224.0.0.1");
+int port = 6667;
+
+peer1 = new Peer(new MulticastConnection(group, port));
+peer1.connect();
+\end{lstlisting}
+
+The exception is as follows:
+
+\begin{lstlisting}
+java.net.SocketException: Can't assign requested address
+at java.net.PlainDatagramSocketImpl.join(Native Method)
+at java.net.AbstractPlainDatagramSocketImpl.join(AbstractPlainDatagramSocketImpl.java:178)
+at java.net.MulticastSocket.joinGroup(MulticastSocket.java:323)
+at rockthenet.connections.MulticastConnection.establish(MulticastConnection.java:48)
+at test.connections.MulticastConnectionTest.setup(MulticastConnectionTest.java:29)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.lang.reflect.Method.invoke(Method.java:483)
+at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+\end{lstlisting}
+
+That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
+
+
+
+
+
+
+
+\newpage
 
 \section{Technologies}
 \subsection{Mock-Objects}
@@ -516,68 +586,6 @@ And for coverage wrap the junit task with a \textit{$<$jacoco:coverage$>$} tag. 
 	</junit>
 </jacoco:coverage>
 \end{lstlisting}
-
-\section{Test report}
-
-Testing was categorized in three sub categories:
-
-\begin{itemize}
-	\item Unit Tests
-	\item Exception Handling
-	\item Graphical User Interface Tests
-\end{itemize}
-
-\subsection{Unit Tests}
-
-Unit tests were mainly done in the model classes. The following figure is a snippet of the latest coverage report (October 31st) created in Jenkins. 
-
-\includegraphics[width=\textwidth]{images/coverage}
-
-The tests of the \lstinline|view| package have zero coverage because it was tested in a different way. Some of the packages also have zero coverage due to very simple get and set methods, which are unnecessary to test.  
-
-\subsection{Exception Handling}
-% TODO: You are never strong enough that you don't need help.”  ― César Chávez
-\subsection{GUI Test}
-% TODO: NIKO?
-
-\section{Occurred problems}
-\label{sec:problems}
-\subsection{Multicast Connection}
-
-Multicast connection couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
-\\\\
-In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
-
-Concretely the following code throws an exception that cannot be resolved. 
-
-\begin{lstlisting}
-InetAddress group = InetAddress.getByName("224.0.0.1");
-int port = 6667;
-
-peer1 = new Peer(new MulticastConnection(group, port));
-peer1.connect();
-\end{lstlisting}
-
-The exception is as follows:
-
-\begin{lstlisting}
-java.net.SocketException: Can't assign requested address
-at java.net.PlainDatagramSocketImpl.join(Native Method)
-at java.net.AbstractPlainDatagramSocketImpl.join(AbstractPlainDatagramSocketImpl.java:178)
-at java.net.MulticastSocket.joinGroup(MulticastSocket.java:323)
-at rockthenet.connections.MulticastConnection.establish(MulticastConnection.java:48)
-at test.connections.MulticastConnectionTest.setup(MulticastConnectionTest.java:29)
-at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.lang.reflect.Method.invoke(Method.java:483)
-at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
-at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
-\end{lstlisting}
-
-That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
 
 \nocite{*}
 \bibliographystyle{plain}
