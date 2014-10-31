@@ -214,7 +214,7 @@ public class Controller implements Refreshable {
             session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv2cConnection
                     (address, port, communityName, securityName)), null));
             monitorModel = new ThruPutMonitorModel((JNS5GTFirewall) session.getFirewall());
-            session.setRefresher(new Refresher(this, SessionSettings.DEFAULT_INTERVAL));
+            session.setRefresher(new Refresher(this, -1));
             session.getRefresher().start();
             newRule.setDisable(false);
             session.setHost(address);
@@ -259,7 +259,7 @@ public class Controller implements Refreshable {
             session.setFirewall(new JNS5GTFirewall(new JNS5GTRetriever(SNMPConnectionFactory.createSNMPv3Connection
                     (address, port, username, authentificationPassword, securityPassword)), null));
             monitorModel = new ThruPutMonitorModel((JNS5GTFirewall) session.getFirewall());
-            session.setRefresher(new Refresher(this, SessionSettings.DEFAULT_INTERVAL));
+            session.setRefresher(new Refresher(this, -1));
             session.getRefresher().start();
 
             newRule.setDisable(false);

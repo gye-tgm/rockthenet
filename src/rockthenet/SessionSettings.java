@@ -33,6 +33,7 @@ public class SessionSettings {
     private boolean loggedIn;
     private String host;
     private Refresher refresher;
+    private int refreshInterval = 5;
 
     /* Settings Dialog */
     private String email = "";
@@ -48,7 +49,11 @@ public class SessionSettings {
 
     /* Setters */
     public void setRefreshInterval(int newInterval) {
-        refresher.setRefreshInterval(newInterval);
+        if(true){
+            this.refreshInterval = newInterval;
+        } else {
+            refresher.setRefreshInterval(newInterval);
+        }
     }
 
     public void setEmail(String email) {
@@ -68,8 +73,13 @@ public class SessionSettings {
     }
 
     /* Getters */
+
     public int getRefreshInterval() {
-        return refresher.getRefreshInterval();
+        if(true){
+            return refreshInterval;
+        } else {
+            return refresher.getRefreshInterval();
+        }
     }
 
     public String getEmail() {

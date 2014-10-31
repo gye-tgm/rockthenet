@@ -1,5 +1,6 @@
 package rockthenet.utils;
 
+import rockthenet.SessionSettings;
 import rockthenet.utils.Refreshable;
 
 /**
@@ -28,7 +29,10 @@ public class Refresher extends Thread {
         try {
             while (true) {
                 refreshObject.refresh();
-                sleep(refreshInterval);
+                if(refreshInterval == -1)
+                    sleep(SessionSettings.getInstance().getRefreshInterval());
+                else
+                    sleep(refreshInterval);
             }
         } catch (InterruptedException e) {
             System.out.println("interrupted.");
