@@ -8,6 +8,7 @@
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage[normalem]{ulem} 
+\usepackage{enumitem}
 
 \title{Rock the net}
 \author{Elias Frantar, Samuel Schmidt, Nikolaus Schrack, Gary Ye}
@@ -128,8 +129,42 @@ Advanced Total & 26 &	2 \\ \hline
 	Total & 89 & 142 \\ \hline
 \end{tabular}
 
+\newpage
+
 \section{Work Sharing}
 
+\subsection{Original Tasks}
+
+\textbf{Elias Frantar}
+\begin{enumerate}[noitemsep]
+	\item SNMP-Connections: design, implementation, testing
+	\item SSH-Connection: design, implementation, testing
+	\item GUI/Controller programming: implementation
+\end{enumerate}
+
+\noindent \textbf{Samuel Schmidt}
+\begin{enumerate}[noitemsep]
+	\item GUI/Controller: design, implementation
+	\item SNMP-hook: design, implementation, testing
+	\item Notifications (email, pop-ups): design, implementation, testing
+\end{enumerate}
+
+\noindent \textbf{Nikolaus Schrack}
+\begin{enumerate}[noitemsep]
+	\item Thru put graph: design, implementation, testing
+	\item Data refreshing: design, implementation, testing
+	\item Automated GUI-testing
+\end{enumerate}
+
+\noindent \textbf{Gary Ye}
+\begin{enumerate}[noitemsep]
+	\item Data mapping: design, implementation, testing
+	\item CRUD: design, implementation, testing
+	\item CI server
+	\item Multicast-Group-Transactions: design, implementation, testing
+\end{enumerate}
+
+\subsection{Time Spent}
 \begin{tabular} {| l | c | c | c | c | c |} \hline
 
 	Task 								& 	Frantar 	& 	Schmidt 	& 	Schrack 	& 	Ye 		& 	Total 	\\ \hline \hline
@@ -158,12 +193,16 @@ Advanced Total & 26 &	2 \\ \hline
 
 \newpage
 
-\section{Design}
-\subsection{User Stories}
-All user-stories that are not crossed out, have been successfully implemented and are included in the final product. Crossed-out ones did not fully work and therefore are not included in the final product. The current progress of those tasks is documented in this report thoroughly. 
+
+\section{Grade of Completion}
+
+The following user-stories have been deduced from the task description. All not crossed out ones have been successfully implemented and are included in the final product. \\
+In summary everything except Multi-Cast-Groups and the SNMP-trap is working satisfyingly.
+\\\\
+Crossed out ones did not fully work and therefore are not included in the final product. See section~\ref{sec:problems} for more information on the problems we had.
 
 \vspace{10pt}
-\textbf{Basic tasks:}
+\noindent \textbf{Basic tasks:}
 \begin{itemize}
 \item As a user, I want to connect to my firewall device by entering its IP-address.
 \begin{itemize}
@@ -193,7 +232,7 @@ All user-stories that are not crossed out, have been successfully implemented an
 \end{itemize}
 \item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
 \end{itemize}
- \textbf{Advanced tasks:}
+\noindent \textbf{Advanced tasks:}
 \begin{itemize}
 \item \sout{As a user, I want to be notified if a rule has been changed without my assistance.}
 \begin{itemize}
@@ -221,9 +260,10 @@ All user-stories that are not crossed out, have been successfully implemented an
 \end{itemize}
 \end{itemize}
 
+\section{Design}
+
 \subsection{UML Diagram}
 \includegraphics[width=\textwidth]{images/umlv3}
-
 
 \section{Installation and Preparation}
 
@@ -398,9 +438,6 @@ For removing firewall rules we need to do the contrary of setting - \textit{unse
 unset policy id <id> 
 \end{lstlisting}
 
-\subsection{Mutual Exclusion}
-
-% TODO: Explain Akinfenwa Algorithm
 
 \subsection{Continuous Integration Server}
 
@@ -504,12 +541,12 @@ The tests of the \lstinline|view| package have zero coverage because it was test
 % TODO: NIKO?
 
 \section{Occurred problems}
-
+\label{sec:problems}
 \subsection{Multicast Connection}
 
 Multicast connection couldn't be tested because of a very nasty and yet unresolved bug. This has been a major issue for weeks and no solutions could be found in the Internet. 
-
-That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
+\\\\
+In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
 
 Concretely the following code throws an exception that cannot be resolved. 
 
@@ -539,6 +576,8 @@ at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.ja
 at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
 at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 \end{lstlisting}
+
+That's why Ricart Agrawla couldn't be implemented successfully with a Multicast connection. 
 
 \nocite{*}
 \bibliographystyle{plain}
