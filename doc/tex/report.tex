@@ -6,7 +6,8 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{tabularx}
-\usepackage{url} 
+\usepackage{url}
+\usepackage[normalem]{ulem} 
 
 \title{Rock the net}
 \author{Elias Frantar, Samuel Schmidt, Nikolaus Schrack, Gary Ye}
@@ -153,14 +154,19 @@ Advanced Total & 26 &	2 \\ \hline
 	
 \end{tabular}
 
+\newpage
+
 \section{Design}
 \subsection{User Stories}
- \textbf{Basic tasks:}
+All user-stories that are not crossed out, have been successfully implemented and are included in the final product. Crossed-out ones did not fully work and therefore are not included in the final product. The current progress of those tasks is document in this report though.
+
+\vspace{10pt}
+\textbf{Basic tasks:}
 \begin{itemize}
 \item As a user, I want to connect to my firewall device by entering its IP-address.
 \begin{itemize}
+\item As a user, I want to connect with SNMPv2c.
 \item As a user, I want to connect with SNMPv3.
-\item As a user, I want to fallback to SNMPv2c when SNMPv3 is not available.
 \end{itemize}
 \item As a user, I want a visually appealing graphical user interface.
 \item As a user, I want to list all firewall-rules configured on my device.
@@ -172,7 +178,7 @@ Advanced Total & 26 &	2 \\ \hline
 \end{itemize}
 \item As a user, I want the rules to be refreshed.
 \begin{itemize}
-\item As a user, I want the rules to be refreshed automatically.
+\item \sout{As a user, I want the rules to be refreshed automatically.}
 \begin{itemize}
 \item As a user, I want to configure the refresh intervals.
 \end{itemize}
@@ -184,17 +190,15 @@ Advanced Total & 26 &	2 \\ \hline
 \item As a user, I want to monitor multiple rules at the same time.
 \end{itemize}
 \item As a developer, I want the data retrieval to be encapsulated for further reuse and expansion.
-\item As a developer, I want all network packages to be logged in a log file for debugging purposes.
 \end{itemize}
  \textbf{Advanced tasks:}
 \begin{itemize}
-\item As a user, I want to be notified if a rule has been changed without my assistance.
+\item \sout{As a user, I want to be notified if a rule has been changed without my assistance.}
 \begin{itemize}
 \item As a user, I want to be notified by a pop-up window.
 \item As a user, I want to be optionally notified by email.
 \item As a user, I want to configure my email-address.
 \begin{itemize}
-\item As a user, I want to configure the email-address in a config-file.
 \item As a user, I want to configure the email-address in the GUI.
 \end{itemize}
 \end{itemize}
@@ -208,7 +212,7 @@ Advanced Total & 26 &	2 \\ \hline
 \item As a user, I want to stay logged in for the whole session after I have logged in for the first time.
 \end{itemize}
 \end{itemize}
-\item As a user, I want to have a transaction system for write access on the firewall, so that no editing conflicts can occur when multiple applications are trying to modify at the same time.
+\item \sout{As a user, I want to have a transaction system for write access on the firewall, so that no editing conflicts can occur when multiple applications are trying to modify at the same time.}
 \item As a developer, I want to be able to easily modify the software so that it works with other firewall hardwares.
 \begin{itemize}
 \item As a developer, I only want to exchange the SNMP-commands to make the application work with other firewall hardwares.
