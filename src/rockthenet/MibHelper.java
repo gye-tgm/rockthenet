@@ -10,8 +10,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * @author gary
+ * It's a last resort class for reading the MIB should all other methods fail.
+ *
+ * Ignore this, and use the {@code dictionaries} package instead.
+ *
+ * @author Gary ye
+ * @version 2014-10-31
  */
+@Deprecated
 public class MibHelper {
     private HashMap<String, String> oidDictionary;   // (name -> oid)
     private HashMap<String, String> namesDictionary; // (oid -> name)
