@@ -509,6 +509,18 @@ Multicast connection couldn't be tested because of a very nasty and yet unresolv
 \\\\
 In fact it wasn't even possible to create a Multicast-group manually on some of the team-members PCs.
 
+Concretely the following code throws an exception that cannot be resolved. 
+
+\begin{lstlisting}
+InetAddress group = InetAddress.getByName("224.0.0.1");
+int port = 6667;
+
+peer1 = new Peer(new MulticastConnection(group, port));
+peer1.connect();
+\end{lstlisting}
+
+The exception is as follows:
+
 \begin{lstlisting}
 java.net.SocketException: Can't assign requested address
 at java.net.PlainDatagramSocketImpl.join(Native Method)
