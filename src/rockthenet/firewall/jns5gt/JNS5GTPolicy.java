@@ -11,7 +11,7 @@ import rockthenet.firewall.Policy;
  * @version 2014-10-29
  */
 public class JNS5GTPolicy extends Policy {
-    protected Integer thruPut;
+    protected int thruPut;
 
     /**
      * Constructs a JNS5GT policy with the default values.
