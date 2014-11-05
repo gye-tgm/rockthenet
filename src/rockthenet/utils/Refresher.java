@@ -30,7 +30,7 @@ public class Refresher extends Thread {
             while (true) {
                 refreshObject.refresh();
                 if(refreshInterval == -1)
-                    sleep(SessionSettings.getInstance().getRefreshInterval());
+                    sleep(SessionSettings.getInstance().getRefreshInterval() * 1000);
                 else
                     sleep(refreshInterval);
             }
