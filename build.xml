@@ -20,8 +20,9 @@
     <echo message="Exec dir in ${exec.dir}" /> 
     <java classname="rockthenet.Main"
 	  fork="true"
-	  dir="${exec.dir}"
-      />
+	  dir="."> 
+      <classpath refid="rockthenet.module.classpath"/>
+    </java>
   </target>
 
   <target name="clean" description="Clean build products.">
