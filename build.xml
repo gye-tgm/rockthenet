@@ -29,6 +29,24 @@
     <delete dir="${build.dir}" />
   </target>
 
+  <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+           uri="javafx:com.sun.javafx.tools.ant"
+           classpath="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/lib/ant-javafx.jar"/> 
+
+  <target name="create-jar" description="Creates the Jar File"> 
+    <echo message="Value!"/>
+    <fx:jar destfile="rockthenet.jar">
+      <fx:application mainClass="rockthenet.Main"/>      
+      <fx:resources> 
+	<fx:fileset dir="." includes="lib/*.jar"/>
+      </fx:resources>
+      <fileset dir="${build.dir}"/>
+      <manifest>
+	
+      </manifest>
+    </fx:jar>
+  </target> 
+
   <target name="compile" depends="compile.module.rockthenet.tests" />
 
   <target name="rebuild" depends="clean, compile" description="Clean and build products." />
