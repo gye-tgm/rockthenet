@@ -31,7 +31,7 @@
 
   <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
            uri="javafx:com.sun.javafx.tools.ant"
-           classpath="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/lib/ant-javafx.jar"/> 
+           classpath="${env.JAVA_HOME}/lib/ant-javafx.jar"/> 
 
   <target name="create-jar" description="Creates the Jar File"> 
     <echo message="Value!"/>
