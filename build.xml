@@ -20,13 +20,32 @@
     <echo message="Exec dir in ${exec.dir}" /> 
     <java classname="rockthenet.Main"
 	  fork="true"
-	  dir="${exec.dir}"
-      />
+	  dir="."> 
+      <classpath refid="rockthenet.module.classpath"/>
+    </java>
   </target>
 
   <target name="clean" description="Clean build products.">
     <delete dir="${build.dir}" />
   </target>
+
+  <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+           uri="javafx:com.sun.javafx.tools.ant"
+           classpath="${env.JAVA_HOME}/lib/ant-javafx.jar"/> 
+
+  <target name="create-jar" description="Creates the Jar File"> 
+    <echo message="Value!"/>
+    <fx:jar destfile="rockthenet.jar">
+      <fx:application mainClass="rockthenet.Main"/>      
+      <fx:resources> 
+	<fx:fileset dir="." includes="lib/*.jar"/>
+      </fx:resources>
+      <fileset dir="${build.dir}"/>
+      <manifest>
+	
+      </manifest>
+    </fx:jar>
+  </target> 
 
   <target name="compile" depends="compile.module.rockthenet.tests" />
 

@@ -19,3 +19,4 @@ The important tasks of the ant build script are listed here:
 
 
 Known problems: If the `JAVA_HOME` is not set properly then this program will not work. 
+Known bugs: run-gui does not work properly on some systems 

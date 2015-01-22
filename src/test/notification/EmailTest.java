@@ -5,6 +5,7 @@ package test.notification;
  */
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import rockthenet.notification.Email;
 
@@ -14,17 +15,20 @@ import static org.junit.Assert.assertTrue;
 public class EmailTest {
     private Email email;
 
+    @Ignore
     @Before
     public void setUp() {
         email = new Email();
     }
 
+    @Ignore
     @Test
     public void testValidateSuccess() throws InterruptedException {
         email.sendMail("rockthenet.gg@gmail.com", "F9 liftoff", "F9 in orbit");
         assertTrue(email.checkMail("F9 liftoff"));
     }
 
+    @Ignore
     @Test
     public void testValidateFail() throws InterruptedException {
         email.sendMail("rockthenet.gg@gmail.com", "F9 liftoff", "F9 in orbit");
